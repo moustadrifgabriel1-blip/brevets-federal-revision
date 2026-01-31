@@ -266,36 +266,68 @@ elif page == "📚 Mes Documents":
         st.subheader("📤 Télécharger vos documents")
         st.info("💡 Upload depuis mobile, tablette, etc.")
         
-        uploaded_files = st.file_uploader(
-            "Sélectionnez vos fichiers PDF, Word, Excel",
-            type=['pdf', 'docx', 'doc', 'xlsx', 'xls', 'pptx'],
-            accept_multiple_files=True,
-            key="doc_uploader"
-        )
+        upload_method = st.radio("Méthode :", ["📦 Fichier ZIP (tout le dossier)", "📄 Fichiers individuels"], horizontal=True)
         
-        if uploaded_files:
-            st.write(f"📦 {len(uploaded_files)} fichier(s)")
+        if upload_method == "📦 Fichier ZIP (tout le dossier)":
+            st.markdown("""
+            **Instructions :**
+            1. Sur ton Mac, sélectionne le dossier complet
+            2. Clic droit > "Compresser"
+            3. Upload le fichier .zip ici
+            """)
             
-            module_codes = ["AA01", "AA02", "AA03", "AA04", "AA05", "AA06", "AA07", "AA08", "AA09", "AA10",
-                          "AE01", "AE02", "AE03", "AE04", "AE05", "AE06", "AE07", "AE08", "AE09", "AE10"]
-            selected_module = st.selectbox("📂 Module", module_codes)
+            uploaded_zip = st.file_uploader("Fichier ZIP", type=['zip'], key="zip_uploader")
             
-            if st.button("💾 Sauvegarder", type="primary", key="save_uploaded"):
-                with st.spinner("Sauvegarde..."):
+            if uploaded_zip and st.button("📦 Extraire", type="primary", key="import_zip"):
+                with st.spinner("Extraction..."):
                     try:
-                        dest_folder = Path(f"cours/{selected_module}")
-                        dest_folder.mkdir(parents=True, exist_ok=True)
+                        import zipfile
+                        from io import BytesIO
                         
-                        for uploaded_file in uploaded_files:
-                            file_path = dest_folder / uploaded_file.name
-                            with open(file_path, 'wb') as f:
-                                f.write(uploaded_file.getbuffer())
+                        zip_data = BytesIO(uploaded_zip.getbuffer())
+                        total = 0
                         
-                        st.success(f"✅ {len(uploaded_files)} fichier(s) sauvegardé(s) !")
+                        with zipfile.ZipFile(zip_data, 'r') as zip_ref:
+                            for f in zip_ref.filelist:
+                                if not f.is_dir() and not '__MACOSX' in f.filename:
+                                    zip_ref.extract(f, 'cours/')
+                                    total += 1
+                        
+                        st.success(f"✅ {total} fichiers extraits !")
                         st.balloons()
                     except Exception as e:
-                        st.error(f"❌ Erreur : {e}")
-    
+                        st.error(f"❌ {e}")
+        
+        else:
+            uploaded_files = st.file_uploader(
+                "Fichiers (plusieurs à la fois)",
+                type=['pdf', 'docx', 'doc', 'xlsx', 'xls', 'pptx'],
+                accept_multiple_files=True,
+                key="doc_uploader"
+            )
+            
+            if uploaded_files:
+                st.write(f"📦 {len(uploaded_files)} fichier(s)")
+                
+                module_codes = ["AA01", "AA02", "AA03", "AA04", "AA05", "AA06", "AA07", "AA08", "AA09", "AA10",
+                              "AE01", "AE02", "AE03", "AE04", "AE05", "AE06", "AE07", "AE08", "AE09", "AE10"]
+                selected_module = st.selectbox("📂 Module", module_codes)
+                
+                if st.button("💾 Sauvegarder", type="primary", key="save_uploaded"):
+                    with st.spinner("Sauvegarde..."):
+                        try:
+                            dest_folder = Path(f"cours/{selected_module}")
+                            dest_folder.mkdir(parents=True, exist_ok=True)
+                            
+                            for uploaded_file in uploaded_files:
+                                file_path = dest_folder / uploaded_file.name
+                                with open(file_path, 'wb') as f:
+                                    f.write(uploaded_file.getbuffer())
+                            
+                            st.success(f"✅ {len(uploaded_files)} sauvegardé(s) !")
+                            st.balloons()
+                        except Exception as e:
+                            st.error(f"❌ {e}")
     with tab2:
         st.subheader("📁 Importer vos dossiers de formation")
         
