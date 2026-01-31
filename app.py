@@ -296,9 +296,7 @@ elif page == "📚 Mes Documents":
                     except Exception as e:
                         st.error(f"❌ Erreur : {e}")
     
-    with tab2
-    
-    with tab1:
+    with tab2:
         st.subheader("📁 Importer vos dossiers de formation")
         
         # Aide pour obtenir le chemin sur Mac
