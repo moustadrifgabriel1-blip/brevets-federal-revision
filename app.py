@@ -617,6 +617,19 @@ elif page == "� Planning Cours":
             Les colonnes peuvent être nommées différemment (date/jour, module/cours, durée/h, thèmes/sujets).
             """)
             
+            # Vérifier si des sessions existent déjà
+            if schedule_manager.sessions:
+                st.warning(f"⚠️ Attention : {len(schedule_manager.sessions)} sessions sont déjà enregistrées.")
+                col1, col2 = st.columns([3, 1])
+                with col1:
+                    st.info("Si vous importez un nouveau fichier, les sessions existantes seront **écrasées**.")
+                with col2:
+                    if st.button("🗑️ Effacer tout", type="secondary"):
+                        schedule_manager.sessions = []
+                        schedule_manager.save()
+                        st.success("✅ Toutes les sessions ont été supprimées")
+                        st.rerun()
+            
             uploaded_excel = st.file_uploader(
                 "Importer un fichier Excel (.xlsx)",
                 type=['xlsx', 'xls'],
@@ -624,32 +637,37 @@ elif page == "� Planning Cours":
             )
             
             if uploaded_excel:
-                try:
-                    # Sauvegarder temporairement
-                    temp_path = Path("data/temp_schedule.xlsx")
-                    temp_path.parent.mkdir(parents=True, exist_ok=True)
-                    with open(temp_path, 'wb') as f:
-                        f.write(uploaded_excel.getbuffer())
-                    
-                    # Parser
-                    sessions = schedule_manager.parse_excel_schedule(str(temp_path))
-                    schedule_manager.save()
-                    
-                    st.success(f"✅ {len(sessions)} sessions importées!")
-                    
-                    # Aperçu
-                    st.markdown("**Aperçu:**")
-                    for s in sessions[:5]:
-                        st.write(f"• {s.date.strftime('%d.%m.%Y')} - {s.module_code} ({s.duration_hours}h)")
-                    if len(sessions) > 5:
-                        st.caption(f"... et {len(sessions) - 5} autres sessions")
-                    
-                    temp_path.unlink()
-                    st.rerun()
-                    
-                except Exception as e:
-                    st.error(f"Erreur lors de l'import: {e}")
-                    st.exception(e)
+                # Vérifier si un fichier a déjà été importé
+                if schedule_manager.sessions and not st.session_state.get('confirm_reimport', False):
+                    st.error("❌ Un planning est déjà chargé ! Cliquez sur '🗑️ Effacer tout' ci-dessus pour réimporter.")
+                else:
+                    try:
+                        # Sauvegarder temporairement
+                        temp_path = Path("data/temp_schedule.xlsx")
+                        temp_path.parent.mkdir(parents=True, exist_ok=True)
+                        with open(temp_path, 'wb') as f:
+                            f.write(uploaded_excel.getbuffer())
+                        
+                        # Parser
+                        sessions = schedule_manager.parse_excel_schedule(str(temp_path))
+                        schedule_manager.save()
+                        
+                        st.success(f"✅ {len(sessions)} sessions importées!")
+                        
+                        # Aperçu
+                        st.markdown("**Aperçu:**")
+                        for s in sessions[:5]:
+                            st.write(f"• {s.date.strftime('%d.%m.%Y')} - {s.module_code} ({s.duration_hours}h)")
+                        if len(sessions) > 5:
+                            st.caption(f"... et {len(sessions) - 5} autres sessions")
+                        
+                        temp_path.unlink()
+                        st.session_state['confirm_reimport'] = False
+                        st.rerun()
+                        
+                    except Exception as e:
+                        st.error(f"Erreur lors de l'import: {e}")
+                        st.exception(e)
     
     with tab2:
         st.subheader("📋 Mes sessions de cours")
