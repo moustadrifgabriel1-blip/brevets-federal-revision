@@ -704,7 +704,7 @@ elif page == "� Planning Cours":
             st.divider()
             
             # Afficher les sessions
-            for session in filtered_sessions:
+            for idx, session in enumerate(filtered_sessions):
                 is_past = session.date <= datetime.now()
                 status_icon = "✅" if is_past else "📅"
                 date_str = session.date.strftime("%d.%m.%Y")
@@ -722,7 +722,7 @@ elif page == "� Planning Cours":
                     
                     col1, col2 = st.columns(2)
                     with col1:
-                        if st.button("🗑️ Supprimer", key=f"del_{session.date}_{session.module_code}"):
+                        if st.button("🗑️ Supprimer", key=f"del_{idx}_{session.date}_{session.module_code}"):
                             schedule_manager.sessions.remove(session)
                             schedule_manager.save()
                             st.rerun()
