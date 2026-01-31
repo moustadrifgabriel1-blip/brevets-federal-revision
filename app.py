@@ -260,7 +260,43 @@ if page == "🏠 Accueil":
 elif page == "📚 Mes Documents":
     st.header("📚 Gestion des Documents")
     
-    tab1, tab2, tab3, tab4 = st.tabs(["📁 Import Dossiers", "📖 Cours", "📋 Directives", "📊 Vue Modules"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📤 Upload", "📁 Import Dossiers", "📖 Cours", "📋 Directives", "📊 Vue Modules"])
+    
+    with tab1:
+        st.subheader("📤 Télécharger vos documents")
+        st.info("💡 Upload depuis mobile, tablette, etc.")
+        
+        uploaded_files = st.file_uploader(
+            "Sélectionnez vos fichiers PDF, Word, Excel",
+            type=['pdf', 'docx', 'doc', 'xlsx', 'xls', 'pptx'],
+            accept_multiple_files=True,
+            key="doc_uploader"
+        )
+        
+        if uploaded_files:
+            st.write(f"📦 {len(uploaded_files)} fichier(s)")
+            
+            module_codes = ["AA01", "AA02", "AA03", "AA04", "AA05", "AA06", "AA07", "AA08", "AA09", "AA10",
+                          "AE01", "AE02", "AE03", "AE04", "AE05", "AE06", "AE07", "AE08", "AE09", "AE10"]
+            selected_module = st.selectbox("📂 Module", module_codes)
+            
+            if st.button("💾 Sauvegarder", type="primary", key="save_uploaded"):
+                with st.spinner("Sauvegarde..."):
+                    try:
+                        dest_folder = Path(f"cours/{selected_module}")
+                        dest_folder.mkdir(parents=True, exist_ok=True)
+                        
+                        for uploaded_file in uploaded_files:
+                            file_path = dest_folder / uploaded_file.name
+                            with open(file_path, 'wb') as f:
+                                f.write(uploaded_file.getbuffer())
+                        
+                        st.success(f"✅ {len(uploaded_files)} fichier(s) sauvegardé(s) !")
+                        st.balloons()
+                    except Exception as e:
+                        st.error(f"❌ Erreur : {e}")
+    
+    with tab2
     
     with tab1:
         st.subheader("📁 Importer vos dossiers de formation")
