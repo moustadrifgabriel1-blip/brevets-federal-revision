@@ -260,6 +260,26 @@ if page == "🏠 Accueil":
 elif page == "📚 Mes Documents":
     st.header("📚 Gestion des Documents")
     
+    # Bouton supprimer tout
+    col1, col2 = st.columns([4, 1])
+    with col2:
+        if st.button("🗑️ Tout Supprimer", type="secondary", key="del_all"):
+            if st.checkbox("✓ Confirmer", key="confirm_del"):
+                try:
+                    import shutil
+                    deleted = 0
+                    for item in Path("cours/").iterdir():
+                        if item.name != "README.md":
+                            if item.is_dir():
+                                shutil.rmtree(item)
+                            else:
+                                item.unlink()
+                            deleted += 1
+                    st.success(f"✅ {deleted} supprimé(s)")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ {e}")
+    
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["📤 Upload", "📁 Import Dossiers", "📖 Cours", "📋 Directives", "📊 Vue Modules"])
     
     with tab1:
