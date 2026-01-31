@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Data files
+data/*.json
+data/*.db
+data/*.sqlite
+exports/
+
+# Sensitive
+config/config.json
+.env
+*.key
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Documents (trop gros pour GitHub)
+*.pdf
+*.docx
+*.xlsx
+cours/
+directives_examen/
+Brevets*/
+
+# Logs
+*.log
