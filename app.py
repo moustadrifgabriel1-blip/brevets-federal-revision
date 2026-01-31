@@ -949,7 +949,6 @@ elif page == "�🔬 Analyser":
                     analyzer = ContentAnalyzer(config)
                     
                     all_concepts = []
-                    progress_bar = st.progress(0)
                     
                     cours_docs = scanner.get_documents_by_category('cours')
                     
@@ -964,7 +963,14 @@ elif page == "�🔬 Analyser":
                     if modules_found:
                         st.info(f"📚 {len(modules_found)} modules détectés: {', '.join(sorted(modules_found.keys()))}")
                     
+                    # Barre de progression avec %
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+                    
                     for i, doc in enumerate(cours_docs):
+                        percent = int(((i + 1) / len(cours_docs)) * 100)
+                        status_text.text(f"⏳ Analyse en cours... {i+1}/{len(cours_docs)} documents ({percent}%)")
+                        
                         concepts = analyzer.analyze_course_document(
                             doc.content, 
                             doc.filename, 
@@ -972,6 +978,10 @@ elif page == "�🔬 Analyser":
                         )
                         all_concepts.extend(concepts)
                         progress_bar.progress((i + 1) / len(cours_docs))
+                    
+                    # Clear progress et afficher succès
+                    status_text.empty()
+                    progress_bar.empty()
                     
                     st.success(f"✅ {len(all_concepts)} concepts identifiés")
                     
