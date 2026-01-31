@@ -870,7 +870,7 @@ elif page == "� Planning Cours":
                         st.info(f"📅 Prochaine session: {next_s.date.strftime('%d.%m.%Y')} ({next_s.duration_hours}h)")
 
 
-elif page == "�🔬 Analyser":
+elif page == "🔬 Analyser":
     st.header("🔬 Analyse IA des Documents")
     
     st.markdown("""
