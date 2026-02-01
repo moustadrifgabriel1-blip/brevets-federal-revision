@@ -1355,13 +1355,17 @@ elif page == "📆 Planning Révisions":
                 # Ajouter les jalons
                 milestones = revision_plan.get('milestones', [])
                 for m in milestones:
-                    fig_progress.add_vline(
-                        x=m['date'],
-                        line_dash='dash',
-                        line_color='gray',
-                        annotation_text=m['name'],
-                        annotation_position='top'
-                    )
+                    try:
+                        milestone_date = pd.to_datetime(m['date'])
+                        fig_progress.add_vline(
+                            x=milestone_date,
+                            line_dash='dash',
+                            line_color='gray',
+                            annotation_text=m.get('name', ''),
+                            annotation_position='top'
+                        )
+                    except Exception:
+                        pass  # Ignorer les dates invalides
                 
                 fig_progress.update_layout(
                     height=400,
