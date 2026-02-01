@@ -41,9 +41,14 @@ class RevisionPlannerAuto:
         self.milestones = []
         
     def load_concepts(self, concept_map_path: str = "exports/concept_map.json"):
+        # Chercher dans exports/ puis cloud_data/ pour Streamlit Cloud
         path = Path(concept_map_path)
         if not path.exists():
-            raise FileNotFoundError(f"Fichier {concept_map_path} non trouve")
+            alt_path = Path("cloud_data") / Path(concept_map_path).name
+            if alt_path.exists():
+                path = alt_path
+            else:
+                raise FileNotFoundError(f"Fichier {concept_map_path} non trouve")
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
         self.nodes = data.get("nodes", [])
@@ -66,6 +71,11 @@ class RevisionPlannerAuto:
     
     def load_course_schedule(self, schedule_path: str = "data/course_schedule.json"):
         path = Path(schedule_path)
+        if not path.exists():
+            # Chercher dans cloud_data/ pour Streamlit Cloud
+            alt_path = Path("cloud_data") / Path(schedule_path).name
+            if alt_path.exists():
+                path = alt_path
         if path.exists():
             with open(path, "r", encoding="utf-8") as f:
                 data = json.load(f)
