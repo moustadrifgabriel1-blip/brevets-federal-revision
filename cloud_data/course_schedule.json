@@ -1,0 +1,1203 @@
+{
+  "sessions": [
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2025-10-07T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA11",
+      "module_name": "",
+      "date": "2025-10-07T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mathématiques"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA11",
+      "module_name": "",
+      "date": "2025-10-08T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mathématiques"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2025-10-08T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA02",
+      "module_name": "",
+      "date": "2025-10-09T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Formation"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA02",
+      "module_name": "",
+      "date": "2025-10-09T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Formation"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA07",
+      "module_name": "",
+      "date": "2025-10-10T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Bases de la maintenance"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA11",
+      "module_name": "",
+      "date": "2025-11-12T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mathématiques"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA05",
+      "module_name": "",
+      "date": "2025-11-12T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Santé et sécu. au travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA02",
+      "module_name": "",
+      "date": "2025-11-13T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Formation"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA11",
+      "module_name": "",
+      "date": "2025-11-13T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mathématiques"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA03",
+      "module_name": "",
+      "date": "2025-11-14T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Préparation du travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA07",
+      "module_name": "",
+      "date": "2025-11-14T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Bases de la maintenance"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2025-11-15T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA10",
+      "module_name": "",
+      "date": "2025-11-15T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mécanique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA03",
+      "module_name": "",
+      "date": "2025-12-04T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Préparation du travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA02",
+      "module_name": "",
+      "date": "2025-12-04T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Formation"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA08",
+      "module_name": "",
+      "date": "2025-12-05T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Maintenance des équip."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2025-12-05T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA05",
+      "module_name": "",
+      "date": "2025-12-06T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Santé et sécu. au travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA10",
+      "module_name": "",
+      "date": "2025-12-06T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mécanique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA03",
+      "module_name": "",
+      "date": "2026-01-14T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Préparation du travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA05",
+      "module_name": "",
+      "date": "2026-01-14T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Santé et sécu. au travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2026-01-15T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA03",
+      "module_name": "",
+      "date": "2026-01-15T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Préparation du travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE10",
+      "module_name": "",
+      "date": "2026-01-16T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Maintenance réseaux (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2026-01-16T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA05",
+      "module_name": "",
+      "date": "2026-01-17T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Santé et sécu. au travail"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA04",
+      "module_name": "",
+      "date": "2026-01-29T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exécution de mandats"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2026-01-29T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA04",
+      "module_name": "",
+      "date": "2026-01-30T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exécution de mandats"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE10",
+      "module_name": "",
+      "date": "2026-01-30T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Maintenance réseaux (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA10",
+      "module_name": "",
+      "date": "2026-01-31T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mécanique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2026-01-31T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE13",
+      "module_name": "",
+      "date": "2026-02-11T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Lignes aériennes (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-02-11T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-02-12T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-02-12T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA02",
+      "module_name": "",
+      "date": "2026-02-13T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Formation"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA04",
+      "module_name": "",
+      "date": "2026-02-13T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exécution de mandats"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE04",
+      "module_name": "",
+      "date": "2026-02-14T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Doc. de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE03",
+      "module_name": "",
+      "date": "2026-02-14T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Eclairage public"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA10",
+      "module_name": "",
+      "date": "2026-02-28T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Mécanique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA02",
+      "module_name": "",
+      "date": "2026-03-04T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Formation"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2026-03-04T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-03-05T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-03-05T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE04",
+      "module_name": "",
+      "date": "2026-03-06T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Doc. de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA09",
+      "module_name": "",
+      "date": "2026-03-06T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Electrotechnique"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-03-07T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA06",
+      "module_name": "",
+      "date": "2026-03-24T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Suivi des travaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE13",
+      "module_name": "",
+      "date": "2026-03-24T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Lignes aériennes (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE12",
+      "module_name": "",
+      "date": "2026-03-25T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Lignes souterraines (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE01",
+      "module_name": "",
+      "date": "2026-03-25T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Etude de projet (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE02",
+      "module_name": "",
+      "date": "2026-03-26T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Sécurité sur & prox. d'IE"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE03",
+      "module_name": "",
+      "date": "2026-03-26T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Eclairage public"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-03-27T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE04",
+      "module_name": "",
+      "date": "2026-03-27T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Doc. de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE13",
+      "module_name": "",
+      "date": "2026-04-21T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Lignes aériennes (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE01",
+      "module_name": "",
+      "date": "2026-04-21T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Etude de projet (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE04",
+      "module_name": "",
+      "date": "2026-04-22T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Doc. de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE09",
+      "module_name": "",
+      "date": "2026-04-22T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de protection"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE02",
+      "module_name": "",
+      "date": "2026-04-23T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Sécurité sur & prox. d'IE"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE12",
+      "module_name": "",
+      "date": "2026-04-23T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Lignes souterraines (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE13",
+      "module_name": "",
+      "date": "2026-04-24T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Lignes aériennes (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-04-24T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-05-07T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-05-07T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE01",
+      "module_name": "",
+      "date": "2026-05-08T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Etude de projet (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE09",
+      "module_name": "",
+      "date": "2026-05-08T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de protection"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE02",
+      "module_name": "",
+      "date": "2026-05-09T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Sécurité sur & prox. d'IE"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE03",
+      "module_name": "",
+      "date": "2026-05-09T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Eclairage public"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-05-21T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-05-21T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2026-09-09T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE01",
+      "module_name": "",
+      "date": "2026-09-09T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Etude de projet (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE05",
+      "module_name": "",
+      "date": "2026-09-10T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Installations de m. à terre"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE02",
+      "module_name": "",
+      "date": "2026-09-10T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Sécurité sur & prox. d'IE"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE09",
+      "module_name": "",
+      "date": "2026-09-11T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de protection"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE09",
+      "module_name": "",
+      "date": "2026-09-30T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de protection"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE01",
+      "module_name": "",
+      "date": "2026-09-30T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Etude de projet (EN)"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-10-01T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA01",
+      "module_name": "",
+      "date": "2026-10-01T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Conduite de collab."
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE03",
+      "module_name": "",
+      "date": "2026-10-02T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Eclairage public"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2026-10-03T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE05",
+      "module_name": "",
+      "date": "2026-10-03T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Installations de m. à terre"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-10-28T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2026-10-28T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE02",
+      "module_name": "",
+      "date": "2026-10-29T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Sécurité sur & prox. d'IE"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AA06",
+      "module_name": "",
+      "date": "2026-10-29T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Suivi des travaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-10-30T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-10-30T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-10-31T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-10-31T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-11-24T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-11-24T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-11-25T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE11",
+      "module_name": "",
+      "date": "2026-11-25T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Travail de projet"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE02",
+      "module_name": "",
+      "date": "2026-11-26T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Sécurité sur & prox. d'IE"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2026-11-26T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2026-11-27T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE05",
+      "module_name": "",
+      "date": "2026-11-27T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Installations de m. à terre"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2027-01-18T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2027-01-18T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2027-01-19T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2027-01-19T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE06",
+      "module_name": "",
+      "date": "2027-01-20T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Exploitation de réseaux"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2027-01-21T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    },
+    {
+      "module_code": "AE07",
+      "module_name": "",
+      "date": "2027-01-21T00:00:00",
+      "duration_hours": 0,
+      "topics": [
+        "Techniques de mesure"
+      ],
+      "status": "planned",
+      "notes": ""
+    }
+  ]
+}

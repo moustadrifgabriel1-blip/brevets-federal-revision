@@ -8,11 +8,9 @@ venv/
 env/
 ENV/
 
-# Data files
-data/*.json
+# Data files (garder database.json pour les données analysées)
 data/*.db
 data/*.sqlite
-exports/
 
 # Sensitive
 config/config.json
@@ -33,12 +31,12 @@ Thumbs.db
 # Streamlit
 .streamlit/secrets.toml
 
-# Documents (trop gros pour GitHub)
-*.pdf
-*.docx
-*.xlsx
-cours/
-directives_examen/
+# Documents volumineux (trop gros pour GitHub - 1.6 GB)
+cours/**/*.pdf
+cours/**/*.docx
+cours/**/*.xlsx
+cours/**/*.pptx
+directives_examen/**/*.pdf
 Brevets*/
 
 # Logs

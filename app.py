@@ -122,20 +122,24 @@ def get_files_in_folder(folder_path):
 
 
 def load_concept_map():
-    """Charge la cartographie des concepts"""
-    path = Path("exports/concept_map.json")
-    if path.exists():
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+    """Charge la cartographie des concepts (local ou cloud_data)"""
+    # Essayer d'abord le chemin local, puis cloud_data pour Streamlit Cloud
+    for folder in ["exports", "cloud_data"]:
+        path = Path(folder) / "concept_map.json"
+        if path.exists():
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
     return None
 
 
 def load_revision_plan():
-    """Charge le planning de révision"""
-    path = Path("exports/revision_plan.json")
-    if path.exists():
-        with open(path, 'r', encoding='utf-8') as f:
-            return json.load(f)
+    """Charge le planning de révision (local ou cloud_data)"""
+    # Essayer d'abord le chemin local, puis cloud_data pour Streamlit Cloud
+    for folder in ["exports", "cloud_data"]:
+        path = Path(folder) / "revision_plan.json"
+        if path.exists():
+            with open(path, 'r', encoding='utf-8') as f:
+                return json.load(f)
     return None
 
 

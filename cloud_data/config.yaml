@@ -1,0 +1,161 @@
+analysis:
+  detail_level: 4
+  language: fr
+  max_concepts_per_doc: 50
+api:
+  gemini_api_key: ""  # Utiliser .env
+  model: gemini-3-pro-preview
+  temperature: 0.3
+categories:
+- keywords:
+  - courant
+  - tension
+  - puissance
+  - résistance
+  - transformateur
+  name: Technique électrique
+- keywords:
+  - distribution
+  - réseau
+  - ligne
+  - poste
+  - raccordement
+  name: Réseaux de distribution
+- keywords:
+  - sécurité
+  - protection
+  - risque
+  - EPI
+  - consignation
+  name: Sécurité
+- keywords:
+  - norme
+  - loi
+  - ordonnance
+  - OIBT
+  - NIBT
+  name: Réglementation
+- keywords:
+  - mesure
+  - contrôle
+  - test
+  - vérification
+  - instrument
+  name: Mesures et contrôles
+- keywords:
+  - maintenance
+  - entretien
+  - réparation
+  - diagnostic
+  name: Maintenance
+paths:
+  cours: ./cours
+  database: ./data/database.json
+  directives: ./directives_examen
+  exports: ./exports
+  planning: ./planning_cours
+planning:
+  weekday_minutes: 30
+  weekend_hours: 8
+  default_hours_per_day: 0.5
+  revision_days_per_week: 5
+  revision_ratio: 0.3
+  spaced_repetition_intervals:
+  - 1
+  - 3
+  - 7
+  - 14
+  - 30
+
+# Structure des modules de formation
+modules:
+  # Modules de base (AA)
+  AA01:
+    name: "Conduite de collaborateurs"
+    has_content: true
+  AA02:
+    name: "Formation"
+    has_content: true
+  AA03:
+    name: "Préparation du travail"
+    has_content: true
+  AA04:
+    name: "Exécution de mandats"
+    has_content: true
+  AA05:
+    name: "Santé et sécurité au travail"
+    has_content: true
+  AA06:
+    name: "Suivi des travaux"
+    has_content: false
+  AA07:
+    name: "Bases de la maintenance"
+    has_content: true
+  AA08:
+    name: "Maintenance des équipements"
+    has_content: true
+  AA09:
+    name: "Électrotechnique"
+    has_content: true
+  AA10:
+    name: "Mécanique"
+    has_content: true
+  AA11:
+    name: "Mathématique"
+    has_content: true
+  
+  # Modules avancés/examen (AE)
+  AE01:
+    name: "Étude de projet"
+    has_content: false
+  AE02:
+    name: "Sécurité et à proximité d'IE"
+    has_content: false
+  AE03:
+    name: "Éclairage public"
+    has_content: true
+  AE04:
+    name: "Documentation de réseaux"
+    has_content: true
+  AE05:
+    name: "Installation mise à terre"
+    has_content: false
+  AE06:
+    name: "Exploitation de réseaux"
+    has_content: false
+  AE07:
+    name: "Technique de mesure"
+    has_content: true
+  AE09:
+    name: "Technique de protection"
+    has_content: false
+  AE10:
+    name: "Maintenance Des Réseaux"
+    has_content: true
+  AE11:
+    name: "Travail de projet"
+    has_content: false
+  AE12:
+    name: "Lignes souterraines"
+    has_content: false
+  AE13:
+    name: "Lignes aériennes"
+    has_content: true
+priority_levels:
+  critical:
+    description: Concepts fondamentaux, mentionnés dans les directives
+    weight: 10
+  high:
+    description: Concepts importants, prérequis pour d'autres
+    weight: 7
+  low:
+    description: Concepts secondaires, pour approfondir
+    weight: 2
+  medium:
+    description: Concepts à connaître, utiles pour la compréhension
+    weight: 5
+user:
+  completed_modules: []
+  exam_date: '2027-03-01'
+  formation_start: '2025-09-01'
+  name: Gabriel
