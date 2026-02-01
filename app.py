@@ -121,6 +121,33 @@ def get_files_in_folder(folder_path):
     return files
 
 
+def is_streamlit_cloud():
+    """Détecte si on est sur Streamlit Cloud"""
+    import os
+    return os.environ.get('STREAMLIT_SERVER_HEADLESS', '') == 'true' or \
+           os.environ.get('HOME', '').startswith('/home/appuser') or \
+           not Path("cours").exists()
+
+
+def get_cours_status():
+    """Retourne le statut des cours (local, drive, ou cloud)"""
+    cours_path = Path("cours")
+    cloud_data = Path("cloud_data")
+    
+    if cours_path.exists():
+        if cours_path.is_symlink():
+            return "drive", len(list(cours_path.rglob('*.pdf')))
+        else:
+            return "local", len(list(cours_path.rglob('*.pdf')))
+    elif cloud_data.exists():
+        # Sur Streamlit Cloud, utiliser les données analysées
+        concept_map = load_concept_map()
+        if concept_map and 'nodes' in concept_map:
+            return "cloud", len(concept_map.get('nodes', []))
+        return "cloud", 0
+    return "none", 0
+
+
 def load_concept_map():
     """Charge la cartographie des concepts (local ou cloud_data)"""
     # Essayer d'abord le chemin local, puis cloud_data pour Streamlit Cloud
@@ -223,9 +250,16 @@ if page == "🏠 Accueil":
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        cours_count = len(cours_files)
-        if cours_count > 0:
-            st.success(f"✅ {cours_count} fichiers de cours importés")
+        cours_status, cours_count = get_cours_status()
+        if cours_status == "drive":
+            st.success(f"☁️ {cours_count} PDFs sur Google Drive")
+        elif cours_status == "local":
+            st.success(f"✅ {cours_count} fichiers de cours locaux")
+        elif cours_status == "cloud":
+            if cours_count > 0:
+                st.info(f"☁️ {cours_count} concepts analysés (mode cloud)")
+            else:
+                st.warning("⚠️ Aucune analyse disponible")
         else:
             st.warning("⚠️ Aucun cours importé")
     
