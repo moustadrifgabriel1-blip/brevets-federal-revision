@@ -2,7 +2,8 @@
 """
 ☁️ Synchronisation Google Drive
 ================================
-Sauvegarde automatique des cours sur Google Drive (2 To)
+Sauvegarde et récupération des cours sur Google Drive (2 To)
+Fonctionne avec Google Drive installé sur Mac
 """
 
 import os
@@ -12,7 +13,9 @@ from pathlib import Path
 from datetime import datetime
 
 # Configuration
-DRIVE_FOLDER = Path.home() / "Library/CloudStorage/GoogleDrive-" # Sera complété
+DRIVE_ACCOUNT = "moustadrifgabriel1@gmail.com"
+BACKUP_FOLDER_NAME = "Brevets_Federal_Backup"
+
 LOCAL_FOLDERS = [
     "cours",
     "Brevets Fédéral Electricien de réseaux",
@@ -30,7 +33,7 @@ def find_google_drive_path():
         print("❌ Dossier CloudStorage non trouvé")
         return None
     
-    # Chercher le dossier Google Drive
+    # Chercher le dossier Google Drive (avec ou sans compte spécifique)
     for folder in cloud_storage.iterdir():
         if folder.name.startswith("GoogleDrive"):
             print(f"✅ Google Drive trouvé: {folder}")
@@ -41,22 +44,22 @@ def find_google_drive_path():
     return None
 
 
-def sync_to_drive(drive_path: Path):
-    """Synchronise les dossiers vers Google Drive"""
+def get_backup_path(drive_path: Path) -> Path:
+    """Retourne le chemin du backup sur Drive"""
     # Chercher le dossier principal (My Drive, Mon Drive, etc.)
     possible_names = ["My Drive", "Mon Drive", "Mi unidad", "Meine Ablage"]
-    main_folder = None
     
     for name in possible_names:
         if (drive_path / name).exists():
-            main_folder = drive_path / name
-            break
+            return drive_path / name / BACKUP_FOLDER_NAME
     
-    if not main_folder:
-        # Essayer directement dans le dossier Drive
-        main_folder = drive_path
-    
-    backup_folder = main_folder / "Brevets_Federal_Backup"
+    # Fallback: directement dans le dossier Drive
+    return drive_path / BACKUP_FOLDER_NAME
+
+
+def sync_to_drive(drive_path: Path):
+    """Synchronise les dossiers locaux vers Google Drive"""
+    backup_folder = get_backup_path(drive_path)
     backup_folder.mkdir(parents=True, exist_ok=True)
     print(f"📁 Dossier de backup: {backup_folder}")
     
@@ -114,20 +117,8 @@ def sync_to_drive(drive_path: Path):
 
 
 def restore_from_drive(drive_path: Path):
-    """Restaure depuis Google Drive"""
-    # Chercher le dossier principal
-    possible_names = ["My Drive", "Mon Drive", "Mi unidad", "Meine Ablage"]
-    main_folder = None
-    
-    for name in possible_names:
-        if (drive_path / name).exists():
-            main_folder = drive_path / name
-            break
-    
-    if not main_folder:
-        main_folder = drive_path
-    
-    backup_folder = main_folder / "Brevets_Federal_Backup"
+    """Restaure depuis Google Drive vers le dossier local"""
+    backup_folder = get_backup_path(drive_path)
     
     if not backup_folder.exists():
         print(f"❌ Backup non trouvé: {backup_folder}")
@@ -162,38 +153,219 @@ def restore_from_drive(drive_path: Path):
     return True
 
 
+def get_folder_info(folder_path: Path):
+    """Retourne le nombre de fichiers et la taille totale d'un dossier"""
+    if not folder_path.exists():
+        return 0, 0
+    try:
+        files = [f for f in folder_path.rglob('*') if f.is_file()]
+        total_size = sum(f.stat().st_size for f in files)
+        return len(files), total_size
+    except Exception:
+        return 0, 0
+
+
+def compare_folders(local_path: Path, drive_path: Path):
+    """Compare deux dossiers et retourne les différences"""
+    local_files = set()
+    drive_files = set()
+    
+    if local_path.exists():
+        for f in local_path.rglob('*'):
+            if f.is_file():
+                local_files.add(f.relative_to(local_path))
+    
+    if drive_path.exists():
+        for f in drive_path.rglob('*'):
+            if f.is_file():
+                drive_files.add(f.relative_to(drive_path))
+    
+    only_local = local_files - drive_files
+    only_drive = drive_files - local_files
+    common = local_files & drive_files
+    
+    return {
+        'local_only': only_local,
+        'drive_only': only_drive,
+        'common': common,
+        'synced': len(only_local) == 0 and len(only_drive) == 0
+    }
+
+
 def show_status(drive_path: Path):
-    """Affiche le statut du backup"""
-    # Chercher le dossier principal
-    possible_names = ["My Drive", "Mon Drive", "Mi unidad", "Meine Ablage"]
-    main_folder = None
+    """Affiche le statut détaillé du backup et de la synchronisation"""
+    backup_folder = get_backup_path(drive_path)
     
-    for name in possible_names:
-        if (drive_path / name).exists():
-            main_folder = drive_path / name
-            break
+    print("=" * 60)
+    print("📊 STATUT DE SYNCHRONISATION GOOGLE DRIVE")
+    print("=" * 60)
     
-    if not main_folder:
-        main_folder = drive_path
-    
-    backup_folder = main_folder / "Brevets_Federal_Backup"
-    
+    # 1. Vérifier si le backup existe
     if not backup_folder.exists():
-        print("❌ Aucun backup trouvé sur Google Drive")
-        return
+        print("\n❌ DRIVE: Aucun backup trouvé")
+        print(f"   Chemin: {backup_folder}")
+        print("\n💡 Lance: python sync_drive.py sync")
+        return False
     
+    print(f"\n✅ DRIVE: Backup trouvé")
+    print(f"   📁 {backup_folder}")
+    
+    # 2. Afficher le timestamp de dernière sync
     timestamp_file = backup_folder / "last_sync.txt"
     if timestamp_file.exists():
-        print("📊 Statut du backup Google Drive:")
-        print("-" * 40)
-        print(timestamp_file.read_text())
+        content = timestamp_file.read_text().strip().split('\n')
+        for line in content:
+            print(f"   {line}")
     
-    print("\n📁 Contenu du backup:")
-    for item in backup_folder.iterdir():
-        if item.is_dir():
-            size = sum(f.stat().st_size for f in item.rglob('*') if f.is_file())
-            files = len(list(item.rglob('*')))
-            print(f"  📂 {item.name}: {size / 1024 / 1024:.1f} MB ({files} fichiers)")
+    # 3. Vérifier chaque dossier
+    print("\n" + "-" * 60)
+    print("📂 ÉTAT DES DOSSIERS")
+    print("-" * 60)
+    
+    all_synced = True
+    
+    for folder_name in LOCAL_FOLDERS:
+        local_path = Path(folder_name)
+        drive_folder = backup_folder / folder_name
+        
+        # Vérifier si c'est un lien symbolique vers Drive
+        is_symlink = local_path.is_symlink()
+        symlink_ok = False
+        
+        if is_symlink:
+            try:
+                target = local_path.resolve()
+                symlink_ok = target == drive_folder.resolve()
+            except:
+                pass
+        
+        # Obtenir les infos
+        local_files, local_size = get_folder_info(local_path)
+        drive_files, drive_size = get_folder_info(drive_folder)
+        
+        # Déterminer le statut
+        if symlink_ok:
+            status = "🔗 LIEN DRIVE"
+            synced = True
+        elif is_symlink:
+            status = "⚠️ MAUVAIS LIEN"
+            synced = False
+        elif not local_path.exists() and not drive_folder.exists():
+            status = "❌ INEXISTANT"
+            synced = True  # Rien à sync
+        elif not local_path.exists():
+            status = "📥 À RESTAURER"
+            synced = False
+        elif not drive_folder.exists():
+            status = "📤 À SAUVEGARDER"
+            synced = False
+        elif local_files == drive_files and abs(local_size - drive_size) < 1024:
+            status = "✅ SYNCHRONISÉ"
+            synced = True
+        else:
+            status = "🔄 DIFFÉRENT"
+            synced = False
+        
+        if not synced:
+            all_synced = False
+        
+        # Affichage
+        print(f"\n  {folder_name}")
+        print(f"    {status}")
+        if symlink_ok:
+            print(f"    → Lecture directe depuis Drive ({drive_files} fichiers)")
+        else:
+            print(f"    Local: {local_files} fichiers ({local_size / 1024 / 1024:.1f} MB)")
+            print(f"    Drive: {drive_files} fichiers ({drive_size / 1024 / 1024:.1f} MB)")
+    
+    # 4. Résumé final
+    print("\n" + "=" * 60)
+    
+    # Compter les liens
+    links_count = sum(1 for f in ["cours", "Brevets Fédéral Electricien de réseaux"] 
+                      if Path(f).is_symlink())
+    
+    if links_count == 2:
+        print("✅ SYNCHRONISATION PARFAITE")
+        print("   Tu travailles directement depuis Google Drive")
+        print("   Toute modification est automatiquement synchronisée")
+    elif all_synced:
+        print("✅ FICHIERS SYNCHRONISÉS")
+        print("   💡 Lance 'python sync_drive.py drive' pour travailler depuis Drive")
+    else:
+        print("⚠️ SYNCHRONISATION REQUISE")
+        print("   💡 Lance 'python sync_drive.py sync' pour sauvegarder vers Drive")
+        print("   💡 Lance 'python sync_drive.py drive' pour travailler depuis Drive")
+    
+    print("=" * 60)
+    
+    return all_synced
+
+
+def create_drive_link(drive_path: Path):
+    """Crée un lien symbolique vers le backup Drive pour accès direct"""
+    backup_folder = get_backup_path(drive_path)
+    
+    if not backup_folder.exists():
+        print("❌ Backup non trouvé, lance d'abord 'sync'")
+        return False
+    
+    link_path = Path("drive_backup")
+    
+    if link_path.exists():
+        if link_path.is_symlink():
+            link_path.unlink()
+        else:
+            print(f"❌ {link_path} existe déjà et n'est pas un lien")
+            return False
+    
+    link_path.symlink_to(backup_folder)
+    print(f"✅ Lien créé: {link_path} → {backup_folder}")
+    print("\n💡 Tu peux maintenant accéder aux fichiers via ./drive_backup/")
+    return True
+
+
+def work_from_drive(drive_path: Path):
+    """Configure le projet pour travailler directement depuis Drive"""
+    backup_folder = get_backup_path(drive_path)
+    
+    if not backup_folder.exists():
+        print("❌ Backup non trouvé sur Drive")
+        return False
+    
+    print(f"📂 Backup Drive: {backup_folder}")
+    print("\n🔗 Création des liens symboliques...")
+    
+    folders_to_link = ["cours", "Brevets Fédéral Electricien de réseaux"]
+    
+    for folder_name in folders_to_link:
+        src = backup_folder / folder_name
+        dest = Path(folder_name)
+        
+        if not src.exists():
+            print(f"  ⚠️ {folder_name} n'existe pas sur Drive")
+            continue
+        
+        # Sauvegarder le dossier local s'il existe
+        if dest.exists() and not dest.is_symlink():
+            backup_local = Path(f"{folder_name}_local_backup")
+            if not backup_local.exists():
+                print(f"  📦 Sauvegarde locale: {folder_name} → {backup_local}")
+                dest.rename(backup_local)
+            else:
+                print(f"  ⚠️ {folder_name} local existe, suppression...")
+                shutil.rmtree(dest)
+        elif dest.is_symlink():
+            dest.unlink()
+        
+        # Créer le lien symbolique
+        dest.symlink_to(src)
+        print(f"  ✅ {folder_name} → Drive")
+    
+    print("\n✅ Configuration terminée!")
+    print("📁 Tes cours sont maintenant lus directement depuis Google Drive")
+    print("💡 Les modifications sont automatiquement synchronisées")
+    return True
 
 
 if __name__ == "__main__":
@@ -217,9 +389,11 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("""
 Usage:
-  python sync_drive.py sync      - Synchroniser vers Drive
-  python sync_drive.py restore   - Restaurer depuis Drive  
+  python sync_drive.py sync      - Synchroniser local → Drive
+  python sync_drive.py restore   - Restaurer Drive → local  
   python sync_drive.py status    - Voir le statut
+  python sync_drive.py link      - Créer un lien vers Drive
+  python sync_drive.py drive     - Travailler directement depuis Drive
         """)
         sys.exit(0)
     
@@ -231,5 +405,9 @@ Usage:
         restore_from_drive(drive_path)
     elif command == "status":
         show_status(drive_path)
+    elif command == "link":
+        create_drive_link(drive_path)
+    elif command == "drive":
+        work_from_drive(drive_path)
     else:
         print(f"❌ Commande inconnue: {command}")
