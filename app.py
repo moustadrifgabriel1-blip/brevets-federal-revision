@@ -1014,7 +1014,17 @@ elif page == "🔬 Analyser":
                     mapper.build_from_concepts(all_concepts)
                     mapper.export_to_json("exports/concept_map.json")
                     
-                    st.success("✅ Analyse terminée avec succès!")
+                    # Etape 4: Generation automatique du planning
+                    st.info("📆 Generation du planning de revision...")
+                    from src.revision_planner import auto_generate_planning
+                    planning_result = auto_generate_planning(config)
+                    
+                    if planning_result['success']:
+                        st.success(f"Planning genere: {planning_result['total_sessions']} sessions, {planning_result['total_hours']}h de revision")
+                    else:
+                        st.warning(f"Erreur planning: {planning_result.get('error', 'Inconnu')}")
+                    
+                    st.success("Analyse et planning termines!")
                     st.balloons()
                     
                 except Exception as e:
@@ -1123,231 +1133,119 @@ elif page == "🗺️ Concepts":
                 st.caption(f"... et {len(learning_order) - 20} autres concepts")
 
 
-elif page == "� Planning Révisions":
-    st.header("📆 Planning de Révision")
+elif page == "📆 Planning Révisions":
+    st.header("📆 Planning de Révision Automatique")
     
     revision_plan = load_revision_plan()
     concept_map = load_concept_map()
     
     if not concept_map:
-        st.warning("⚠️ Lancez d'abord l'analyse pour générer un planning.")
-    else:
-        if not revision_plan:
-            st.subheader("Générer votre planning personnalisé")
-            
-            # Charger le planning de cours
-            from src.course_schedule_manager import CourseScheduleManager
-            schedule_manager = CourseScheduleManager(load_config())
-            schedule_manager.load()
-            
-            if schedule_manager.sessions:
-                st.success(f"✅ Planning de cours chargé: {len(schedule_manager.sessions)} sessions trouvées")
-                
-                completed = schedule_manager.get_completed_sessions()
-                upcoming = schedule_manager.get_upcoming_sessions()
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.metric("Sessions passées", len(completed))
-                with col2:
-                    st.metric("Sessions à venir", len(upcoming))
-                
-                st.info("ℹ️ Le système ne planifiera de révisions que pour les cours déjà vus.")
-            else:
-                st.warning("⚠️ Aucun planning de cours trouvé. Allez dans '📅 Planning Cours' pour l'ajouter, ou continuez sans.")
-            
-            st.divider()
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                exam_date = st.date_input(
-                    "Date de l'examen",
-                    value=datetime(2027, 3, 1)
-                )
-            with col2:
-                hours_per_week = st.slider(
-                    "Heures de révision par semaine",
-                    min_value=2,
-                    max_value=30,
-                    value=10
-                )
-            
-            if st.button("📅 Générer le planning", type="primary"):
-                with st.spinner("Génération du planning..."):
-                    try:
-                        from src.planner import RevisionPlanner
-                        
-                        config = load_config()
-                        planner = RevisionPlanner(config)
-                        
-                        # Charger les concepts
-                        from src.analyzer import Concept
-                        concepts = []
-                        for node in concept_map.get('nodes', []):
-                            c = Concept(
-                                id=node.get('id', ''),
-                                name=node.get('name', ''),
-                                description='',
-                                category=node.get('category', ''),
-                                source_document='',
-                                source_module=node.get('module'),
-                                importance=node.get('importance', 'medium'),
-                                prerequisites=node.get('prerequisites', []),
-                                exam_relevant=node.get('exam_relevant', False)
-                            )
-                            concepts.append(c)
-                        
-                        learning_order = concept_map.get('learning_order', [])
-                        
-                        # Créer le planning avec le gestionnaire de cours
-                        plan = planner.create_plan(
-                            concepts=concepts,
-                            learning_order=learning_order,
-                            course_schedule={},
-                            exam_date=datetime.combine(exam_date, datetime.min.time()),
-                            available_hours_per_week=hours_per_week,
-                            course_schedule_manager=schedule_manager if schedule_manager.sessions else None
-                        )
-                        
-                        planner.export_plan("exports/revision_plan.json")
-                        planner.export_to_markdown("exports/revision_plan.md")
-                        
-                        st.success("✅ Planning généré!")
-                        st.rerun()
-                        
-                    except Exception as e:
-                        st.error(f"Erreur: {e}")
-                        st.exception(e)
-    st.header("📅 Planning de Révision")
-    
-    revision_plan = load_revision_plan()
-    concept_map = load_concept_map()
-    
-    if not concept_map:
-        st.warning("⚠️ Lancez d'abord l'analyse pour générer un planning.")
-    else:
-        if not revision_plan:
-            st.subheader("Générer votre planning personnalisé")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                exam_date = st.date_input(
-                    "Date de l'examen",
-                    value=datetime(2026, 6, 15)
-                )
-            with col2:
-                hours_per_week = st.slider(
-                    "Heures de révision par semaine",
-                    min_value=2,
-                    max_value=30,
-                    value=10
-                )
-            
-            if st.button("📅 Générer le planning", type="primary"):
-                with st.spinner("Génération du planning..."):
-                    try:
-                        from src.planner import RevisionPlanner
-                        
-                        config = load_config()
-                        planner = RevisionPlanner(config)
-                        
-                        # Charger les concepts
-                        from src.analyzer import Concept
-                        concepts = []
-                        for node in concept_map.get('nodes', []):
-                            c = Concept(
-                                id=node.get('id', ''),
-                                name=node.get('name', ''),
-                                description='',
-                                category=node.get('category', ''),
-                                source_document='',
-                                source_module=node.get('module'),
-                                importance=node.get('importance', 'medium'),
-                                prerequisites=node.get('prerequisites', []),
-                                exam_relevant=node.get('exam_relevant', False)
-                            )
-                            concepts.append(c)
-                        
-                        learning_order = concept_map.get('learning_order', [])
-                        
-                        plan = planner.create_plan(
-                            concepts=concepts,
-                            learning_order=learning_order,
-                            course_schedule={},
-                            exam_date=datetime.combine(exam_date, datetime.min.time()),
-                            available_hours_per_week=hours_per_week
-                        )
-                        
-                        planner.export_plan("exports/revision_plan.json")
-                        planner.export_to_markdown("exports/revision_plan.md")
-                        
-                        st.success("✅ Planning généré!")
-                        st.rerun()
-                        
-                    except Exception as e:
-                        st.error(f"Erreur: {e}")
+        st.warning("⚠️ Lancez d'abord l'analyse pour générer les concepts et le planning.")
+        st.info("👉 Allez dans l'onglet 'Analyser' pour démarrer.")
+    elif not revision_plan:
+        st.warning("⚠️ Le planning n'a pas encore été généré.")
+        st.info("Le planning est généré automatiquement après l'analyse. Relancez l'analyse.")
         
-        else:
-            # Afficher le planning existant
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("⏱️ Heures totales", f"{revision_plan.get('total_hours', 0):.1f}h")
-            with col2:
-                st.metric("📚 Concepts", len(revision_plan.get('concepts_covered', [])))
-            with col3:
-                exam_date = datetime.fromisoformat(revision_plan.get('exam_date', '2026-06-15'))
-                days_left = (exam_date - datetime.now()).days
-                st.metric("📅 Jours restants", days_left)
-            
-            st.divider()
-            
-            # Jalons
-            st.subheader("🏁 Jalons")
-            milestones = revision_plan.get('milestones', [])
+        # Bouton pour regenerer le planning
+        if st.button("🔄 Générer le planning maintenant", type="primary"):
+            with st.spinner("Génération en cours..."):
+                try:
+                    from src.revision_planner import auto_generate_planning
+                    config = load_config()
+                    result = auto_generate_planning(config)
+                    if result['success']:
+                        st.success(f"✅ Planning généré: {result['total_sessions']} sessions")
+                        st.rerun()
+                    else:
+                        st.error(f"Erreur: {result['error']}")
+                except Exception as e:
+                    st.error(f"Erreur: {e}")
+    else:
+        # Afficher les statistiques
+        stats = revision_plan.get('statistics', {})
+        
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("⏱️ Heures totales", f"{revision_plan.get('total_hours', 0):.1f}h")
+        with col2:
+            st.metric("📚 Concepts", revision_plan.get('total_concepts', 0))
+        with col3:
+            st.metric("📅 Sessions", revision_plan.get('total_sessions', 0))
+        with col4:
+            days_left = stats.get('days_until_exam', 0)
+            st.metric("🎯 Jours restants", days_left)
+        
+        st.divider()
+        
+        # Jalons
+        st.subheader("🏁 Jalons de progression")
+        milestones = revision_plan.get('milestones', [])
+        if milestones:
             for m in milestones:
-                date = datetime.fromisoformat(m['date']).strftime('%d/%m/%Y')
-                st.markdown(f"- **{date}**: {m['name']} - {m['objective']}")
-            
-            st.divider()
-            
-            # Sessions de la semaine
-            st.subheader("📆 Sessions de cette semaine")
-            
-            sessions = revision_plan.get('sessions', [])
-            today = datetime.now()
-            start_of_week = today - timedelta(days=today.weekday())
-            end_of_week = start_of_week + timedelta(days=7)
-            
-            week_sessions = [
-                s for s in sessions
-                if start_of_week <= datetime.fromisoformat(s['date']) < end_of_week
-            ]
-            
-            if week_sessions:
-                for session in sorted(week_sessions, key=lambda x: x['date']):
-                    date = datetime.fromisoformat(session['date'])
-                    type_icon = {
-                        'new_learning': '📚',
-                        'revision': '🔄',
-                        'practice': '✏️'
-                    }.get(session['session_type'], '📖')
+                col1, col2 = st.columns([1, 4])
+                with col1:
+                    st.markdown(f"**{m['date']}**")
+                with col2:
+                    progress = m.get('progress', 0)
+                    st.progress(progress / 100)
+                    st.caption(f"{m['name']}: {m['objective']}")
+        
+        st.divider()
+        
+        # Sessions de la semaine
+        st.subheader("📆 Sessions à venir")
+        
+        sessions = revision_plan.get('sessions', [])
+        today = datetime.now().strftime('%Y-%m-%d')
+        
+        # Filtrer les sessions futures
+        upcoming = [s for s in sessions if s['date'] >= today][:14]
+        
+        if upcoming:
+            for session in upcoming:
+                priority_icon = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}.get(session['priority'], '⚪')
+                type_icon = {'new_learning': '📚', 'revision': '🔄', 'practice': '✏️'}.get(session['session_type'], '📖')
+                
+                with st.expander(f"{priority_icon} {type_icon} {session['day_name']} {session['date']} - {session['duration_minutes']} min"):
+                    st.markdown(f"**Catégorie:** {session['category']}")
+                    st.markdown("**Concepts à étudier:**")
+                    for concept in session['concepts'][:10]:
+                        st.markdown(f"  - {concept}")
+                    if len(session['concepts']) > 10:
+                        st.caption(f"... et {len(session['concepts']) - 10} autres")
                     
-                    with st.expander(f"{type_icon} {date.strftime('%A %d/%m')} - {session['duration_minutes']} min"):
-                        st.markdown(f"**Concepts:** {', '.join(session['concepts'])}")
+                    if session.get('objectives'):
                         st.markdown("**Objectifs:**")
                         for obj in session['objectives']:
-                            st.markdown(f"- {obj}")
-                        
-                        if st.checkbox("✅ Marquer comme terminé", key=f"done_{session['date']}"):
-                            st.success("Session complétée!")
-            else:
-                st.info("Aucune session prévue cette semaine.")
-            
-            # Bouton pour régénérer
+                            st.markdown(f"  - {obj}")
+        else:
+            st.info("Aucune session à venir.")
+        
+        st.divider()
+        
+        # Boutons d'action
+        col1, col2 = st.columns(2)
+        with col1:
             if st.button("🔄 Régénérer le planning"):
                 Path("exports/revision_plan.json").unlink(missing_ok=True)
-                st.rerun()
+                from src.revision_planner import auto_generate_planning
+                config = load_config()
+                result = auto_generate_planning(config)
+                if result['success']:
+                    st.success("Planning régénéré!")
+                    st.rerun()
+        with col2:
+            # Telecharger le planning
+            md_path = Path("exports/revision_plan.md")
+            if md_path.exists():
+                with open(md_path, 'r', encoding='utf-8') as f:
+                    md_content = f.read()
+                st.download_button(
+                    "📥 Télécharger (Markdown)",
+                    md_content,
+                    file_name="planning_revision.md",
+                    mime="text/markdown"
+                )
 
 
 elif page == "📖 Ressources":
