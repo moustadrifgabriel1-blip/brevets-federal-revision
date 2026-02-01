@@ -8,6 +8,7 @@ import json
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
+import time
 
 import google.generativeai as genai
 from rich.console import Console
@@ -97,6 +98,9 @@ Réponds en JSON avec cette structure:
 Concentre-toi sur les concepts vraiment importants pour un futur spécialiste de réseaux énergétiques."""
 
         try:
+            # Délai de 2s entre requêtes pour éviter rate limiting
+            time.sleep(2)
+            
             response = self.model.generate_content(
                 prompt,
                 generation_config=self.generation_config
@@ -159,6 +163,9 @@ Réponds en JSON avec cette structure:
 Sois précis et exhaustif - c'est crucial pour la préparation à l'examen."""
 
         try:
+            # Délai de 2s entre requêtes pour éviter rate limiting
+            time.sleep(2)
+            
             response = self.model.generate_content(
                 prompt,
                 generation_config=self.generation_config
@@ -234,6 +241,9 @@ Réponds en JSON:
 }}"""
 
         try:
+            # Délai de 2s entre requêtes pour éviter rate limiting
+            time.sleep(2)
+            
             response = self.model.generate_content(
                 prompt,
                 generation_config=self.generation_config
