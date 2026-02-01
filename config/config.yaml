@@ -4,7 +4,7 @@ analysis:
   max_concepts_per_doc: 50
 api:
   gemini_api_key: ""  # Utiliser .env
-  model: gemini-3-pro
+  model: gemini-3-pro-preview
   temperature: 0.3
 categories:
 - keywords:
