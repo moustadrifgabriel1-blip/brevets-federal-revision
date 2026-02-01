@@ -1,247 +1,220 @@
-# 🎓 Guide Complet - Brevet Fédéral Spécialiste Réseaux Énergétiques
+# 🎓 Guide Complet - Brevet Fédéral de Spécialiste de Réseau
 
-## 📋 Informations sur le Brevet Fédéral en Suisse
+## 📋 Informations Officielles
 
-### Qu'est-ce qu'un Brevet Fédéral ?
+### Qu'est-ce que le Brevet Fédéral de Spécialiste de Réseau ?
 
-Le **brevet fédéral** (Eidgenössischer Fachausweis) est un titre de la formation professionnelle supérieure en Suisse. Il atteste de qualifications professionnelles approfondies et permet d'accéder à des postes à responsabilités.
+Le **brevet fédéral de Spécialiste de réseau - orientation énergie** est un titre de formation professionnelle supérieure en Suisse. Il atteste de qualifications professionnelles approfondies dans le domaine des réseaux électriques et permet d'accéder à des postes à responsabilités : chef d'équipe, responsable technique, chef de projet.
 
-### Organisation de l'examen
+### Organisation et Formation
 
 | Élément | Détails |
 |---------|---------|
-| **Organisme** | EIT.swiss (anciennement USIE) - Association des entreprises électriques |
-| **Site web** | [eit.swiss](https://www.eit.swiss/fr/) |
-| **Contact** | info@eit.swiss / 044 444 17 17 |
-| **Lieu d'examen** | Vulkanplatz 3, 8048 Zürich-Altstetten |
-| **Inscription** | [eitswiss.tocco.ch](https://eitswiss.tocco.ch) |
+| **Organisme de formation (Suisse romande)** | **CIFER** - Centre Intercantonal de Formation des Électriciens de Réseau |
+| **Site web** | [cifer.ch](https://cifer.ch/formations-certifiantes/#13111) |
+| **Contact** | formation@cifer.ch / 021 863 11 80 |
+| **Adresse** | Chemin de l'Islettaz 9, 1305 Penthalaz |
+| **Durée de la formation** | Environ 1 an (55 jours, soit 440 heures) |
+| **Format des cours** | Blocs de 2 à 5 jours, usuellement mardi à samedi |
+| **Nombre de participants** | Max. 24 candidats par session |
+
+### Calendrier du Brevet 2025-2027
+
+| Étape | Date |
+|-------|------|
+| **Cours d'accompagnement** | Automne 2026 (facultatifs, pour préparer le concours) |
+| **Concours d'entrée** | Printemps 2027 |
+| **Début des cours préparatoires** | Automne 2027 |
+| **Examen final** | Mars 2029 |
 
 ---
 
-## 📚 Structure de l'Examen
+## 📚 Structure de l'Examen (selon Directives officielles)
+
+L'examen final est composé de plusieurs parties évaluant les compétences acquises selon les directives d'examen du 01.01.2024.
 
 ### Parties de l'examen
 
 1. **Travail de projet** (travail écrit préalable)
-   - À rédiger avant l'examen oral
-   - Environ 20-30 pages
-   - Sujet pratique lié à l'activité professionnelle
+   - Projet pratique lié à l'activité professionnelle
+   - Préparation et documentation d'un projet réseau
+   - À défendre lors de l'examen oral
 
-2. **Examen écrit** (4-6 heures)
-   - Questions techniques
-   - Calculs et dimensionnements
-   - Études de cas
+2. **Épreuves écrites**
+   - Questions techniques sur les modules AA et AE
+   - Calculs de dimensionnement et études de cas
+   - Application des normes et réglementations
 
-3. **Examen oral** (30-60 minutes)
-   - Présentation du travail de projet
-   - Questions sur le projet
-   - Questions techniques générales
-
-4. **Examen pratique** (selon spécialisation)
-   - Manipulation d'équipements
-   - Résolution de problèmes réels
+3. **Épreuves orales**
+   - Présentation et défense du travail de projet
+   - Questions techniques et situationnelles
+   - Démonstration des compétences de conduite
 
 ---
 
-## 🎯 Domaines de Compétences Évalués
+## 🎯 Modules de Formation (Programme CIFER)
 
-### 1. Électrotechnique de base
-- Loi d'Ohm et lois de Kirchhoff
-- Courant alternatif (AC) et continu (DC)
-- Puissance active, réactive et apparente
-- Facteur de puissance (cos φ)
-- Transformateurs et machines électriques
+### Modules de base (AA) - Compétences transversales
 
-### 2. Réseaux de distribution
-- Topologie des réseaux (maillé, radial, en boucle)
-- Niveaux de tension (BT, MT, HT)
-- Postes de transformation
-- Lignes aériennes et câbles souterrains
-- Pertes en ligne et chutes de tension
+| Module | Nom | Contenu clé |
+|--------|-----|-------------|
+| **AA01** | Conduite de collaborateurs | Leadership, gestion d'équipe, motivation |
+| **AA02** | Formation | Transmission des savoirs, encadrement apprentis |
+| **AA03** | Préparation du travail | Planification, organisation, ressources |
+| **AA04** | Exécution de mandats | Réalisation de projets, qualité |
+| **AA05** | Santé et sécurité au travail | Prévention, EPI, premiers secours |
+| **AA06** | Suivi des travaux | Contrôle qualité, reporting |
+| **AA07** | Bases de la maintenance | Stratégies de maintenance préventive/corrective |
+| **AA08** | Maintenance des équipements | Diagnostic, réparation, optimisation |
+| **AA09** | Électrotechnique | Fondamentaux électriques, calculs |
+| **AA10** | Mécanique | Mécanique appliquée aux réseaux |
+| **AA11** | Mathématiques | Calculs professionnels, trigonométrie |
 
-### 3. Protection et sécurité
-- Dispositifs de protection (fusibles, disjoncteurs)
-- Protection différentielle
-- Mise à la terre et schémas de liaison
-- Consignation et travaux hors tension
-- Équipements de protection individuelle (EPI)
+### Modules spécialisés (AE) - Orientation Énergie
 
-### 4. Normes et réglementation
-- **NIBT** (Norme des installations à basse tension)
-- **OIBT** (Ordonnance sur les installations à basse tension)
-- **ESTI** (Inspection fédérale des installations à courant fort)
-- Normes européennes (EN, IEC)
-
-### 5. Énergies renouvelables
-- Installations photovoltaïques
-- Stockage d'énergie (batteries)
-- Pompes à chaleur
-- Bornes de recharge véhicules électriques
-
-### 6. Smart Grid et digitalisation
-- Compteurs intelligents
-- Gestion de charge
-- Domotique et automatisation
-- Communication et protocoles
+| Module | Nom | Contenu clé |
+|--------|-----|-------------|
+| **AE01** | Étude de projet | Conception et planification de projets réseau |
+| **AE02** | Sécurité sur et à proximité d'IE | Consignation, travaux sous tension, 5 règles d'or |
+| **AE03** | Éclairage public | Conception, maintenance, LED |
+| **AE04** | Documentation de réseaux | Plans, schémas, SIG |
+| **AE05** | Installations de mise à terre | Schémas de liaison, mesures |
+| **AE06** | Exploitation de réseaux | Gestion quotidienne, incidents |
+| **AE07** | Technique de mesure | Instruments, méthodes, interprétation |
+| **AE09** | Technique de protection | Relais, sélectivité, coordination |
+| **AE10** | Maintenance des réseaux | Stratégies et interventions |
+| **AE11** | Travail de projet | Projet personnel pour l'examen |
+| **AE12** | Lignes souterraines | Câbles, pose, raccordements |
+| **AE13** | Lignes aériennes | Poteaux, conducteurs, travaux en hauteur |
 
 ---
 
-## 📖 Conditions d'Admission
+## 📖 Conditions d'Admission (CIFER)
 
 ### Prérequis obligatoires
 
-1. **Formation initiale** : CFC d'installateur-électricien, électricien de réseau, ou formation équivalente
+1. **Formation initiale** : CFC d'électricien de réseau ou formation équivalente reconnue
 
-2. **Expérience professionnelle** : Minimum 3-5 ans dans le domaine après le CFC
+2. **Expérience professionnelle** : Minimum 3-5 ans dans le domaine des réseaux électriques après le CFC
 
-3. **Cours préparatoires** : Avoir suivi les modules de formation reconnus
+3. **Concours d'entrée** : Réussir le concours d'entrée (max. 24 places par session)
 
-4. **Attestations** : Modules validés par les centres de formation agréés
+4. **Cours d'accompagnement** : Facultatifs mais recommandés (4 demi-journées sur plusieurs semaines)
 
----
+### Subventions disponibles
 
-## 🏫 Centres de Formation Recommandés
-
-### Suisse romande
-
-| Centre | Lieu | Contact |
-|--------|------|---------|
-| **CFPS Centre de formation** | Genève | cfps.ch |
-| **CPLN** | Neuchâtel | cpln.ch |
-| **ETML** | Lausanne | etml.ch |
-| **Ecole des Métiers** | Fribourg | emf.ch |
-
-### Suisse alémanique
-
-| Centre | Lieu | Contact |
-|--------|------|---------|
-| **STFW** | Winterthur | stfw.ch |
-| **GIBZ** | Zug | gibz.ch |
-| **ABB Technikerschule** | Baden | abbts.ch |
+- **SEFRI** : Subvention fédérale pouvant couvrir 50% des coûts
+- **FONPRO** : Subvention cantonale (canton de Vaud)
+- Information : [sefri.admin.ch](https://www.sbfi.admin.ch/sbfi/fr/home/formation/fpc/fps/contributions.html)
 
 ---
 
-## 📊 Statistiques de Réussite
+## 🏫 Formation avec CIFER
 
-### Taux de réussite moyens
+### Centre de formation officiel (Suisse romande)
 
-| Session | Taux de réussite |
-|---------|------------------|
-| Première tentative | 60-70% |
-| Deuxième tentative | 80-85% |
+| Information | Détails |
+|-------------|---------|
+| **Nom** | CIFER - Centre Intercantonal de Formation des Électriciens de Réseau |
+| **Adresse** | Chemin de l'Islettaz 9, 1305 Penthalaz |
+| **Téléphone** | +41 21 863 11 80 |
+| **Email** | formation@cifer.ch |
+| **Site web** | [cifer.ch](https://cifer.ch) |
+
+### Liens officiels
+
+- [Règlement d'examen](https://www.netzelektriker.ch/sites/default/files/2022-07/R%C3%A8glement%20EP%20du%2001.01.2024.pdf)
+- [Directives d'examen](https://www.netzelektriker.ch/sites/default/files/2022-07/Directives%20EP%20du%2001.01.2024.pdf)
+- [AES - Informations complémentaires](https://www.netzelektriker.ch/fr/formation-continue)
+
+---
+
+## 📊 Réussite à l'Examen
 
 ### Facteurs de succès identifiés
 
-1. ✅ Préparation structurée sur 6-12 mois
-2. ✅ Révision régulière (répétition espacée)
-3. ✅ Exercices pratiques quotidiens
-4. ✅ Groupes d'étude avec collègues
-5. ✅ Cours préparatoires officiels
-6. ✅ Expérience terrain variée
+1. ✅ **Se concentrer sur les directives d'examen** - Ce sont elles qui définissent ce qui sera évalué
+2. ✅ Préparation structurée sur 12-18 mois
+3. ✅ Révision régulière basée sur la **courbe de l'oubli** (répétition espacée)
+4. ✅ Maîtriser chaque module AA et AE du programme
+5. ✅ Travail de projet préparé en avance
+6. ✅ Exercices pratiques et mises en situation
 
 ---
 
-## 🧠 Méthodes d'Apprentissage Efficaces
+## 🧠 La Courbe de l'Oubli et la Répétition Espacée
 
-### 1. Répétition Espacée (Spaced Repetition)
+### Principe scientifique
 
-La répétition espacée est **scientifiquement prouvée** comme la méthode la plus efficace pour la mémorisation à long terme.
+La **courbe de l'oubli** d'Ebbinghaus montre que sans révision, nous oublions :
+- **50%** après 1 heure
+- **70%** après 24 heures  
+- **90%** après 1 semaine
 
-**Principe** : Réviser une notion juste avant de l'oublier permet de l'ancrer plus profondément.
+La **répétition espacée** combat ce phénomène en révisant juste avant d'oublier.
 
-**Intervalles recommandés** :
-- J+1 (lendemain)
-- J+3 (3 jours après)
-- J+7 (1 semaine)
-- J+14 (2 semaines)
-- J+30 (1 mois)
+### Intervalles optimaux utilisés par ce système
 
-**Outils recommandés** :
-- **Anki** - Application de flashcards gratuite
-- **Quizlet** - Création de fiches en ligne
-- **Votre système de révision !** 🎯
+| Révision | Intervalle | Rétention visée |
+|----------|------------|-----------------|
+| R1 | **J+7** (1 semaine) | Consolider la mémoire à court terme |
+| R2 | **J+21** (3 semaines) | Ancrer en mémoire à moyen terme |
+| R3 | **J+45** (6 semaines) | Fixer en mémoire à long terme |
 
-### 2. Technique de Feynman
+### Pourquoi ces intervalles ?
 
-1. Choisir un concept à apprendre
-2. L'expliquer comme à un enfant de 10 ans
-3. Identifier les lacunes dans votre explication
-4. Simplifier et utiliser des analogies
-5. Répéter jusqu'à maîtrise complète
+- Plus efficaces que les révisions quotidiennes
+- Optimisés pour la charge de travail en formation continue
+- Basés sur la recherche en sciences cognitives
+- Adaptés aux modules techniques du brevet
 
-### 3. Active Recall (Rappel actif)
+### Conseils pour maximiser la mémorisation
 
-Au lieu de relire passivement vos notes :
-- Fermez vos cours
-- Essayez de vous rappeler ce que vous avez appris
-- Vérifiez vos réponses
-- Concentrez-vous sur ce que vous avez oublié
-
-### 4. Pratique Délibérée
-
-- Focalisez-vous sur vos points faibles
-- Sortez de votre zone de confort
-- Obtenez des feedbacks réguliers
-- Corrigez immédiatement vos erreurs
-
-### 5. Méthode Pomodoro
-
-- 25 minutes de travail concentré
-- 5 minutes de pause
-- Après 4 pomodoros : pause longue (15-30 min)
+1. **Réviser activement** : Ne pas relire, mais tester vos connaissances
+2. **Dormir suffisamment** : Le sommeil consolide la mémoire
+3. **Espacer les révisions** : Ne pas tout réviser le même jour
+4. **Varier les supports** : Flashcards, schémas, explications orales
 
 ---
 
-## 📅 Planning de Préparation Recommandé
+## 📅 Comment Utiliser ce Système
 
-### 12 mois avant l'examen
+### L'IA et les Directives d'Examen
 
-| Mois | Focus | Actions |
-|------|-------|---------|
-| **M-12 à M-9** | Bases théoriques | Révision des fondamentaux, cours préparatoires |
-| **M-9 à M-6** | Approfondissement | Normes (NIBT, OIBT), calculs techniques |
-| **M-6 à M-3** | Pratique intensive | Exercices d'examen, études de cas |
-| **M-3 à M-1** | Travail de projet | Rédaction et préparation soutenance |
-| **M-1 à J-jour** | Révisions finales | Répétition, simulation d'examen |
+Ce système utilise l'IA pour analyser vos cours **en fonction des directives d'examen officielles**. C'est crucial car :
 
-### Répartition hebdomadaire suggérée
+1. **Les directives définissent ce qui sera évalué** - Pas besoin d'apprendre ce qui ne sera pas testé
+2. **Priorisation automatique** - Les concepts liés aux critères d'examen sont prioritaires
+3. **Mapping cours ↔ exigences** - L'IA identifie quels cours couvrent quelles compétences
 
-| Jour | Activité | Durée |
-|------|----------|-------|
-| Lundi | Théorie nouvelle | 2h |
-| Mardi | Exercices pratiques | 2h |
-| Mercredi | Révision (répétition espacée) | 1.5h |
-| Jeudi | Calculs et dimensionnements | 2h |
-| Vendredi | Normes et réglementation | 1.5h |
-| Samedi | Examen blanc / Cas pratiques | 3h |
-| Dimanche | Repos ou révision légère | 1h max |
+### Fichiers de directives utilisés
+
+Le système utilise les directives officielles dans le dossier `directives_examen/` :
+- `Directives EP du 01.01.2024.pdf` - Directives d'examen professionnel
+
+### Workflow recommandé
+
+1. 📚 **Importez vos cours** - Tous vos PDFs dans le dossier `cours/`
+2. 📋 **Vérifiez les directives** - Assurez-vous qu'elles sont à jour
+3. 🔬 **Lancez l'analyse IA** - L'IA extrait les concepts clés
+4. 📆 **Générez le planning** - Planning basé sur la répétition espacée
+5. ✅ **Suivez le planning** - Révisez selon les intervalles optimaux
 
 ---
 
-## 📚 Ressources Essentielles
+## 📚 Ressources Officielles CIFER
 
-### Documents officiels
+### Documents à télécharger
 
-1. **NIBT 2020** - Norme des installations à basse tension
-2. **OIBT** - Ordonnance sur les installations à basse tension
-3. **Directives ESTI** - Publications de l'Inspection fédérale
-4. **Manuel Practice** - EIT.swiss
+- [Information sur les cours préparatoires 2025-2027](https://cifer.ch/wp-content/uploads/2024/11/FSB-Information-cours-preparatoires-25-27_V01.pdf)
+- [Conditions d'admission et de validation](https://cifer.ch/wp-content/uploads/2024/11/FSB-Conditions-dadmission-25-27_v.01.pdf)
+- [Information sur les cours d'accompagnement](https://cifer.ch/wp-content/uploads/2024/11/FSB-Fiche-info-accompagnement-25-27-v.02-2.pdf)
 
-### Livres recommandés
+### Documentation AES
 
-| Titre | Auteur/Éditeur | Usage |
-|-------|----------------|-------|
-| Manuel de référence "Practice" | EIT.swiss | Bible du métier |
-| Électrotechnique | Théodore Wildi | Bases théoriques |
-| Installations électriques | Electrosuisse | Normes et pratique |
-| Protection des installations | Schneider Electric | Guide technique |
-
-### Ressources en ligne
-
-- **Electrosuisse** : electrosuisse.ch (normes et formations)
-- **ESTI** : esti.admin.ch (réglementation officielle)
-- **EIT.swiss** : eit.swiss (examens et ressources métier)
-- **orientation.ch** : orientation.ch (informations générales)
+- [Règlement d'examen EP 01.01.2024](https://www.netzelektriker.ch/sites/default/files/2022-07/R%C3%A8glement%20EP%20du%2001.01.2024.pdf)
+- [Directives d'examen EP 01.01.2024](https://www.netzelektriker.ch/sites/default/files/2022-07/Directives%20EP%20du%2001.01.2024.pdf)
+- [Informations AES sur le brevet](https://www.netzelektriker.ch/fr/formation-continue)
 
 ---
 
@@ -249,11 +222,11 @@ Au lieu de relire passivement vos notes :
 
 ### Pendant la préparation
 
+❌ Négliger les **directives d'examen** - C'est LE document de référence
 ❌ Commencer trop tard (moins de 6 mois avant)
-❌ Se concentrer uniquement sur la théorie
-❌ Négliger les normes et la réglementation
-❌ Étudier sans plan structuré
-❌ Ignorer ses points faibles
+❌ Se concentrer uniquement sur la théorie sans pratique
+❌ Étudier sans plan structuré basé sur les modules
+❌ Ignorer ses points faibles dans les modules AE
 
 ### Pendant l'examen
 
@@ -265,58 +238,18 @@ Au lieu de relire passivement vos notes :
 
 ---
 
-## ✅ Conseils des Experts
+## 📞 Contact CIFER
 
-### Témoignages de candidats ayant réussi
-
-> "La clé c'est la régularité. Mieux vaut 1h par jour que 7h le dimanche."
-> — Candidat reçu 2024
-
-> "J'ai utilisé Anki pour les formules et les normes. Ça a fait toute la différence."
-> — Technicien certifié 2023
-
-> "Le travail de projet, commencez-le tôt ! C'est ce qui m'a le plus stressé."
-> — Spécialiste réseaux 2024
-
-### Recommandations clés
-
-1. **Créez un groupe d'étude** avec 2-3 collègues
-2. **Testez-vous régulièrement** (examens blancs)
-3. **Reliez théorie et pratique** quotidiennement
-4. **Dormez suffisamment** (8h) - le cerveau consolide pendant le sommeil
-5. **Faites du sport** - améliore la mémoire et réduit le stress
+| Information | Détails |
+|-------------|---------|
+| **Adresse** | Chemin de l'Islettaz 9, 1305 Penthalaz |
+| **Téléphone** | +41 21 863 11 80 |
+| **Email formation** | formation@cifer.ch |
+| **Email général** | info@cifer.ch |
+| **Site web** | [cifer.ch](https://cifer.ch) |
+| **LinkedIn** | [@cifer-formation](https://www.linkedin.com/company/cifer-formation/) |
+| **Instagram** | [@cifer.formation](https://www.instagram.com/cifer.formation/) |
 
 ---
 
-## 🎯 Intégration avec Votre Système
-
-Votre système de révision intelligent intègre déjà :
-
-✅ **Répétition espacée** - Planning automatique avec intervalles optimaux
-✅ **Mapping concepts-exigences** - Focus sur ce qui est évalué
-✅ **Identification des prérequis** - "Tu dois savoir X pour comprendre Y"
-✅ **Élimination du bruit** - Concentration sur l'essentiel
-✅ **Suivi de progression** - Visualisation de votre avancement
-
-### Prochaines étapes
-
-1. 📚 Importez vos cours dans le système
-2. 📋 Ajoutez les directives officielles d'examen
-3. 🔬 Lancez l'analyse IA
-4. 📅 Générez votre planning personnalisé
-5. ✅ Suivez le planning quotidiennement !
-
----
-
-## 📞 Contacts Utiles
-
-| Organisation | Contact | Utilité |
-|--------------|---------|---------|
-| **EIT.swiss** | 044 444 17 17 | Inscription, questions examen |
-| **ESTI** | 058 595 18 18 | Réglementation |
-| **Electrosuisse** | 044 956 11 11 | Normes, formations |
-| **Orientation.ch** | orientation.ch | Informations carrière |
-
----
-
-*Ce guide est intégré à votre système de révision intelligent. Bonne préparation !* 🎓
+*Ce guide est spécifiquement adapté au Brevet Fédéral de Spécialiste de Réseau - Orientation Énergie avec CIFER. Bonne préparation !* 🎓

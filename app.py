@@ -1468,7 +1468,7 @@ elif page == "📆 Planning Révisions":
 elif page == "📖 Ressources":
     st.header("📖 Ressources et Guides")
     
-    tab1, tab2, tab3 = st.tabs(["📘 Guide Complet", "🎴 Flashcards", "📐 Formules"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📘 Guide Complet", "🏫 CIFER Info", "🎴 Flashcards", "📐 Formules"])
     
     with tab1:
         st.subheader("📘 Guide Brevet Fédéral")
@@ -1481,6 +1481,42 @@ elif page == "📖 Ressources":
             st.warning("Guide non disponible")
     
     with tab2:
+        st.subheader("🏫 CIFER - Centre de Formation Officiel")
+        st.markdown("""
+### Brevet Fédéral de Spécialiste de Réseau - Orientation Énergie
+
+**CIFER** (Centre Intercantonal de Formation des Électriciens de Réseau) est l'organisme 
+officiel de formation pour le brevet fédéral en Suisse romande.
+
+#### 📍 Coordonnées
+| Information | Détails |
+|-------------|---------|
+| **Adresse** | Chemin de l'Islettaz 9, 1305 Penthalaz |
+| **Téléphone** | +41 21 863 11 80 |
+| **Email** | formation@cifer.ch |
+| **Site web** | [cifer.ch](https://cifer.ch/formations-certifiantes/#13111) |
+
+#### 📅 Calendrier Formation 2025-2027
+| Étape | Date |
+|-------|------|
+| Cours d'accompagnement (facultatifs) | Automne 2026 |
+| Concours d'entrée | Printemps 2027 |
+| Début cours préparatoires | Automne 2027 |
+| **Examen final** | **Mars 2029** |
+
+#### 📋 Documents Officiels
+- [Règlement d'examen](https://www.netzelektriker.ch/sites/default/files/2022-07/R%C3%A8glement%20EP%20du%2001.01.2024.pdf)
+- [Directives d'examen](https://www.netzelektriker.ch/sites/default/files/2022-07/Directives%20EP%20du%2001.01.2024.pdf)
+- [Conditions d'admission](https://cifer.ch/wp-content/uploads/2024/11/FSB-Conditions-dadmission-25-27_v.01.pdf)
+- [Info cours préparatoires](https://cifer.ch/wp-content/uploads/2024/11/FSB-Information-cours-preparatoires-25-27_V01.pdf)
+
+#### 💰 Subventions
+Des subventions peuvent couvrir jusqu'à **50% des coûts** :
+- **SEFRI** : Subvention fédérale
+- **FONPRO** : Canton de Vaud
+        """)
+    
+    with tab3:
         st.subheader("🎴 Flashcards d'Étude")
         flashcards_path = Path("docs/FLASHCARDS.md")
         if flashcards_path.exists():
@@ -1543,7 +1579,7 @@ elif page == "📖 Ressources":
         else:
             st.warning("Flashcards non disponibles")
     
-    with tab3:
+    with tab4:
         st.subheader("📐 Formules Essentielles")
         formules_path = Path("docs/FORMULES_ESSENTIELLES.md")
         if formules_path.exists():
@@ -1630,4 +1666,4 @@ elif page == "⚙️ Paramètres":
 
 # Footer
 st.divider()
-st.caption("🎓 Système de Révision Intelligent - Brevet Fédéral Spécialiste Réseaux Énergétiques")
+st.caption("🎓 Système de Révision Intelligent - Brevet Fédéral de Spécialiste de Réseau | Formation CIFER")

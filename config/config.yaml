@@ -60,12 +60,24 @@ planning:
   default_hours_per_day: 0.5
   revision_days_per_week: 5
   revision_ratio: 0.3
+  # Intervalles optimisés basés sur la courbe de l'oubli d'Ebbinghaus
+  # J+7, J+21, J+45 pour une rétention maximale à long terme
   spaced_repetition_intervals:
-  - 1
-  - 3
-  - 7
-  - 14
-  - 30
+  - 7    # R1: Consolider mémoire court terme
+  - 21   # R2: Ancrer mémoire moyen terme  
+  - 45   # R3: Fixer mémoire long terme
+
+# Formation CIFER - Brevet Fédéral Spécialiste de Réseau
+formation:
+  organisme: "CIFER - Centre Intercantonal de Formation des Électriciens de Réseau"
+  orientation: "Énergie"
+  lieu: "Chemin de l'Islettaz 9, 1305 Penthalaz"
+  telephone: "+41 21 863 11 80"
+  email: "formation@cifer.ch"
+  site_web: "https://cifer.ch"
+  duree_jours: 55
+  duree_heures: 440
+  max_participants: 24
 
 # Structure des modules de formation
 modules:
@@ -143,19 +155,27 @@ modules:
     has_content: true
 priority_levels:
   critical:
-    description: Concepts fondamentaux, mentionnés dans les directives
+    description: Concepts mentionnés dans les directives d'examen
     weight: 10
   high:
-    description: Concepts importants, prérequis pour d'autres
+    description: Concepts fondamentaux des modules AA/AE
     weight: 7
+  medium:
+    description: Concepts à connaître pour la compréhension
+    weight: 5
   low:
     description: Concepts secondaires, pour approfondir
     weight: 2
-  medium:
-    description: Concepts à connaître, utiles pour la compréhension
-    weight: 5
+
+# Source de vérité pour l'IA
+directives:
+  source_primaire: "directives_examen/Directives EP du 01.01.2024.pdf"
+  importance: "L'IA doit prioriser les concepts selon les critères d'évaluation des directives"
+  note: "Seuls les concepts alignés avec les directives d'examen sont considérés critiques"
+
 user:
   completed_modules: []
-  exam_date: '2027-03-01'
-  formation_start: '2025-09-01'
+  exam_date: '2029-03-01'
+  formation_start: '2027-09-01'
   name: Gabriel
+  centre_formation: "CIFER"
