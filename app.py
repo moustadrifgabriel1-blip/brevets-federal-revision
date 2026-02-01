@@ -11,6 +11,20 @@ from pathlib import Path
 from datetime import datetime, timedelta
 import pandas as pd
 
+# Charger la clé API depuis .env ou secrets.toml
+def get_api_key():
+    if hasattr(st, 'secrets') and 'api' in st.secrets:
+        return st.secrets['api'].get('GOOGLE_API_KEY', '')
+    env_path = Path('.env')
+    if env_path.exists():
+        with open(env_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line.startswith('GOOGLE_API_KEY='):
+                    return line.split('=', 1)[1].strip()
+    return ''
+
+
 # Configuration de la page
 st.set_page_config(
     page_title="🎓 Révision Brevet Fédéral",
@@ -66,7 +80,14 @@ def load_config():
     config_path = Path("config/config.yaml")
     if config_path.exists():
         with open(config_path, 'r', encoding='utf-8') as f:
-            return yaml.safe_load(f)
+            config = yaml.safe_load(f)
+        # Charger la clé API depuis .env ou secrets
+        api_key = get_api_key()
+        if api_key and config:
+            if 'api' not in config:
+                config['api'] = {}
+            config['api']['gemini_api_key'] = api_key
+        return config
     return None
 
 
