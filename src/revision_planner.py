@@ -115,6 +115,12 @@ class RevisionPlannerAuto:
         current_date = start_date
         concept_index = 0
         total = len(ordered)
+        
+        # Configuration réaliste : temps par concept selon la difficulté
+        # Concept simple: 10-15 min, Concept complexe: 20-30 min
+        # En moyenne: ~15-20 min par concept nouveau
+        MINUTES_PER_NEW_CONCEPT = 15
+        
         while current_date < self.exam_date and concept_index < total:
             date_str = current_date.strftime("%Y-%m-%d")
             if date_str in self.course_dates:
@@ -122,7 +128,11 @@ class RevisionPlannerAuto:
                 continue
             is_weekend = current_date.weekday() >= 5
             duration = self.weekend_hours * 60 if is_weekend else self.weekday_minutes
-            per_session = max(1, duration // 20)
+            
+            # Calculer le nombre réaliste de concepts pour cette session
+            # 30 min = 2 concepts max, 60 min = 4 concepts max, etc.
+            per_session = max(1, min(6, duration // MINUTES_PER_NEW_CONCEPT))
+            
             session_concepts = []
             cats = set()
             prio = "medium"
@@ -153,29 +163,66 @@ class RevisionPlannerAuto:
         return self.sessions
     
     def _add_spaced_repetition(self):
-        important = [c for c in self.concepts if c.get("importance") in ["critical", "high"] or c.get("exam_relevant")][:30]
-        for concept in important:
-            for interval in [3, 7, 14, 30]:
-                review_date = datetime.now() + timedelta(days=interval)
+        """Ajoute des révisions espacées de manière réaliste"""
+        important = [c for c in self.concepts if c.get("importance") in ["critical", "high"] or c.get("exam_relevant")][:20]
+        
+        # Distribuer les révisions sur différents jours pour éviter la surcharge
+        review_schedule = {}  # date -> liste de concepts
+        
+        for i, concept in enumerate(important):
+            # Décaler les intervalles pour bien répartir (éviter la surcharge)
+            base_offset = i % 7  # Décaler de 0-6 jours
+            for interval in [7, 21, 45]:  # Révisions moins fréquentes mais plus espacées
+                actual_interval = interval + base_offset
+                review_date = datetime.now() + timedelta(days=actual_interval)
                 if review_date < self.exam_date:
                     date_str = review_date.strftime("%Y-%m-%d")
-                    existing = [s for s in self.sessions if s.date == date_str]
-                    if existing:
-                        if concept["name"] not in existing[0].concepts:
-                            existing[0].concepts.append(f"Reviser: {concept['name']}")
-                    else:
-                        self.sessions.append(RevisionSession(
-                            date=date_str,
-                            day_name=self._translate_day(review_date.strftime("%A")),
-                            duration_minutes=20,
-                            concepts=[f"Reviser: {concept['name']}"],
-                            category=concept.get("category", "Revision"),
-                            priority="medium",
-                            session_type="revision",
-                            module=concept.get("module"),
-                            completed=False,
-                            objectives=[f"Reviser: {concept['name']}"]
-                        ))
+                    if date_str not in review_schedule:
+                        review_schedule[date_str] = []
+                    review_schedule[date_str].append(concept)
+        
+        # Ne pas surcharger les sessions courtes (30 min)
+        MAX_TOTAL_CONCEPTS_SHORT = 2  # Max pour session 30 min
+        MAX_TOTAL_CONCEPTS_LONG = 8   # Max pour session longue (weekend)
+        
+        for date_str, concepts_to_review in review_schedule.items():
+            existing = [s for s in self.sessions if s.date == date_str]
+            
+            if existing:
+                session = existing[0]
+                current_total = len(session.concepts)
+                is_short_session = session.duration_minutes <= 45
+                max_concepts = MAX_TOTAL_CONCEPTS_SHORT if is_short_session else MAX_TOTAL_CONCEPTS_LONG
+                
+                # Ne pas ajouter de révisions si la session est déjà chargée
+                if current_total >= max_concepts:
+                    continue
+                
+                # Ajouter max 1 révision aux sessions courtes, 2 aux longues
+                available_slots = max(0, max_concepts - current_total)
+                max_reviews = 1 if is_short_session else 2
+                
+                for concept in concepts_to_review[:min(available_slots, max_reviews)]:
+                    review_name = f"Reviser: {concept['name']}"
+                    if review_name not in session.concepts:
+                        session.concepts.append(review_name)
+            else:
+                # Créer une nouvelle session de révision (seulement si 2+ concepts)
+                if len(concepts_to_review) >= 2:
+                    review_date = datetime.strptime(date_str, "%Y-%m-%d")
+                    limited = concepts_to_review[:3]
+                    self.sessions.append(RevisionSession(
+                        date=date_str,
+                        day_name=self._translate_day(review_date.strftime("%A")),
+                        duration_minutes=len(limited) * 15,  # 15 min par révision
+                        concepts=[f"Reviser: {c['name']}" for c in limited],
+                        category=limited[0].get("category", "Revision") if limited else "Revision",
+                        priority="medium",
+                        session_type="revision",
+                        module=limited[0].get("module") if limited else None,
+                        completed=False,
+                        objectives=[f"Consolider les acquis"]
+                    ))
         self.sessions.sort(key=lambda s: s.date)
     
     def _create_milestones(self):

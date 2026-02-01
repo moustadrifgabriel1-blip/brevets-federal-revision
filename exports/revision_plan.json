@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-02-01T16:49:52.595248",
+  "generated_at": "2026-02-01T18:15:17.291545",
   "exam_date": "2027-03-01",
-  "total_sessions": 65,
+  "total_sessions": 164,
   "total_concepts": 503,
-  "total_hours": 182.5,
+  "total_hours": 435.2,
   "weekday_minutes": 30,
   "weekend_hours": 8,
   "concepts_covered": [
@@ -1814,27 +1814,9 @@
         "Chaîne de sécurité antichute (Le système des 4 éléments)",
         "Rôles : Maître d'ouvrage vs Maître d'œuvre",
         "Cadre légal suisse (LAA et OPA)",
-        "Cadre légal (LAA et OPA)",
-        "Terminologie du Risque",
-        "Pyramide légale de la SST",
-        "Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr)",
-        "Planification de projet",
-        "Normes SIA",
-        "Responsabilités et Rôles",
-        "Directive MSST (CFST 6508)",
-        "Mécanisme de l'accident",
-        "Constitution de la matière et charges électriques",
-        "Techniques de présentation actives",
-        "Grandeurs photométriques fondamentales",
-        "Contrôle de sécurité électrique (OIBT/NIBT)",
-        "Définition de l'objectif d'intervention",
-        "Structuration de l'action de formation",
-        "Recueil des besoins en formation",
-        "Parcours de formation mixte (Blended Learning)",
-        "Complémentarité des modalités",
-        "Apprentissage Social (Social Learning)"
+        "Cadre légal (LAA et OPA)"
       ],
-      "category": "Ingénierie de Formation",
+      "category": "Législation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -1848,15 +1830,16 @@
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Analyse des besoins de formation"
+        "Terminologie du Risque",
+        "Pyramide légale de la SST"
       ],
-      "category": "Ingénierie de formation",
+      "category": "Droit et Législation",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA02",
+      "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Analyse des besoins de formation"
+        "Comprendre Terminologie du Risque"
       ]
     },
     {
@@ -1864,15 +1847,16 @@
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Instruction MSST et Sécurité"
+        "Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr)",
+        "Planification de projet"
       ],
-      "category": "Sécurité (HSE) / Législation",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA02",
+      "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Instruction MSST et Sécurité"
+        "Comprendre Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr)"
       ]
     },
     {
@@ -1880,44 +1864,16 @@
       "day_name": "Mercredi",
       "duration_minutes": 30,
       "concepts": [
-        "Apprentissage entre pairs",
-        "Reviser: Grandeurs photométriques fondamentales",
-        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
-        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
-        "Reviser: Stabilité et maintenance des structures porteuses",
-        "Reviser: Technologies de sources lumineuses (LED)",
-        "Reviser: La Lanterne Magique",
-        "Reviser: Les 4 Pôles de la communication",
-        "Reviser: Définition de l'objectif d'intervention",
-        "Reviser: Adaptation à l'auditoire",
-        "Reviser: Carte Mentale (Heuristic Map)",
-        "Reviser: Structuration de l'action de formation",
-        "Reviser: Recueil des besoins en formation",
-        "Reviser: Technique de la Discussion Post-it",
-        "Reviser: Structuration du plan de discussion",
-        "Reviser: Typologie des questions d'animation",
-        "Reviser: Parcours de formation mixte (Blended Learning)",
-        "Reviser: Complémentarité des modalités",
-        "Reviser: Engagement du Management",
-        "Reviser: Apprentissage Actif",
-        "Reviser: Apprentissage Social (Social Learning)",
-        "Reviser: Analyse des besoins de formation",
-        "Reviser: Méthode CQQCOQP",
-        "Reviser: Démarche contractuelle par objectifs",
-        "Reviser: Instruction MSST et Sécurité",
-        "Reviser: Théorie de l'apprentissage social (Bandura)",
-        "Reviser: Renforcement Vicariant",
-        "Reviser: Réponse au cahier des charges",
-        "Reviser: Analyse de la demande",
-        "Reviser: Proposition commerciale"
+        "Normes SIA",
+        "Responsabilités et Rôles"
       ],
-      "category": "Méthodologie de formation",
+      "category": "Législation & Sécurité",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA02",
+      "module": "AA03",
       "completed": false,
       "objectives": [
-        "Comprendre Apprentissage entre pairs"
+        "Comprendre Normes SIA"
       ]
     },
     {
@@ -1925,15 +1881,16 @@
       "day_name": "Jeudi",
       "duration_minutes": 30,
       "concepts": [
-        "Réponse au cahier des charges"
+        "Directive MSST (CFST 6508)",
+        "Mécanisme de l'accident"
       ],
-      "category": "Gestion de projet / Commercial",
+      "category": "Analyse de risques",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA02",
+      "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Réponse au cahier des charges"
+        "Comprendre Directive MSST (CFST 6508)"
       ]
     },
     {
@@ -1941,9 +1898,71 @@
       "day_name": "Vendredi",
       "duration_minutes": 30,
       "concepts": [
-        "Gestion du trac (via la respiration)"
+        "Constitution de la matière et charges électriques",
+        "Techniques de présentation actives"
       ],
-      "category": "Communication et Leadership (Module AA02)",
+      "category": "Outils d'animation",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Constitution de la matière et charges électriques"
+      ]
+    },
+    {
+      "date": "2026-02-07",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Grandeurs photométriques fondamentales",
+        "Contrôle de sécurité électrique (OIBT/NIBT)",
+        "Définition de l'objectif d'intervention",
+        "Structuration de l'action de formation",
+        "Recueil des besoins en formation",
+        "Parcours de formation mixte (Blended Learning)"
+      ],
+      "category": "Pédagogie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE03",
+      "completed": false,
+      "objectives": [
+        "Comprendre Grandeurs photométriques fondamentales"
+      ]
+    },
+    {
+      "date": "2026-02-08",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Complémentarité des modalités",
+        "Apprentissage Social (Social Learning)",
+        "Analyse des besoins de formation",
+        "Instruction MSST et Sécurité",
+        "Apprentissage entre pairs",
+        "Réponse au cahier des charges",
+        "Reviser: Grandeurs photométriques fondamentales",
+        "Reviser: Définition de l'objectif d'intervention"
+      ],
+      "category": "Pédagogie professionnelle",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Complémentarité des modalités"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Gestion du trac (via la respiration)",
+        "Ingénierie de formation (Analyse des besoins)"
+      ],
+      "category": "Management / Ressources Humaines",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -1953,34 +1972,121 @@
       ]
     },
     {
-      "date": "2026-02-07",
+      "date": "2026-02-10",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Processus de dépannage et gestion des avaries",
+        "Sécurité des interventions d'urgence"
+      ],
+      "category": "Technique / Exploitation Réseau",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Processus de dépannage et gestion des avaries"
+      ]
+    },
+    {
+      "date": "2026-02-11",
+      "day_name": "Mercredi",
+      "duration_minutes": 45,
+      "concepts": [
+        "Reviser: Stabilité et maintenance des structures porteuses",
+        "Reviser: Structuration de l'action de formation",
+        "Reviser: Engagement du Management"
+      ],
+      "category": "Génie Civil / Maintenance",
+      "priority": "medium",
+      "session_type": "revision",
+      "module": "AE03",
+      "completed": false,
+      "objectives": [
+        "Consolider les acquis"
+      ]
+    },
+    {
+      "date": "2026-02-12",
+      "day_name": "Jeudi",
+      "duration_minutes": 45,
+      "concepts": [
+        "Reviser: Technologies de sources lumineuses (LED)",
+        "Reviser: Recueil des besoins en formation",
+        "Reviser: Apprentissage Actif"
+      ],
+      "category": "Technologie / Efficacité énergétique",
+      "priority": "medium",
+      "session_type": "revision",
+      "module": "AE03",
+      "completed": false,
+      "objectives": [
+        "Consolider les acquis"
+      ]
+    },
+    {
+      "date": "2026-02-13",
+      "day_name": "Vendredi",
+      "duration_minutes": 45,
+      "concepts": [
+        "Reviser: La Lanterne Magique",
+        "Reviser: Technique de la Discussion Post-it",
+        "Reviser: Apprentissage Social (Social Learning)"
+      ],
+      "category": "Méthodologie de communication",
+      "priority": "medium",
+      "session_type": "revision",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Consolider les acquis"
+      ]
+    },
+    {
+      "date": "2026-02-14",
       "day_name": "Samedi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Structuration du plan de discussion"
+      ],
+      "category": "Analyse systémique",
+      "priority": "medium",
+      "session_type": "revision",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Consolider les acquis"
+      ]
+    },
+    {
+      "date": "2026-02-15",
+      "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Ingénierie de formation (Analyse des besoins)",
-        "Processus de dépannage et gestion des avaries",
-        "Sécurité des interventions d'urgence",
         "Objectifs Pédagogiques (OPG/OPP)",
         "Scénario pédagogique",
         "Progression Pédagogique",
         "Objectifs opérationnels et évaluables",
         "Évaluation des acquis",
-        "Posture du formateur",
+        "Posture du formateur"
+      ],
+      "category": "Pédagogie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Objectifs Pédagogiques (OPG/OPP)"
+      ]
+    },
+    {
+      "date": "2026-02-16",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
         "Boussole de l'aide (Autonomie)",
-        "Méthode DESC",
-        "Clôture et Transfert",
-        "Ingénierie de formation",
-        "Méthodes Pédagogiques",
-        "AFEST (Action de Formation en Situation de Travail)",
-        "Transfert des Acquis",
-        "Changement de Paradigme (Formation vs Compétence)",
-        "Typologie des compétences (Savoirs)",
-        "Outils d'évaluation en situation (Contexte fort)",
-        "Analyse du contexte de formation",
-        "Formation en situation de travail vs Hors travail",
-        "Situation de travail formatrice",
-        "Séquence réflexive",
-        "Démonstration pratique (Enseignant/Étudiant)"
+        "Méthode DESC"
       ],
       "category": "Pédagogie Différenciée",
       "priority": "high",
@@ -1988,102 +2094,270 @@
       "module": "AA02",
       "completed": false,
       "objectives": [
-        "Comprendre Ingénierie de formation (Analyse des besoins)"
+        "Comprendre Boussole de l'aide (Autonomie)"
       ]
     },
     {
-      "date": "2026-02-08",
+      "date": "2026-02-17",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Clôture et Transfert",
+        "Ingénierie de formation"
+      ],
+      "category": "Planification Pédagogique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Clôture et Transfert"
+      ]
+    },
+    {
+      "date": "2026-02-18",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Méthodes Pédagogiques",
+        "AFEST (Action de Formation en Situation de Travail)"
+      ],
+      "category": "Animation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Méthodes Pédagogiques"
+      ]
+    },
+    {
+      "date": "2026-02-19",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Transfert des Acquis",
+        "Changement de Paradigme (Formation vs Compétence)"
+      ],
+      "category": "Management de la Formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Transfert des Acquis"
+      ]
+    },
+    {
+      "date": "2026-02-20",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Typologie des compétences (Savoirs)",
+        "Outils d'évaluation en situation (Contexte fort)"
+      ],
+      "category": "Évaluation pratique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Typologie des compétences (Savoirs)"
+      ]
+    },
+    {
+      "date": "2026-02-21",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Analyse du contexte de formation",
+        "Formation en situation de travail vs Hors travail",
+        "Situation de travail formatrice",
+        "Séquence réflexive",
+        "Démonstration pratique (Enseignant/Étudiant)",
+        "Mise en situation et Simulation"
+      ],
+      "category": "Méthode pédagogique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Analyse du contexte de formation"
+      ]
+    },
+    {
+      "date": "2026-02-22",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Mise en situation et Simulation",
         "Apprentissage par entraînement (Stage)",
         "Objectifs SMART",
         "Protocole de lancement d'activité",
         "Débriefing bienveillant",
         "Cadre légal et normatif (OLEl)",
         "Distances de sécurité (Lignes aériennes)",
-        "Systèmes d'Information Réseau (SIR)",
-        "Cadre légal de la documentation (OLEI)",
-        "Gestion des données (Data Management)",
-        "SIG et SIR (GIS / NIS)",
-        "Ligne Ordinaire",
-        "Cadre légal et normatif (OLEI/OICF)",
-        "Sécurité sur poteaux en bois (CFST 6506)",
-        "Flèche et Tension (Mécanique)",
-        "Classes de solidité des supports bois",
-        "Dimensionnement statique des supports",
-        "Calcul d'ancrage et haubanage",
-        "Sécurité et Directive CFST 6506",
-        "Forces sur Plan Incliné",
-        "Levier et Couple (Moment)",
-        "Résistance des Matériaux",
-        "Inspection et Maintenance Préventive des Postes (TS)",
-        "Transformateur de Puissance (Distribution)",
         "Reviser: Grandeurs photométriques fondamentales",
-        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
-        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
-        "Reviser: Stabilité et maintenance des structures porteuses",
-        "Reviser: Technologies de sources lumineuses (LED)",
-        "Reviser: La Lanterne Magique",
-        "Reviser: Les 4 Pôles de la communication",
-        "Reviser: Définition de l'objectif d'intervention",
-        "Reviser: Adaptation à l'auditoire",
-        "Reviser: Carte Mentale (Heuristic Map)",
-        "Reviser: Structuration de l'action de formation",
-        "Reviser: Recueil des besoins en formation",
-        "Reviser: Technique de la Discussion Post-it",
-        "Reviser: Structuration du plan de discussion",
-        "Reviser: Typologie des questions d'animation",
-        "Reviser: Parcours de formation mixte (Blended Learning)",
-        "Reviser: Complémentarité des modalités",
-        "Reviser: Engagement du Management",
-        "Reviser: Apprentissage Actif",
-        "Reviser: Apprentissage Social (Social Learning)",
-        "Reviser: Analyse des besoins de formation",
-        "Reviser: Méthode CQQCOQP",
-        "Reviser: Démarche contractuelle par objectifs",
-        "Reviser: Instruction MSST et Sécurité",
-        "Reviser: Théorie de l'apprentissage social (Bandura)",
-        "Reviser: Renforcement Vicariant",
-        "Reviser: Apprentissage entre pairs",
-        "Reviser: Réponse au cahier des charges",
-        "Reviser: Analyse de la demande",
-        "Reviser: Proposition commerciale"
+        "Reviser: Définition de l'objectif d'intervention"
       ],
-      "category": "Équipements Haute Tension",
+      "category": "Techniques d'animation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
       "completed": false,
       "objectives": [
-        "Comprendre Mise en situation et Simulation"
+        "Comprendre Apprentissage par entraînement (Stage)"
       ]
     },
     {
-      "date": "2026-02-09",
+      "date": "2026-02-23",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
+        "Systèmes d'Information Réseau (SIR)",
+        "Cadre légal de la documentation (OLEI)"
+      ],
+      "category": "Gestion de patrimoine / Informatique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes d'Information Réseau (SIR)"
+      ]
+    },
+    {
+      "date": "2026-02-24",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Gestion des données (Data Management)",
+        "SIG et SIR (GIS / NIS)"
+      ],
+      "category": "Informatique de réseau",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Gestion des données (Data Management)"
+      ]
+    },
+    {
+      "date": "2026-02-25",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Ligne Ordinaire",
+        "Cadre légal et normatif (OLEI/OICF)"
+      ],
+      "category": "Réglementation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE13",
+      "completed": false,
+      "objectives": [
+        "Comprendre Ligne Ordinaire"
+      ]
+    },
+    {
+      "date": "2026-02-26",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Sécurité sur poteaux en bois (CFST 6506)",
+        "Flèche et Tension (Mécanique)"
+      ],
+      "category": "Mécanique des lignes",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE13",
+      "completed": false,
+      "objectives": [
+        "Comprendre Sécurité sur poteaux en bois (CFST 6506)"
+      ]
+    },
+    {
+      "date": "2026-02-27",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Classes de solidité des supports bois",
+        "Dimensionnement statique des supports"
+      ],
+      "category": "Mécanique des lignes",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE13",
+      "completed": false,
+      "objectives": [
+        "Comprendre Classes de solidité des supports bois"
+      ]
+    },
+    {
+      "date": "2026-02-28",
+      "day_name": "Samedi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Structuration du plan de discussion"
+      ],
+      "category": "Analyse systémique",
+      "priority": "medium",
+      "session_type": "revision",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Consolider les acquis"
+      ]
+    },
+    {
+      "date": "2026-03-01",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Calcul d'ancrage et haubanage",
+        "Sécurité et Directive CFST 6506",
+        "Forces sur Plan Incliné",
+        "Levier et Couple (Moment)",
+        "Résistance des Matériaux",
+        "Inspection et Maintenance Préventive des Postes (TS)"
+      ],
+      "category": "Dimensionnement",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE13",
+      "completed": false,
+      "objectives": [
+        "Comprendre Calcul d'ancrage et haubanage"
+      ]
+    },
+    {
+      "date": "2026-03-02",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Transformateur de Puissance (Distribution)",
         "Sécurité des Personnes et Mise à la Terre"
       ],
-      "category": "Sécurité (HSE)",
+      "category": "Équipements Haute Tension",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Sécurité des Personnes et Mise à la Terre"
+        "Comprendre Transformateur de Puissance (Distribution)"
       ]
     },
     {
-      "date": "2026-02-10",
+      "date": "2026-03-03",
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Les 3 Méthodes de Travail (EN 50110-1)"
+        "Les 3 Méthodes de Travail (EN 50110-1)",
+        "Travaux hors tension (Méthode 1)"
       ],
-      "category": "Normes et Sécurité",
+      "category": "Procédures d'intervention",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -2093,64 +2367,33 @@
       ]
     },
     {
-      "date": "2026-02-15",
+      "date": "2026-03-08",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Travaux hors tension (Méthode 1)",
         "Les 5 Règles de Sécurité",
         "Équipements de Protection (EPI/EPC)",
         "Amortissement du choc d'arrêt",
         "Distinction EN 361 vs EN 358",
         "Sauvetage d'urgence et délai d'intervention",
-        "Programme de manœuvre",
+        "Programme de manœuvre"
+      ],
+      "category": "Gestion de crise",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Les 5 Règles de Sécurité"
+      ]
+    },
+    {
+      "date": "2026-03-09",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
         "Mesures de protection (5 règles vitales)",
-        "Mandat de travail et ordre de manœuvre",
-        "Hiérarchie des responsabilités (Rôles)",
-        "Directive ESTI n°100",
-        "Stratégies de Maintenance",
-        "Niveaux d'Intervention (I-E-R)",
-        "Méthodes de Travail Électriques",
-        "Mesure de mise à la terre (Earthing Measurement)",
-        "Les 4 mesures de base de la maintenance",
-        "Cadre légal suisse (OICF/LIE/LApEl)",
-        "Contrôle OIBT (NIV)",
-        "Mise à la terre (Earthing)",
-        "Jugement de la stabilité du poteau",
-        "Contrôle de l'état du bois",
-        "Protection contre les chutes (EPI)",
-        "Méthodes de travail (AM1, AM2, AM3)",
-        "Organisation et Rôles de Sécurité",
-        "Reviser: Grandeurs photométriques fondamentales",
-        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
-        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
-        "Reviser: Stabilité et maintenance des structures porteuses",
-        "Reviser: Technologies de sources lumineuses (LED)",
-        "Reviser: La Lanterne Magique",
-        "Reviser: Les 4 Pôles de la communication",
-        "Reviser: Définition de l'objectif d'intervention",
-        "Reviser: Adaptation à l'auditoire",
-        "Reviser: Carte Mentale (Heuristic Map)",
-        "Reviser: Structuration de l'action de formation",
-        "Reviser: Recueil des besoins en formation",
-        "Reviser: Technique de la Discussion Post-it",
-        "Reviser: Structuration du plan de discussion",
-        "Reviser: Typologie des questions d'animation",
-        "Reviser: Parcours de formation mixte (Blended Learning)",
-        "Reviser: Complémentarité des modalités",
-        "Reviser: Engagement du Management",
-        "Reviser: Apprentissage Actif",
-        "Reviser: Apprentissage Social (Social Learning)",
-        "Reviser: Analyse des besoins de formation",
-        "Reviser: Méthode CQQCOQP",
-        "Reviser: Démarche contractuelle par objectifs",
-        "Reviser: Instruction MSST et Sécurité",
-        "Reviser: Théorie de l'apprentissage social (Bandura)",
-        "Reviser: Renforcement Vicariant",
-        "Reviser: Apprentissage entre pairs",
-        "Reviser: Réponse au cahier des charges",
-        "Reviser: Analyse de la demande",
-        "Reviser: Proposition commerciale"
+        "Mandat de travail et ordre de manœuvre"
       ],
       "category": "Santé et Sécurité au Travail (SST)",
       "priority": "high",
@@ -2158,120 +2401,128 @@
       "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Travaux hors tension (Méthode 1)"
+        "Comprendre Mesures de protection (5 règles vitales)"
       ]
     },
     {
-      "date": "2026-02-16",
-      "day_name": "Lundi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Inspection et Maintenance Préventive des Postes"
-      ],
-      "category": "Exploitation & Maintenance",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AE10",
-      "completed": false,
-      "objectives": [
-        "Comprendre Inspection et Maintenance Préventive des Postes"
-      ]
-    },
-    {
-      "date": "2026-02-17",
+      "date": "2026-03-10",
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Système de Mise à la Terre (MALT)"
+        "Hiérarchie des responsabilités (Rôles)",
+        "Directive ESTI n°100"
       ],
-      "category": "Sécurité & Protection",
+      "category": "Normes et Réglementations",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Système de Mise à la Terre (MALT)"
+        "Comprendre Hiérarchie des responsabilités (Rôles)"
       ]
     },
     {
-      "date": "2026-02-18",
+      "date": "2026-03-11",
       "day_name": "Mercredi",
       "duration_minutes": 30,
       "concepts": [
-        "Signalisation et Sécurité des Installations"
+        "Stratégies de Maintenance",
+        "Niveaux d'Intervention (I-E-R)"
       ],
-      "category": "HSE (Hygiène Sécurité Environnement)",
+      "category": "Gestion de la maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Stratégies de Maintenance"
+      ]
+    },
+    {
+      "date": "2026-03-12",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Méthodes de Travail Électriques",
+        "Mesure de mise à la terre (Earthing Measurement)"
+      ],
+      "category": "Sécurité et Protection",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Signalisation et Sécurité des Installations"
+        "Comprendre Méthodes de Travail Électriques"
       ]
     },
     {
-      "date": "2026-02-19",
-      "day_name": "Jeudi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Remise en État (Instandsetzung)"
-      ],
-      "category": "Opérations techniques",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA07",
-      "completed": false,
-      "objectives": [
-        "Comprendre Remise en État (Instandsetzung)"
-      ]
-    },
-    {
-      "date": "2026-02-20",
+      "date": "2026-03-13",
       "day_name": "Vendredi",
       "duration_minutes": 30,
       "concepts": [
-        "Cadre Légal et OPA (Art. 32b)"
+        "Les 4 mesures de base de la maintenance",
+        "Cadre légal suisse (OICF/LIE/LApEl)"
       ],
-      "category": "Législation et Sécurité",
+      "category": "Législation",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA07",
+      "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Cadre Légal et OPA (Art. 32b)"
+        "Comprendre Les 4 mesures de base de la maintenance"
       ]
     },
     {
-      "date": "2026-02-21",
+      "date": "2026-03-14",
       "day_name": "Samedi",
       "duration_minutes": 480,
       "concepts": [
-        "Cadre Légal et Normatif Suisse",
-        "Tâches Spécifiques de l'Électricien de Réseau",
-        "Maintenance des réseaux électriques",
-        "Gestion des perturbations",
-        "Mission et objectifs de la maintenance",
-        "Cadre sécuritaire de la maintenance",
-        "Document de suivi OMoD",
-        "Transport de marchandises dangereuses (ADR/SDR)",
-        "Maintenance des réseaux énergétiques",
-        "Objectifs de la maintenance (DFS)",
-        "Catégories de mesure (CAT I-IV)",
-        "Transformateurs de mesure (TI / TP)",
-        "Impédance de boucle et courant de court-circuit (Ik)",
-        "Champ tournant et comparaison de phases",
-        "Procédure d'admission",
-        "Certification finale",
-        "Profil professionnel Electricien de réseau (NE/ER)",
-        "Directives d'Examen Professionnel (EP)",
-        "Notation Scientifique et Préfixes d'Ingénierie",
-        "Manipulation de Formules Algébriques",
-        "Triangle des Puissances (AC)",
-        "Système International d'Unités (SI)",
-        "Transformation de formules",
-        "Trigonométrie dans le Triangle Rectangle"
+        "Contrôle OIBT (NIV)",
+        "Mise à la terre (Earthing)",
+        "Jugement de la stabilité du poteau",
+        "Contrôle de l'état du bois",
+        "Protection contre les chutes (EPI)",
+        "Méthodes de travail (AM1, AM2, AM3)"
       ],
-      "category": "Sécurité et Transport",
+      "category": "Réglementation et Sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Contrôle OIBT (NIV)"
+      ]
+    },
+    {
+      "date": "2026-03-15",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Organisation et Rôles de Sécurité",
+        "Inspection et Maintenance Préventive des Postes",
+        "Système de Mise à la Terre (MALT)",
+        "Signalisation et Sécurité des Installations",
+        "Remise en État (Instandsetzung)",
+        "Cadre Légal et OPA (Art. 32b)"
+      ],
+      "category": "Gestion de chantier",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Organisation et Rôles de Sécurité"
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Cadre Légal et Normatif Suisse",
+        "Tâches Spécifiques de l'Électricien de Réseau"
+      ],
+      "category": "Technique métier",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA07",
@@ -2281,8 +2532,156 @@
       ]
     },
     {
-      "date": "2026-02-22",
+      "date": "2026-03-17",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Maintenance des réseaux électriques",
+        "Gestion des perturbations"
+      ],
+      "category": "Gestion technique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Maintenance des réseaux électriques"
+      ]
+    },
+    {
+      "date": "2026-03-18",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Mission et objectifs de la maintenance",
+        "Cadre sécuritaire de la maintenance"
+      ],
+      "category": "Gestion de la maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Mission et objectifs de la maintenance"
+      ]
+    },
+    {
+      "date": "2026-03-19",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Document de suivi OMoD",
+        "Transport de marchandises dangereuses (ADR/SDR)"
+      ],
+      "category": "Législation et Administration",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Document de suivi OMoD"
+      ]
+    },
+    {
+      "date": "2026-03-20",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Maintenance des réseaux énergétiques",
+        "Objectifs de la maintenance (DFS)"
+      ],
+      "category": "Stratégie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Maintenance des réseaux énergétiques"
+      ]
+    },
+    {
+      "date": "2026-03-21",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Catégories de mesure (CAT I-IV)",
+        "Transformateurs de mesure (TI / TP)",
+        "Impédance de boucle et courant de court-circuit (Ik)",
+        "Champ tournant et comparaison de phases",
+        "Procédure d'admission",
+        "Certification finale",
+        "Reviser: Stabilité et maintenance des structures porteuses",
+        "Reviser: Structuration de l'action de formation"
+      ],
+      "category": "Haute & Basse Tension",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Catégories de mesure (CAT I-IV)"
+      ]
+    },
+    {
+      "date": "2026-03-22",
       "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Profil professionnel Electricien de réseau (NE/ER)",
+        "Directives d'Examen Professionnel (EP)",
+        "Notation Scientifique et Préfixes d'Ingénierie",
+        "Manipulation de Formules Algébriques",
+        "Triangle des Puissances (AC)",
+        "Système International d'Unités (SI)",
+        "Reviser: Technologies de sources lumineuses (LED)",
+        "Reviser: Recueil des besoins en formation"
+      ],
+      "category": "Algèbre",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": null,
+      "completed": false,
+      "objectives": [
+        "Comprendre Profil professionnel Electricien de réseau (NE/ER)"
+      ]
+    },
+    {
+      "date": "2026-03-23",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Transformation de formules",
+        "Trigonométrie dans le Triangle Rectangle"
+      ],
+      "category": "Algèbre",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA11",
+      "completed": false,
+      "objectives": [
+        "Comprendre Transformation de formules"
+      ]
+    },
+    {
+      "date": "2026-03-24",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Structuration du plan de discussion"
+      ],
+      "category": "Analyse systémique",
+      "priority": "medium",
+      "session_type": "revision",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Consolider les acquis"
+      ]
+    },
+    {
+      "date": "2026-03-28",
+      "day_name": "Samedi",
       "duration_minutes": 480,
       "concepts": [
         "Grandeurs Vectorielles",
@@ -2290,27 +2689,9 @@
         "Transposition et Manipulation de Formules",
         "Notation Scientifique et Unités SI",
         "Gestion de Projet et Rôle du Chef de Projet",
-        "Gestion de projet et Coordination",
-        "Marchés Publics",
-        "Droit de passage et Servitude",
-        "Normes de pose en zone agricole",
-        "Principe de tolérance d'utilité publique",
-        "Principes d'indemnisation des servitudes",
-        "Cadre Légal de la Sécurité (LAA vs LTr)",
-        "Obligations de l'employeur (Art. 82 LAA / Art. 328 CO)",
-        "Obligations du travailleur (Art. 82 LAA / OPA)",
-        "Hiérarchie des normes de sécurité",
-        "Responsabilité de l'employeur et du travailleur",
-        "Loi sur les installations électriques (LIE)",
-        "Équipements de Protection Individuelle (EPI)",
-        "OTConst (Ordonnance sur les travaux de construction)",
-        "Plan de sécurité et de protection de la santé",
-        "Installations existantes (Art. 30 OTConst)",
-        "Repérage et protection des infrastructures souterraines",
-        "Stabilité des parois : Talutage et Étayage",
-        "Stabilité des talus et justificatif de sécurité"
+        "Gestion de projet et Coordination"
       ],
-      "category": "Arithmétique",
+      "category": "Mathématiques / Électricité",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA11",
@@ -2320,77 +2701,145 @@
       ]
     },
     {
-      "date": "2026-02-23",
+      "date": "2026-03-29",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Marchés Publics",
+        "Droit de passage et Servitude",
+        "Normes de pose en zone agricole",
+        "Principe de tolérance d'utilité publique",
+        "Principes d'indemnisation des servitudes",
+        "Cadre Légal de la Sécurité (LAA vs LTr)"
+      ],
+      "category": "Législation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Marchés Publics"
+      ]
+    },
+    {
+      "date": "2026-03-30",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Travaux en espaces confinés (Puits)"
+        "Obligations de l'employeur (Art. 82 LAA / Art. 328 CO)",
+        "Obligations du travailleur (Art. 82 LAA / OPA)"
       ],
-      "category": "Risques spécifiques",
+      "category": "Responsabilité",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Travaux en espaces confinés (Puits)"
+        "Comprendre Obligations de l'employeur (Art. 82 LAA / Art. 328 CO)"
       ]
     },
     {
-      "date": "2026-02-24",
+      "date": "2026-03-31",
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Sécurité des fouilles et tranchées"
+        "Hiérarchie des normes de sécurité",
+        "Responsabilité de l'employeur et du travailleur"
       ],
-      "category": "Génie civil / Sécurité chantier",
+      "category": "Droit du travail",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Sécurité des fouilles et tranchées"
+        "Comprendre Hiérarchie des normes de sécurité"
       ]
     },
     {
-      "date": "2026-02-25",
+      "date": "2026-04-01",
       "day_name": "Mercredi",
       "duration_minutes": 30,
       "concepts": [
-        "Portefeuille des phénomènes dangereux"
+        "Loi sur les installations électriques (LIE)",
+        "Équipements de Protection Individuelle (EPI)"
       ],
-      "category": "Méthodologie de sécurité",
+      "category": "Sécurité au travail",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Portefeuille des phénomènes dangereux"
+        "Comprendre Loi sur les installations électriques (LIE)"
       ]
     },
     {
-      "date": "2026-02-26",
+      "date": "2026-04-02",
       "day_name": "Jeudi",
       "duration_minutes": 30,
       "concepts": [
-        "Directive CFST 6508 (MSST)"
+        "OTConst (Ordonnance sur les travaux de construction)",
+        "Plan de sécurité et de protection de la santé"
       ],
-      "category": "Législation et Normes",
+      "category": "Législation et Réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Directive CFST 6508 (MSST)"
+        "Comprendre OTConst (Ordonnance sur les travaux de construction)"
       ]
     },
     {
-      "date": "2026-02-27",
+      "date": "2026-04-03",
       "day_name": "Vendredi",
       "duration_minutes": 30,
       "concepts": [
-        "Sécurité des opérations de levage"
+        "Installations existantes (Art. 30 OTConst)",
+        "Repérage et protection des infrastructures souterraines"
       ],
-      "category": "Santé et Sécurité au Travail (SST)",
+      "category": "Planification et Préparation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Installations existantes (Art. 30 OTConst)"
+      ]
+    },
+    {
+      "date": "2026-04-04",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Stabilité des parois : Talutage et Étayage",
+        "Stabilité des talus et justificatif de sécurité",
+        "Travaux en espaces confinés (Puits)",
+        "Sécurité des fouilles et tranchées",
+        "Portefeuille des phénomènes dangereux",
+        "Directive CFST 6508 (MSST)"
+      ],
+      "category": "Génie civil / Terrassement",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Stabilité des parois : Talutage et Étayage"
+      ]
+    },
+    {
+      "date": "2026-04-05",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Sécurité des opérations de levage",
+        "Arrimage et Élingage",
+        "Cadre légal de la sécurité (LTr, LAA, OPA, CO)",
+        "Ordonnance sur les travaux de construction (OTConst)",
+        "Travaux à proximité de lignes électriques",
+        "Directive CFST 6512 (Équipements de travail)"
+      ],
+      "category": "Cadre Légal et Normatif",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -2400,96 +2849,63 @@
       ]
     },
     {
-      "date": "2026-03-01",
-      "day_name": "Dimanche",
-      "duration_minutes": 480,
-      "concepts": [
-        "Arrimage et Élingage",
-        "Cadre légal de la sécurité (LTr, LAA, OPA, CO)",
-        "Ordonnance sur les travaux de construction (OTConst)",
-        "Travaux à proximité de lignes électriques",
-        "Directive CFST 6512 (Équipements de travail)",
-        "Travaux à proximité de lignes aériennes",
-        "Principe STOP",
-        "Protection contre les chutes",
-        "Méthodologie d'identification des dangers",
-        "Planification des mesures de sécurité",
-        "Sécurité des travaux en hauteur",
-        "Sécurité électrique sur chantier",
-        "Dangers particuliers (Annexe 1)",
-        "Méthode en 5 étapes",
-        "Principe S-T-O-P",
-        "Identification des dangers",
-        "Dangers électriques",
-        "Sécurisation contre l'ensevelissement",
-        "Risques Atmosphériques et Hydrauliques",
-        "Procédure STOP (Droit de retrait)",
-        "Cadre Législatif SST",
-        "Obligations de l'employeur (Art. 82 LAA)",
-        "Système MSST (Directive 6508)",
-        "Sécurité des fouilles et tranchées (OTConst)"
-      ],
-      "category": "Procédure / Responsabilité",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA05",
-      "completed": false,
-      "objectives": [
-        "Comprendre Arrimage et Élingage"
-      ]
-    },
-    {
-      "date": "2026-03-02",
+      "date": "2026-04-06",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Les 10 éléments du système de sécurité"
+        "Travaux à proximité de lignes aériennes",
+        "Principe STOP"
       ],
-      "category": "Gestion de la sécurité",
+      "category": "Prévention technique",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Les 10 éléments du système de sécurité"
+        "Comprendre Travaux à proximité de lignes aériennes"
       ]
     },
     {
-      "date": "2026-03-03",
+      "date": "2026-04-07",
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Détermination des dangers et appréciation du risque",
-        "Reviser: Grandeurs photométriques fondamentales",
-        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
-        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
-        "Reviser: Stabilité et maintenance des structures porteuses",
-        "Reviser: Technologies de sources lumineuses (LED)",
-        "Reviser: La Lanterne Magique",
-        "Reviser: Les 4 Pôles de la communication",
-        "Reviser: Définition de l'objectif d'intervention",
-        "Reviser: Adaptation à l'auditoire",
-        "Reviser: Carte Mentale (Heuristic Map)",
-        "Reviser: Structuration de l'action de formation",
-        "Reviser: Recueil des besoins en formation",
-        "Reviser: Technique de la Discussion Post-it",
-        "Reviser: Structuration du plan de discussion",
-        "Reviser: Typologie des questions d'animation",
-        "Reviser: Parcours de formation mixte (Blended Learning)",
-        "Reviser: Complémentarité des modalités",
-        "Reviser: Engagement du Management",
-        "Reviser: Apprentissage Actif",
-        "Reviser: Apprentissage Social (Social Learning)",
-        "Reviser: Analyse des besoins de formation",
-        "Reviser: Méthode CQQCOQP",
-        "Reviser: Démarche contractuelle par objectifs",
-        "Reviser: Instruction MSST et Sécurité",
-        "Reviser: Théorie de l'apprentissage social (Bandura)",
-        "Reviser: Renforcement Vicariant",
-        "Reviser: Apprentissage entre pairs",
-        "Reviser: Réponse au cahier des charges",
-        "Reviser: Analyse de la demande",
-        "Reviser: Proposition commerciale"
+        "Protection contre les chutes",
+        "Méthodologie d'identification des dangers"
+      ],
+      "category": "Gestion de la sécurité (SST)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Protection contre les chutes"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Planification des mesures de sécurité",
+        "Sécurité des travaux en hauteur"
+      ],
+      "category": "Risques spécifiques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Planification des mesures de sécurité"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Sécurité électrique sur chantier",
+        "Dangers particuliers (Annexe 1)"
       ],
       "category": "Gestion des risques",
       "priority": "high",
@@ -2497,53 +2913,201 @@
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Détermination des dangers et appréciation du risque"
+        "Comprendre Sécurité électrique sur chantier"
       ]
     },
     {
-      "date": "2026-03-08",
-      "day_name": "Dimanche",
-      "duration_minutes": 480,
+      "date": "2026-04-10",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
       "concepts": [
-        "Règles vitales",
-        "Concept de sécurité OTConst",
-        "Règles vitales et Principe STOPP",
-        "Méthodologie des travaux électriques",
-        "Norme SIA 112",
-        "Types de Rémunération",
-        "Rapport de Régie",
-        "Signalisation de Chantier",
-        "Diagramme de Gantt",
-        "Méthode PERT",
-        "Définitions fondamentales de la maintenance",
-        "Cycle de Maintenance (Définitions)",
-        "Responsabilités Légales (LAA Art. 82)",
-        "Maintenance des équipements de travail",
-        "Différence de Potentiel (DDP) et Potentiel électrique",
-        "Loi d'Ohm et Résistance électrique",
-        "Circuits Mixtes (Série-Parallèle)",
-        "Chute de tension et dimensionnement des lignes",
-        "Puissances en courant alternatif (P, Q, S)",
-        "Systèmes triphasés et couplages (Étoile/Triangle)",
-        "Chute de tension en ligne",
-        "Transformateurs de puissance",
-        "Lois fondamentales du courant continu (DC)",
-        "Dimensionnement de lignes et Chute de tension"
+        "Méthode en 5 étapes",
+        "Principe S-T-O-P"
       ],
-      "category": "Théorie de base",
+      "category": "Gestion de la sécurité",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Règles vitales"
+        "Comprendre Méthode en 5 étapes"
       ]
     },
     {
-      "date": "2026-03-09",
+      "date": "2026-04-11",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Identification des dangers",
+        "Dangers électriques",
+        "Sécurisation contre l'ensevelissement",
+        "Risques Atmosphériques et Hydrauliques",
+        "Procédure STOP (Droit de retrait)",
+        "Cadre Législatif SST"
+      ],
+      "category": "Législation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Identification des dangers"
+      ]
+    },
+    {
+      "date": "2026-04-12",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Obligations de l'employeur (Art. 82 LAA)",
+        "Système MSST (Directive 6508)",
+        "Sécurité des fouilles et tranchées (OTConst)",
+        "Les 10 éléments du système de sécurité",
+        "Détermination des dangers et appréciation du risque",
+        "Règles vitales"
+      ],
+      "category": "Gestion des risques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Obligations de l'employeur (Art. 82 LAA)"
+      ]
+    },
+    {
+      "date": "2026-04-13",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
+        "Concept de sécurité OTConst",
+        "Règles vitales et Principe STOPP"
+      ],
+      "category": "Législation et Organisation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Concept de sécurité OTConst"
+      ]
+    },
+    {
+      "date": "2026-04-14",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Méthodologie des travaux électriques",
+        "Norme SIA 112"
+      ],
+      "category": "Sécurité Électrique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Méthodologie des travaux électriques"
+      ]
+    },
+    {
+      "date": "2026-04-15",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Types de Rémunération",
+        "Rapport de Régie"
+      ],
+      "category": "Gestion financière",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA03",
+      "completed": false,
+      "objectives": [
+        "Comprendre Types de Rémunération"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Signalisation de Chantier",
+        "Diagramme de Gantt"
+      ],
+      "category": "Planification temporelle",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA03",
+      "completed": false,
+      "objectives": [
+        "Comprendre Signalisation de Chantier"
+      ]
+    },
+    {
+      "date": "2026-04-17",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Méthode PERT",
+        "Définitions fondamentales de la maintenance"
+      ],
+      "category": "Théorie de la maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA03",
+      "completed": false,
+      "objectives": [
+        "Comprendre Méthode PERT"
+      ]
+    },
+    {
+      "date": "2026-04-18",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Cycle de Maintenance (Définitions)",
+        "Responsabilités Légales (LAA Art. 82)",
+        "Maintenance des équipements de travail",
+        "Différence de Potentiel (DDP) et Potentiel électrique",
+        "Loi d'Ohm et Résistance électrique",
+        "Circuits Mixtes (Série-Parallèle)"
+      ],
+      "category": "Électrotechnique de base",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA08",
+      "completed": false,
+      "objectives": [
+        "Comprendre Cycle de Maintenance (Définitions)"
+      ]
+    },
+    {
+      "date": "2026-04-19",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Chute de tension et dimensionnement des lignes",
+        "Puissances en courant alternatif (P, Q, S)",
+        "Systèmes triphasés et couplages (Étoile/Triangle)",
+        "Chute de tension en ligne",
+        "Transformateurs de puissance",
+        "Lois fondamentales du courant continu (DC)"
+      ],
+      "category": "Réseaux électriques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Chute de tension et dimensionnement des lignes"
+      ]
+    },
+    {
+      "date": "2026-04-20",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Dimensionnement de lignes et Chute de tension",
         "Puissance, Énergie et Rendement"
       ],
       "category": "Physique appliquée",
@@ -2552,17 +3116,22 @@
       "module": "AA09",
       "completed": false,
       "objectives": [
-        "Comprendre Puissance, Énergie et Rendement"
+        "Comprendre Dimensionnement de lignes et Chute de tension"
       ]
     },
     {
-      "date": "2026-03-10",
-      "day_name": "Mardi",
-      "duration_minutes": 30,
+      "date": "2026-04-25",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
       "concepts": [
-        "Courant Alternatif Monophasé (AC)"
+        "Courant Alternatif Monophasé (AC)",
+        "Dimensionnement de Ligne et Chute de Tension",
+        "Systèmes Triphasés et Couplages",
+        "Évaluation des compétences (Upskilling/Reskilling)",
+        "Électrotechnique fondamentale",
+        "Loi d'Ohm"
       ],
-      "category": "Théorie des réseaux",
+      "category": "Distribution d'énergie",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA09",
@@ -2572,76 +3141,116 @@
       ]
     },
     {
-      "date": "2026-03-11",
-      "day_name": "Mercredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Dimensionnement de Ligne et Chute de Tension"
-      ],
-      "category": "Distribution d'énergie",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA09",
-      "completed": false,
-      "objectives": [
-        "Comprendre Dimensionnement de Ligne et Chute de Tension"
-      ]
-    },
-    {
-      "date": "2026-03-12",
-      "day_name": "Jeudi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Systèmes Triphasés et Couplages"
-      ],
-      "category": "Technique des réseaux",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA09",
-      "completed": false,
-      "objectives": [
-        "Comprendre Systèmes Triphasés et Couplages"
-      ]
-    },
-    {
-      "date": "2026-03-13",
-      "day_name": "Vendredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Évaluation des compétences (Upskilling/Reskilling)"
-      ],
-      "category": "Gestion des compétences",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA02",
-      "completed": false,
-      "objectives": [
-        "Comprendre Évaluation des compétences (Upskilling/Reskilling)"
-      ]
-    },
-    {
-      "date": "2026-03-14",
-      "day_name": "Samedi",
+      "date": "2026-04-26",
+      "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Électrotechnique fondamentale",
-        "Loi d'Ohm",
         "Distribution électrique",
         "Sécurité électrique et Hygiène au travail",
         "Normes d'éclairage public (EN 13201 & SLG 202)",
         "Stabilité et maintenance des structures porteuses",
         "Technologies de sources lumineuses (LED)",
-        "La Lanterne Magique",
+        "La Lanterne Magique"
+      ],
+      "category": "Planification / Réglementation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": null,
+      "completed": false,
+      "objectives": [
+        "Comprendre Distribution électrique"
+      ]
+    },
+    {
+      "date": "2026-04-27",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
         "Adaptation à l'auditoire",
-        "Carte Mentale (Heuristic Map)",
+        "Carte Mentale (Heuristic Map)"
+      ],
+      "category": "Méthodologie et Pédagogie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Adaptation à l'auditoire"
+      ]
+    },
+    {
+      "date": "2026-04-28",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
         "Technique de la Discussion Post-it",
-        "Structuration du plan de discussion",
+        "Structuration du plan de discussion"
+      ],
+      "category": "Animation et Communication",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Technique de la Discussion Post-it"
+      ]
+    },
+    {
+      "date": "2026-04-29",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Typologie des questions d'animation",
-        "Engagement du Management",
+        "Engagement du Management"
+      ],
+      "category": "Gestion de la formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Typologie des questions d'animation"
+      ]
+    },
+    {
+      "date": "2026-04-30",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
         "Apprentissage Actif",
-        "Méthode CQQCOQP",
+        "Méthode CQQCOQP"
+      ],
+      "category": "Psychopédagogie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Apprentissage Actif"
+      ]
+    },
+    {
+      "date": "2026-05-01",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Démarche contractuelle par objectifs",
-        "Théorie de l'apprentissage social (Bandura)",
+        "Théorie de l'apprentissage social (Bandura)"
+      ],
+      "category": "Gestion de formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Démarche contractuelle par objectifs"
+      ]
+    },
+    {
+      "date": "2026-05-02",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
         "Renforcement Vicariant",
         "Analyse de la demande",
         "Proposition commerciale",
@@ -2649,17 +3258,17 @@
         "Gestion du changement organisationnel",
         "Méthodes et Techniques Actives"
       ],
-      "category": "Infrastructure Réseau",
+      "category": "Management / Organisation",
       "priority": "high",
       "session_type": "new_learning",
-      "module": null,
+      "module": "AA02",
       "completed": false,
       "objectives": [
-        "Comprendre Électrotechnique fondamentale"
+        "Comprendre Renforcement Vicariant"
       ]
     },
     {
-      "date": "2026-03-15",
+      "date": "2026-05-03",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
@@ -2668,27 +3277,9 @@
         "Analyse du besoin de formation",
         "Climat d'apprentissage",
         "Gestion des situations délicates",
-        "Processus de Production de Compétences",
-        "Résistance au Changement et Freins",
-        "Contextualisation de l'évaluation",
-        "Matrice de choix des outils",
-        "Synchronisme pédagogique",
-        "Environnement Présentiel vs Distanciel",
-        "Distinction Prescrit vs Réel",
-        "Apprentissage par problème / Étude de cas",
-        "Apprentissage par projet",
-        "Taxonomie de Bloom",
-        "Gestion de la Motivation (Participants Ravis)",
-        "Cycle de Formation",
-        "Critères de sélection de la technique",
-        "Adaptation à la classe virtuelle",
-        "Grille d'observation",
-        "Posture et Animation",
-        "Statique des supports et fondations",
-        "Technique de pose souterraine (Câbles)",
-        "Coexistence et Croisements de réseaux"
+        "Processus de Production de Compétences"
       ],
-      "category": "Gestion et Planification",
+      "category": "Pédagogie et Animation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -2698,11 +3289,135 @@
       ]
     },
     {
-      "date": "2026-03-16",
+      "date": "2026-05-04",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Systèmes de Coordonnées Suisses (MN95)"
+        "Résistance au Changement et Freins",
+        "Contextualisation de l'évaluation"
+      ],
+      "category": "Ingénierie de formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Résistance au Changement et Freins"
+      ]
+    },
+    {
+      "date": "2026-05-05",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Matrice de choix des outils",
+        "Synchronisme pédagogique"
+      ],
+      "category": "Temporalité d'apprentissage",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Matrice de choix des outils"
+      ]
+    },
+    {
+      "date": "2026-05-06",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Environnement Présentiel vs Distanciel",
+        "Distinction Prescrit vs Réel"
+      ],
+      "category": "Environnement d'apprentissage",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Environnement Présentiel vs Distanciel"
+      ]
+    },
+    {
+      "date": "2026-05-10",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Apprentissage par problème / Étude de cas",
+        "Apprentissage par projet",
+        "Taxonomie de Bloom",
+        "Gestion de la Motivation (Participants Ravis)",
+        "Cycle de Formation",
+        "Critères de sélection de la technique"
+      ],
+      "category": "Gestion de la formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Apprentissage par problème / Étude de cas"
+      ]
+    },
+    {
+      "date": "2026-05-11",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Adaptation à la classe virtuelle",
+        "Grille d'observation"
+      ],
+      "category": "Formation digitale",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Adaptation à la classe virtuelle"
+      ]
+    },
+    {
+      "date": "2026-05-12",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Posture et Animation",
+        "Statique des supports et fondations"
+      ],
+      "category": "Génie Civil et Mécanique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Posture et Animation"
+      ]
+    },
+    {
+      "date": "2026-05-13",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Technique de pose souterraine (Câbles)",
+        "Coexistence et Croisements de réseaux"
+      ],
+      "category": "Planification de Réseau",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Technique de pose souterraine (Câbles)"
+      ]
+    },
+    {
+      "date": "2026-05-14",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Systèmes de Coordonnées Suisses (MN95)",
+        "Méthodes de Métrage et Relevé"
       ],
       "category": "Géodésie / Topographie",
       "priority": "high",
@@ -2714,27 +3429,12 @@
       ]
     },
     {
-      "date": "2026-03-17",
-      "day_name": "Mardi",
+      "date": "2026-05-15",
+      "day_name": "Vendredi",
       "duration_minutes": 30,
       "concepts": [
-        "Méthodes de Métrage et Relevé"
-      ],
-      "category": "Technique de mesure",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AE04",
-      "completed": false,
-      "objectives": [
-        "Comprendre Méthodes de Métrage et Relevé"
-      ]
-    },
-    {
-      "date": "2026-03-18",
-      "day_name": "Mercredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Croquis de montage et Dessin technique"
+        "Croquis de montage et Dessin technique",
+        "Systèmes de métrage et relevé"
       ],
       "category": "Documentation technique",
       "priority": "high",
@@ -2746,29 +3446,18 @@
       ]
     },
     {
-      "date": "2026-03-19",
-      "day_name": "Jeudi",
-      "duration_minutes": 30,
+      "date": "2026-05-16",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
       "concepts": [
-        "Systèmes de métrage et relevé"
+        "GNSS (Global Navigation Satellite System)",
+        "Cadre légal et Normes (SIA 405)",
+        "Profondeur d'implantation",
+        "Distances de sécurité",
+        "Surcharge (Hypothèse de charge)",
+        "Matériaux Conducteurs"
       ],
-      "category": "Mensuration",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AE04",
-      "completed": false,
-      "objectives": [
-        "Comprendre Systèmes de métrage et relevé"
-      ]
-    },
-    {
-      "date": "2026-03-20",
-      "day_name": "Vendredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "GNSS (Global Navigation Satellite System)"
-      ],
-      "category": "Mensuration / Technologie",
+      "category": "Construction / Génie civil",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE04",
@@ -2778,161 +3467,501 @@
       ]
     },
     {
-      "date": "2026-03-21",
-      "day_name": "Samedi",
+      "date": "2026-05-17",
+      "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Cadre légal et Normes (SIA 405)",
-        "Profondeur d'implantation",
-        "Distances de sécurité",
-        "Surcharge (Hypothèse de charge)",
-        "Matériaux Conducteurs",
         "Comportement mécanique des conducteurs",
         "Respect des gabarits (OLEI)",
         "Frottement (Friction)",
         "Démultiplication de Force (Poulies et Treuils)",
         "Calcul Vectoriel des Forces",
-        "Appareillage Moyenne Tension (MT)",
-        "Distribution Basse Tension (BT) et Protection",
-        "Travaux sous tension (AuS - Méthode 3)",
-        "Travaux à proximité de tension (Méthode 2)",
-        "Organisation et Responsabilités",
-        "Ancrage et résistance structurelle",
-        "Antichutes mobiles (EN 353)",
-        "Mandat de travail",
-        "Maintenance de ligne aérienne MT",
-        "Déroulement chronologique des manœuvres",
-        "Gestion des modifications techniques et protections",
-        "Cadre Légal et Normatif",
-        "Plan de Maintenance",
-        "Mandat de Travail et Sécurité"
+        "Appareillage Moyenne Tension (MT)"
       ],
-      "category": "Équipements Haute Tension",
+      "category": "Physique appliquée",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AE04",
+      "module": "AE13",
       "completed": false,
       "objectives": [
-        "Comprendre Cadre légal et Normes (SIA 405)"
+        "Comprendre Comportement mécanique des conducteurs"
       ]
     },
     {
-      "date": "2026-03-22",
-      "day_name": "Dimanche",
-      "duration_minutes": 480,
+      "date": "2026-05-18",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
       "concepts": [
-        "Courant de court-circuit (Icc)",
-        "Contrôle périodique (OIBT)",
-        "Typologie des stratégies de maintenance",
-        "Périodicité et Documentation (OICF)",
-        "Paramètres de court-circuit",
-        "Technologie SF6 (Hexafluorure de soufre)",
-        "Modification des forces statiques",
-        "Assurage contre le renversement",
-        "Évaluation du risque",
-        "Qualification du personnel",
-        "Gestion de l'urgence",
-        "Tableau de Distribution Basse Tension (BT)",
-        "Appareillage de Coupure Moyenne Tension (MT)",
-        "Critères de Détermination des Intervalles",
-        "Révision (Partielle et Générale)",
-        "Les 7 Bases de la Maintenance",
-        "Processus de Rétablissement de l'État de Référence",
-        "Documentation et Traçabilité",
-        "Surveillance et Inspection",
-        "Stratégies de maintenance (CBM, CM, TPM)",
-        "Contrôle de l'état",
-        "Remise en état (Planifiée vs Non planifiée)",
-        "Surveillance des installations",
-        "Gestion des incidents et perturbations"
+        "Distribution Basse Tension (BT) et Protection",
+        "Travaux sous tension (AuS - Méthode 3)"
       ],
-      "category": "Opérationnel",
+      "category": "Techniques spéciales",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Courant de court-circuit (Icc)"
+        "Comprendre Distribution Basse Tension (BT) et Protection"
       ]
     },
     {
-      "date": "2026-03-23",
+      "date": "2026-05-19",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Travaux à proximité de tension (Méthode 2)",
+        "Organisation et Responsabilités"
+      ],
+      "category": "Gestion de chantier",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Travaux à proximité de tension (Méthode 2)"
+      ]
+    },
+    {
+      "date": "2026-05-20",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Ancrage et résistance structurelle",
+        "Antichutes mobiles (EN 353)"
+      ],
+      "category": "Équipements (EPI)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Ancrage et résistance structurelle"
+      ]
+    },
+    {
+      "date": "2026-05-22",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Mandat de travail",
+        "Maintenance de ligne aérienne MT"
+      ],
+      "category": "Gestion de maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Mandat de travail"
+      ]
+    },
+    {
+      "date": "2026-05-23",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Déroulement chronologique des manœuvres",
+        "Gestion des modifications techniques et protections",
+        "Cadre Légal et Normatif",
+        "Plan de Maintenance",
+        "Mandat de Travail et Sécurité",
+        "Courant de court-circuit (Icc)"
+      ],
+      "category": "Technique de protection et commande",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Déroulement chronologique des manœuvres"
+      ]
+    },
+    {
+      "date": "2026-05-24",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Contrôle périodique (OIBT)",
+        "Typologie des stratégies de maintenance",
+        "Périodicité et Documentation (OICF)",
+        "Paramètres de court-circuit",
+        "Technologie SF6 (Hexafluorure de soufre)",
+        "Modification des forces statiques"
+      ],
+      "category": "Technologie MT",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Contrôle périodique (OIBT)"
+      ]
+    },
+    {
+      "date": "2026-05-25",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Contrôle d'état (Condition Monitoring)"
+        "Assurage contre le renversement",
+        "Évaluation du risque"
       ],
-      "category": "Maintenance prédictive",
+      "category": "Prévention",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Assurage contre le renversement"
+      ]
+    },
+    {
+      "date": "2026-05-26",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Qualification du personnel",
+        "Gestion de l'urgence"
+      ],
+      "category": "Secours",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Qualification du personnel"
+      ]
+    },
+    {
+      "date": "2026-05-27",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Tableau de Distribution Basse Tension (BT)",
+        "Appareillage de Coupure Moyenne Tension (MT)"
+      ],
+      "category": "Haute Tension (MT)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Tableau de Distribution Basse Tension (BT)"
+      ]
+    },
+    {
+      "date": "2026-05-28",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Critères de Détermination des Intervalles",
+        "Révision (Partielle et Générale)"
+      ],
+      "category": "Planification",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA07",
       "completed": false,
       "objectives": [
-        "Comprendre Contrôle d'état (Condition Monitoring)"
+        "Comprendre Critères de Détermination des Intervalles"
       ]
     },
     {
-      "date": "2026-03-28",
+      "date": "2026-05-29",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Les 7 Bases de la Maintenance",
+        "Processus de Rétablissement de l'État de Référence"
+      ],
+      "category": "Théorie de la maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Les 7 Bases de la Maintenance"
+      ]
+    },
+    {
+      "date": "2026-05-30",
       "day_name": "Samedi",
       "duration_minutes": 480,
       "concepts": [
+        "Documentation et Traçabilité",
+        "Surveillance et Inspection",
+        "Stratégies de maintenance (CBM, CM, TPM)",
+        "Contrôle de l'état",
+        "Remise en état (Planifiée vs Non planifiée)",
+        "Surveillance des installations"
+      ],
+      "category": "Diagnostic",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA08",
+      "completed": false,
+      "objectives": [
+        "Comprendre Documentation et Traçabilité"
+      ]
+    },
+    {
+      "date": "2026-05-31",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Gestion des incidents et perturbations",
+        "Contrôle d'état (Condition Monitoring)",
         "Procédés d'élimination (Codes D)",
         "Procédés de valorisation (Codes R)",
         "Processus de remise en état",
-        "Diagnostic et Surveillance",
+        "Diagnostic et Surveillance"
+      ],
+      "category": "Opérations",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Gestion des incidents et perturbations"
+      ]
+    },
+    {
+      "date": "2026-06-01",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
         "Gestion des déchets et Environnement",
-        "Mesure de la valeur efficace (TrueRMS)",
+        "Mesure de la valeur efficace (TrueRMS)"
+      ],
+      "category": "Technique de mesure",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Gestion des déchets et Environnement"
+      ]
+    },
+    {
+      "date": "2026-06-02",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
         "Localisation de défauts de câbles",
-        "Mesure d'isolement",
+        "Mesure d'isolement"
+      ],
+      "category": "Contrôle & Sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Localisation de défauts de câbles"
+      ]
+    },
+    {
+      "date": "2026-06-03",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Structure modulaire (Blocs)",
-        "Cursus de formation (CFC vers Brevet)",
+        "Cursus de formation (CFC vers Brevet)"
+      ],
+      "category": "Organisation pédagogique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": null,
+      "completed": false,
+      "objectives": [
+        "Comprendre Structure modulaire (Blocs)"
+      ]
+    },
+    {
+      "date": "2026-06-04",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
         "Conversion d'Unités (Système SI)",
-        "Trigonométrie (Triangle rectangle)",
+        "Trigonométrie (Triangle rectangle)"
+      ],
+      "category": "Physique / Métrologie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA11",
+      "completed": false,
+      "objectives": [
+        "Comprendre Conversion d'Unités (Système SI)"
+      ]
+    },
+    {
+      "date": "2026-06-05",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Calcul Vectoriel",
-        "Calculs de Circuits RLC",
+        "Calculs de Circuits RLC"
+      ],
+      "category": "Électrotechnique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA11",
+      "completed": false,
+      "objectives": [
+        "Comprendre Calcul Vectoriel"
+      ]
+    },
+    {
+      "date": "2026-06-06",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
         "Notation Scientifique et Puissances de 10",
         "Résistance Électrique et Influence Thermique",
         "Contrôle des documents d'exécution",
         "Gestion des modifications de chantier",
         "Marchés Publics (AIMP)",
-        "Communication et Gestion des Parties Prenantes",
-        "Marchés Publics et Soumissions",
-        "Vérification et Contrôle Documentaire",
-        "Gestion des Parties Prenantes",
-        "Classification des sols agricoles (Aptitudes culturales)"
+        "Communication et Gestion des Parties Prenantes"
       ],
-      "category": "Gestion des déchets",
+      "category": "Mathématiques Appliquées",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA07",
+      "module": "AA11",
       "completed": false,
       "objectives": [
-        "Comprendre Procédés d'élimination (Codes D)"
+        "Comprendre Notation Scientifique et Puissances de 10"
       ]
     },
     {
-      "date": "2026-03-29",
+      "date": "2026-06-07",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
+        "Marchés Publics et Soumissions",
+        "Vérification et Contrôle Documentaire",
+        "Gestion des Parties Prenantes",
+        "Classification des sols agricoles (Aptitudes culturales)",
         "Mécanisme d'indemnisation des regards",
-        "Indemnisation des conduites souterraines",
+        "Indemnisation des conduites souterraines"
+      ],
+      "category": "Finances & Calculs",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Marchés Publics et Soumissions"
+      ]
+    },
+    {
+      "date": "2026-06-08",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
         "Structure de l'indemnisation agricole",
-        "Dommages de chantier vs Inconvénients permanents",
+        "Dommages de chantier vs Inconvénients permanents"
+      ],
+      "category": "Technique de construction",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Structure de l'indemnisation agricole"
+      ]
+    },
+    {
+      "date": "2026-06-09",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
         "Taux USP (Union Suisse des Paysans)",
-        "Classification agronomique des terrains (A et P)",
+        "Classification agronomique des terrains (A et P)"
+      ],
+      "category": "Environnement & Génie Civil",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Taux USP (Union Suisse des Paysans)"
+      ]
+    },
+    {
+      "date": "2026-06-10",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Barèmes pour supports (Poteaux et Pylônes)",
-        "Facteurs de majoration techniques",
+        "Facteurs de majoration techniques"
+      ],
+      "category": "Planification de tracé",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Barèmes pour supports (Poteaux et Pylônes)"
+      ]
+    },
+    {
+      "date": "2026-06-11",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
         "Système MSST (Directive CFST 6508)",
-        "Organes d'exécution et de surveillance",
+        "Organes d'exécution et de surveillance"
+      ],
+      "category": "Institutionnel",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Système MSST (Directive CFST 6508)"
+      ]
+    },
+    {
+      "date": "2026-06-12",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Ordonnance sur la prévention des accidents (OPA)",
-        "Facteur Humain",
+        "Facteur Humain"
+      ],
+      "category": "Psychologie du travail",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Ordonnance sur la prévention des accidents (OPA)"
+      ]
+    },
+    {
+      "date": "2026-06-13",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
         "Hiérarchie des mesures de protection (STOP)",
         "Travaux en hauteur et Échelles (Art. 20-21 OTConst)",
         "Substances dangereuses et Diagnostic (Art. 32 OTConst)",
         "Dimensionnement et ergonomie de la fouille",
         "Accès sécurisé aux fouilles",
-        "Protection périphérique et signalisation",
+        "Protection périphérique et signalisation"
+      ],
+      "category": "Prévention technique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Hiérarchie des mesures de protection (STOP)"
+      ]
+    },
+    {
+      "date": "2026-06-14",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
         "Accès aux fouilles et puits",
         "Audit de sécurité",
         "Mesures de protection sur les toits",
@@ -2940,23 +3969,24 @@
         "Phénomènes dangereux particuliers",
         "Règles reconnues (SST/PS)"
       ],
-      "category": "Technique de fouille",
+      "category": "Identification des dangers",
       "priority": "high",
       "session_type": "new_learning",
-      "module": "AA04",
+      "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Mécanisme d'indemnisation des regards"
+        "Comprendre Accès aux fouilles et puits"
       ]
     },
     {
-      "date": "2026-03-30",
+      "date": "2026-06-15",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Conformité des équipements de levage"
+        "Conformité des équipements de levage",
+        "Habilitations et Formation"
       ],
-      "category": "Législation et Normes",
+      "category": "Gestion des Ressources Humaines",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -2966,29 +3996,14 @@
       ]
     },
     {
-      "date": "2026-03-31",
+      "date": "2026-06-16",
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Habilitations et Formation"
+        "Facteur humain et Matrice des risques",
+        "Substances Dangereuses Historiques (Amiante, Plomb, PCB)"
       ],
-      "category": "Gestion des Ressources Humaines",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA05",
-      "completed": false,
-      "objectives": [
-        "Comprendre Habilitations et Formation"
-      ]
-    },
-    {
-      "date": "2026-04-01",
-      "day_name": "Mercredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Facteur humain et Matrice des risques"
-      ],
-      "category": "Gestion des Risques",
+      "category": "Santé et Hygiène",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -2998,27 +4013,12 @@
       ]
     },
     {
-      "date": "2026-04-02",
-      "day_name": "Jeudi",
+      "date": "2026-06-17",
+      "day_name": "Mercredi",
       "duration_minutes": 30,
       "concepts": [
-        "Substances Dangereuses Historiques (Amiante, Plomb, PCB)"
-      ],
-      "category": "Santé et Hygiène",
-      "priority": "high",
-      "session_type": "new_learning",
-      "module": "AA05",
-      "completed": false,
-      "objectives": [
-        "Comprendre Substances Dangereuses Historiques (Amiante, Plomb, PCB)"
-      ]
-    },
-    {
-      "date": "2026-04-03",
-      "day_name": "Vendredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Utilisation des échelles portables"
+        "Utilisation des échelles portables",
+        "Planification de la sécurité avant travaux"
       ],
       "category": "Equipements de travail",
       "priority": "high",
@@ -3030,88 +4030,282 @@
       ]
     },
     {
-      "date": "2026-04-04",
-      "day_name": "Samedi",
-      "duration_minutes": 480,
+      "date": "2026-06-18",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
       "concepts": [
-        "Planification de la sécurité avant travaux",
         "Directive MSST (Appel à des spécialistes)",
-        "Génie civil et travaux souterrains",
-        "Organisation en cas d'urgence",
-        "Solution de branche (Solution interentreprises)",
-        "Spécialiste de la sécurité au travail (STPS)",
-        "Responsabilité et Participation",
-        "Balisage et protection contre les chutes",
-        "Accès et Évacuation",
-        "Travaux en hauteur",
-        "Organisation de la sécurité (Rôles et Responsabilités)",
-        "Formation et Instruction",
-        "Planification et réalisation des mesures",
-        "EPI contre les arcs électriques",
-        "Travail en hauteur et protection antichute",
-        "Responsabilité Civile (Code des Obligations)",
-        "Rôles et Responsabilités (Maîtrise)",
-        "Planification Temporelle (Gantt & PERT)",
-        "Calcul de Coûts et Métrés",
-        "Types de prix (Rémunération)",
-        "Contrat d'entreprise",
-        "Systèmes de Management QSE (ISO)",
-        "Personne compétente",
-        "Terminologie de la maintenance"
+        "Génie civil et travaux souterrains"
       ],
-      "category": "Ressources Humaines / Sécurité",
+      "category": "Législation & Normes",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Planification de la sécurité avant travaux"
+        "Comprendre Directive MSST (Appel à des spécialistes)"
       ]
     },
     {
-      "date": "2026-04-05",
+      "date": "2026-06-19",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Organisation en cas d'urgence",
+        "Solution de branche (Solution interentreprises)"
+      ],
+      "category": "Organisation de la sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Organisation en cas d'urgence"
+      ]
+    },
+    {
+      "date": "2026-06-20",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Spécialiste de la sécurité au travail (STPS)",
+        "Responsabilité et Participation",
+        "Balisage et protection contre les chutes",
+        "Accès et Évacuation",
+        "Travaux en hauteur",
+        "Organisation de la sécurité (Rôles et Responsabilités)"
+      ],
+      "category": "Législation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Spécialiste de la sécurité au travail (STPS)"
+      ]
+    },
+    {
+      "date": "2026-06-21",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Technique de Mesure et Extension de Calibre",
-        "Diviseurs de Tension et Potentiomètres",
-        "Compensation du facteur de puissance (cos φ)",
-        "Charge asymétrique et courant de neutre",
-        "Impédance (RLC) et déphasage",
-        "Éléments secondaires (Accumulateurs)",
-        "Automates Programmables (API)",
-        "Lecture de schémas électriques",
-        "Influence de la température sur les résistances",
-        "Générateurs de tension et Stockage",
-        "Transformateurs",
-        "Puissances en Courant Alternatif",
-        "Sources de Tension Réelles et Résistance Interne",
-        "Digitalisation de la formation (Digital Learning)",
-        "Outils collaboratifs en formation",
-        "Fiche de cours (FCP)",
-        "Gestion et Commande de l'éclairage (Smart Lighting)",
-        "Régulation de la dynamique de groupe",
-        "Typologie des formations",
-        "Changement de paradigme éducatif",
-        "Social Learning Digital",
-        "Co-construction",
-        "Contractualisation",
-        "Respiration abdominale"
+        "Formation et Instruction",
+        "Planification et réalisation des mesures",
+        "EPI contre les arcs électriques",
+        "Travail en hauteur et protection antichute",
+        "Responsabilité Civile (Code des Obligations)",
+        "Rôles et Responsabilités (Maîtrise)"
       ],
-      "category": "Technologie éducative",
+      "category": "Droit et Législation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Formation et Instruction"
+      ]
+    },
+    {
+      "date": "2026-06-22",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Planification Temporelle (Gantt & PERT)",
+        "Calcul de Coûts et Métrés"
+      ],
+      "category": "Technique / Calcul",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA03",
+      "completed": false,
+      "objectives": [
+        "Comprendre Planification Temporelle (Gantt & PERT)"
+      ]
+    },
+    {
+      "date": "2026-06-23",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Types de prix (Rémunération)",
+        "Contrat d'entreprise"
+      ],
+      "category": "Droit de la construction",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA03",
+      "completed": false,
+      "objectives": [
+        "Comprendre Types de prix (Rémunération)"
+      ]
+    },
+    {
+      "date": "2026-06-24",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Systèmes de Management QSE (ISO)",
+        "Personne compétente"
+      ],
+      "category": "Ressources Humaines / Sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA08",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes de Management QSE (ISO)"
+      ]
+    },
+    {
+      "date": "2026-06-25",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Terminologie de la maintenance",
+        "Technique de Mesure et Extension de Calibre"
+      ],
+      "category": "Théorie de la maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA08",
+      "completed": false,
+      "objectives": [
+        "Comprendre Terminologie de la maintenance"
+      ]
+    },
+    {
+      "date": "2026-06-26",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Diviseurs de Tension et Potentiomètres",
+        "Compensation du facteur de puissance (cos φ)"
+      ],
+      "category": "Qualité du réseau",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA09",
       "completed": false,
       "objectives": [
-        "Comprendre Technique de Mesure et Extension de Calibre"
+        "Comprendre Diviseurs de Tension et Potentiomètres"
       ]
     },
     {
-      "date": "2026-04-06",
+      "date": "2026-06-27",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Charge asymétrique et courant de neutre",
+        "Impédance (RLC) et déphasage",
+        "Éléments secondaires (Accumulateurs)",
+        "Automates Programmables (API)",
+        "Lecture de schémas électriques",
+        "Influence de la température sur les résistances"
+      ],
+      "category": "Physique des matériaux",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Charge asymétrique et courant de neutre"
+      ]
+    },
+    {
+      "date": "2026-06-28",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Générateurs de tension et Stockage",
+        "Transformateurs",
+        "Puissances en Courant Alternatif",
+        "Sources de Tension Réelles et Résistance Interne",
+        "Digitalisation de la formation (Digital Learning)",
+        "Outils collaboratifs en formation"
+      ],
+      "category": "Machines électriques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Générateurs de tension et Stockage"
+      ]
+    },
+    {
+      "date": "2026-06-29",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
+        "Fiche de cours (FCP)",
+        "Gestion et Commande de l'éclairage (Smart Lighting)"
+      ],
+      "category": "Planification de la formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Fiche de cours (FCP)"
+      ]
+    },
+    {
+      "date": "2026-06-30",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Régulation de la dynamique de groupe",
+        "Typologie des formations"
+      ],
+      "category": "Pédagogie",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Régulation de la dynamique de groupe"
+      ]
+    },
+    {
+      "date": "2026-07-01",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Changement de paradigme éducatif",
+        "Social Learning Digital"
+      ],
+      "category": "Technologies éducatives",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Changement de paradigme éducatif"
+      ]
+    },
+    {
+      "date": "2026-07-02",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Co-construction",
+        "Contractualisation"
+      ],
+      "category": "Méthodologie",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Co-construction"
+      ]
+    },
+    {
+      "date": "2026-07-03",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Respiration abdominale",
         "Planification opérationnelle (Rotation)"
       ],
       "category": "Gestion opérationnelle",
@@ -3120,15 +4314,20 @@
       "module": "AA02",
       "completed": false,
       "objectives": [
-        "Comprendre Planification opérationnelle (Rotation)"
+        "Comprendre Respiration abdominale"
       ]
     },
     {
-      "date": "2026-04-07",
-      "day_name": "Mardi",
-      "duration_minutes": 30,
+      "date": "2026-07-04",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
       "concepts": [
-        "Chronobiologie en formation"
+        "Chronobiologie en formation",
+        "Adaptation des contenus et modalités",
+        "Triangle Pédagogique (Houssaye)",
+        "Stratégies d'apprentissage (Felder & Silverman)",
+        "Dynamique de groupe (RAVI)",
+        "Rôle des Acteurs et Cadre Systémique"
       ],
       "category": "Gestion de groupe",
       "priority": "medium",
@@ -3140,76 +4339,116 @@
       ]
     },
     {
-      "date": "2026-04-08",
-      "day_name": "Mercredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Adaptation des contenus et modalités"
-      ],
-      "category": "Ingénierie pédagogique",
-      "priority": "medium",
-      "session_type": "new_learning",
-      "module": "AA02",
-      "completed": false,
-      "objectives": [
-        "Comprendre Adaptation des contenus et modalités"
-      ]
-    },
-    {
-      "date": "2026-04-09",
-      "day_name": "Jeudi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Triangle Pédagogique (Houssaye)"
-      ],
-      "category": "Théorie de l'apprentissage",
-      "priority": "medium",
-      "session_type": "new_learning",
-      "module": "AA02",
-      "completed": false,
-      "objectives": [
-        "Comprendre Triangle Pédagogique (Houssaye)"
-      ]
-    },
-    {
-      "date": "2026-04-10",
-      "day_name": "Vendredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Stratégies d'apprentissage (Felder & Silverman)"
-      ],
-      "category": "Psychopédagogie",
-      "priority": "medium",
-      "session_type": "new_learning",
-      "module": "AA02",
-      "completed": false,
-      "objectives": [
-        "Comprendre Stratégies d'apprentissage (Felder & Silverman)"
-      ]
-    },
-    {
-      "date": "2026-04-11",
-      "day_name": "Samedi",
+      "date": "2026-07-05",
+      "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Dynamique de groupe (RAVI)",
-        "Rôle des Acteurs et Cadre Systémique",
         "Outils d'évaluation standardisés (Contexte faible)",
         "Diagnostic d'opportunité et de faisabilité",
         "Enseignement par les pairs / Tutorat",
         "Protection de l'environnement et de la faune",
         "Gestion et Sécurité des Données",
-        "Représentation graphique et Schémas",
+        "Représentation graphique et Schémas"
+      ],
+      "category": "Environnement",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Outils d'évaluation standardisés (Contexte faible)"
+      ]
+    },
+    {
+      "date": "2026-07-06",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
         "Statique des supports (Haubanage/Contrefiche)",
-        "Maintenance et contrôle des lignes",
+        "Maintenance et contrôle des lignes"
+      ],
+      "category": "Mécanique / Statique",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AE13",
+      "completed": false,
+      "objectives": [
+        "Comprendre Statique des supports (Haubanage/Contrefiche)"
+      ]
+    },
+    {
+      "date": "2026-07-07",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
         "Somme des diamètres",
-        "Inspection et Maintenance des lignes",
+        "Inspection et Maintenance des lignes"
+      ],
+      "category": "Dimensionnement",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AE13",
+      "completed": false,
+      "objectives": [
+        "Comprendre Somme des diamètres"
+      ]
+    },
+    {
+      "date": "2026-07-08",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Systèmes d'Information Réseau (NIS/SIG)",
-        "Antichutes à rappel automatique (EN 360)",
+        "Antichutes à rappel automatique (EN 360)"
+      ],
+      "category": "Équipements (EPI)",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes d'Information Réseau (NIS/SIG)"
+      ]
+    },
+    {
+      "date": "2026-07-09",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
         "Exploitation en boucle (Ligne en boucle)",
-        "Diagnostic des Supports Bois",
+        "Diagnostic des Supports Bois"
+      ],
+      "category": "Technique Lignes Aériennes",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Exploitation en boucle (Ligne en boucle)"
+      ]
+    },
+    {
+      "date": "2026-07-10",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Inspection visuelle des installations MT/BT",
-        "Système d'Information Réseau (NIS)",
+        "Système d'Information Réseau (NIS)"
+      ],
+      "category": "Maintenance",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Inspection visuelle des installations MT/BT"
+      ]
+    },
+    {
+      "date": "2026-07-11",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
         "Optimisation technico-économique",
         "Gestion des substances dangereuses (Amiante)",
         "Maintenance et évaluation d'état",
@@ -3217,17 +4456,17 @@
         "Gestion des Équipements (EPI et Outillage)",
         "Clarification du mandat"
       ],
-      "category": "Maintenance",
+      "category": "Réseaux électriques",
       "priority": "medium",
       "session_type": "new_learning",
-      "module": "AA02",
+      "module": "AE10",
       "completed": false,
       "objectives": [
-        "Comprendre Dynamique de groupe (RAVI)"
+        "Comprendre Optimisation technico-économique"
       ]
     },
     {
-      "date": "2026-04-12",
+      "date": "2026-07-12",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
@@ -3236,27 +4475,9 @@
         "Communication et Mandats",
         "Traitement des déchets de maintenance",
         "Cycle de vie et fiabilité (Courbe en baignoire)",
-        "Système tribologique",
-        "Identification des acteurs (N° OMoD)",
-        "Tribologie",
-        "Gestion administrative de la maintenance",
-        "Qualité du réseau (Power Quality)",
-        "Systèmes d'Équations Linéaires",
-        "Opérations algébriques fondamentales",
-        "Maîtrise de la calculatrice scientifique",
-        "Électromagnétisme Appliqué",
-        "Coordination des parties prenantes",
-        "Cycle de vie documentaire",
-        "Calcul des indemnités (Pertes de culture)",
-        "Droits de Passage et Indemnités",
-        "Métrés et Calculs Techniques",
-        "Indemnités pour dommages de culture",
-        "Calculs de Génie Civil",
-        "Facteurs économiques et temporels",
-        "Indemnités accessoires et dommages de construction",
-        "Négociation foncière (Valeur vs Prix)"
+        "Système tribologique"
       ],
-      "category": "Ingénierie de maintenance",
+      "category": "Mécanique",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AE10",
@@ -3266,77 +4487,141 @@
       ]
     },
     {
-      "date": "2026-04-13",
+      "date": "2026-07-13",
       "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Indemnité de passage de ligne (Survol)"
+        "Identification des acteurs (N° OMoD)",
+        "Tribologie"
       ],
-      "category": "Économie d'entreprise",
+      "category": "Mécanique / Physique",
       "priority": "medium",
       "session_type": "new_learning",
-      "module": "AA04",
+      "module": "AA07",
       "completed": false,
       "objectives": [
-        "Comprendre Indemnité de passage de ligne (Survol)"
+        "Comprendre Identification des acteurs (N° OMoD)"
       ]
     },
     {
-      "date": "2026-04-14",
+      "date": "2026-07-14",
       "day_name": "Mardi",
       "duration_minutes": 30,
       "concepts": [
-        "Capitalisation et Durée"
+        "Gestion administrative de la maintenance",
+        "Qualité du réseau (Power Quality)"
       ],
-      "category": "Finance",
+      "category": "Administration",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Gestion administrative de la maintenance"
+      ]
+    },
+    {
+      "date": "2026-07-15",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Systèmes d'Équations Linéaires",
+        "Opérations algébriques fondamentales"
+      ],
+      "category": "Algèbre",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA11",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes d'Équations Linéaires"
+      ]
+    },
+    {
+      "date": "2026-07-16",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Maîtrise de la calculatrice scientifique",
+        "Électromagnétisme Appliqué"
+      ],
+      "category": "Physique",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA11",
+      "completed": false,
+      "objectives": [
+        "Comprendre Maîtrise de la calculatrice scientifique"
+      ]
+    },
+    {
+      "date": "2026-07-17",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Coordination des parties prenantes",
+        "Cycle de vie documentaire"
+      ],
+      "category": "Administration de Projet",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA04",
       "completed": false,
       "objectives": [
-        "Comprendre Capitalisation et Durée"
+        "Comprendre Coordination des parties prenantes"
       ]
     },
     {
-      "date": "2026-04-15",
-      "day_name": "Mercredi",
-      "duration_minutes": 30,
+      "date": "2026-07-18",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
       "concepts": [
-        "Organisation de la sécurité (Art. 5 OTConst)"
+        "Calcul des indemnités (Pertes de culture)",
+        "Droits de Passage et Indemnités",
+        "Métrés et Calculs Techniques",
+        "Indemnités pour dommages de culture",
+        "Calculs de Génie Civil",
+        "Facteurs économiques et temporels"
+      ],
+      "category": "Économie",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Calcul des indemnités (Pertes de culture)"
+      ]
+    },
+    {
+      "date": "2026-07-19",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Indemnités accessoires et dommages de construction",
+        "Négociation foncière (Valeur vs Prix)",
+        "Indemnité de passage de ligne (Survol)",
+        "Capitalisation et Durée",
+        "Organisation de la sécurité (Art. 5 OTConst)",
+        "Travaux de peu d'ampleur sur toits"
       ],
       "category": "Management",
       "priority": "medium",
       "session_type": "new_learning",
-      "module": "AA05",
+      "module": "AA04",
       "completed": false,
       "objectives": [
-        "Comprendre Organisation de la sécurité (Art. 5 OTConst)"
+        "Comprendre Indemnités accessoires et dommages de construction"
       ]
     },
     {
-      "date": "2026-04-16",
-      "day_name": "Jeudi",
+      "date": "2026-07-20",
+      "day_name": "Lundi",
       "duration_minutes": 30,
       "concepts": [
-        "Travaux de peu d'ampleur sur toits"
+        "Éclairage de chantier",
+        "Système de sécurité d'entreprise"
       ],
-      "category": "Travaux en hauteur",
-      "priority": "medium",
-      "session_type": "new_learning",
-      "module": "AA05",
-      "completed": false,
-      "objectives": [
-        "Comprendre Travaux de peu d'ampleur sur toits"
-      ]
-    },
-    {
-      "date": "2026-04-17",
-      "day_name": "Vendredi",
-      "duration_minutes": 30,
-      "concepts": [
-        "Éclairage de chantier"
-      ],
-      "category": "Installations électriques provisoires",
+      "category": "Management de la sécurité",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3346,75 +4631,179 @@
       ]
     },
     {
-      "date": "2026-04-18",
-      "day_name": "Samedi",
-      "duration_minutes": 480,
+      "date": "2026-07-21",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
       "concepts": [
-        "Système de sécurité d'entreprise",
         "Délimitation du système (Systèmes partiels)",
-        "Environnement de transbordement",
-        "Gestion des substances dangereuses",
-        "Conformité et Mise en circulation (LSPro/OMach)",
-        "Typologie des mesures (IDS)",
-        "Travaux de peu d'ampleur",
-        "Matrice de mise en œuvre (Critères d'assujettissement)",
-        "Participation des travailleurs",
-        "Appel aux spécialistes MSST",
-        "Protection de la santé (Ergonomie et Hygiène)",
-        "Gestion de l'amiante",
-        "Travail seul",
-        "Méthode QQOQCCP",
-        "Contrôle des équipements spécifiques",
-        "Systèmes de Management Intégré (ISO)",
-        "Résistance interne et sources de tension",
-        "Influence de la Température sur la Résistance",
-        "Corrosion électrochimique",
-        "Impédance et Circuits RLC",
-        "Gamification et interactivité (Ludopédagogie)",
-        "Intelligence Artificielle en formation",
-        "Gestion de la documentation technique",
-        "Certification Qualité (Référentiel Qualiopi)"
+        "Environnement de transbordement"
       ],
-      "category": "Maintenance & Matériaux",
+      "category": "Logistique et Infrastructure",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA05",
       "completed": false,
       "objectives": [
-        "Comprendre Système de sécurité d'entreprise"
+        "Comprendre Délimitation du système (Systèmes partiels)"
       ]
     },
     {
-      "date": "2026-04-19",
+      "date": "2026-07-22",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Gestion des substances dangereuses",
+        "Conformité et Mise en circulation (LSPro/OMach)"
+      ],
+      "category": "Santé au travail",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Gestion des substances dangereuses"
+      ]
+    },
+    {
+      "date": "2026-07-23",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Typologie des mesures (IDS)",
+        "Travaux de peu d'ampleur"
+      ],
+      "category": "Gestion des risques",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Typologie des mesures (IDS)"
+      ]
+    },
+    {
+      "date": "2026-07-24",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Matrice de mise en œuvre (Critères d'assujettissement)",
+        "Participation des travailleurs"
+      ],
+      "category": "Droit du travail",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Matrice de mise en œuvre (Critères d'assujettissement)"
+      ]
+    },
+    {
+      "date": "2026-07-25",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Appel aux spécialistes MSST",
+        "Protection de la santé (Ergonomie et Hygiène)",
+        "Gestion de l'amiante",
+        "Travail seul",
+        "Méthode QQOQCCP",
+        "Contrôle des équipements spécifiques"
+      ],
+      "category": "Santé au travail",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Appel aux spécialistes MSST"
+      ]
+    },
+    {
+      "date": "2026-07-26",
       "day_name": "Dimanche",
       "duration_minutes": 480,
       "concepts": [
-        "Composition des graisses lubrifiantes",
+        "Systèmes de Management Intégré (ISO)",
+        "Résistance interne et sources de tension",
+        "Influence de la Température sur la Résistance",
+        "Corrosion électrochimique",
+        "Impédance et Circuits RLC",
+        "Gamification et interactivité (Ludopédagogie)"
+      ],
+      "category": "Qualité et Environnement",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA08",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes de Management Intégré (ISO)"
+      ]
+    },
+    {
+      "date": "2026-07-27",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Intelligence Artificielle en formation",
+        "Gestion de la documentation technique"
+      ],
+      "category": "Méthodologie",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Intelligence Artificielle en formation"
+      ]
+    },
+    {
+      "date": "2026-07-28",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Certification Qualité (Référentiel Qualiopi)",
+        "Composition des graisses lubrifiantes"
+      ],
+      "category": "Chimie industrielle / Mécanique",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Certification Qualité (Référentiel Qualiopi)"
+      ]
+    },
+    {
+      "date": "2026-07-29",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
         "Cadre Institutionnel (AES)"
       ],
       "category": "Environnement Professionnel",
       "priority": "medium",
       "session_type": "new_learning",
-      "module": "AA07",
+      "module": "AA04",
       "completed": false,
       "objectives": [
-        "Comprendre Composition des graisses lubrifiantes"
+        "Comprendre Cadre Institutionnel (AES)"
       ]
     }
   ],
   "statistics": {
-    "total_revision_hours": 182.5,
+    "total_revision_hours": 435.2,
     "sessions_by_priority": {
-      "high": 51,
-      "medium": 14,
+      "high": 127,
+      "medium": 37,
       "low": 0
     },
     "sessions_by_type": {
-      "new_learning": 65,
-      "revision": 0,
+      "new_learning": 158,
+      "revision": 6,
       "practice": 0
     },
-    "average_concepts_per_session": 9.6,
+    "average_concepts_per_session": 3.2,
     "days_until_exam": 392
   }
 }

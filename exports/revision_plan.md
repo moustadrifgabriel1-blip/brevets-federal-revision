@@ -14,16 +14,16 @@ Jours restants: 392
 ## Sessions de la semaine
 
 - **Dimanche 2026-02-01** (480min): Les 4 Pôles de la communication, Phase de présentation des participants, Chaîne de sécurité antichute (Le système des 4 éléments)
-- **Lundi 2026-02-02** (30min): Analyse des besoins de formation
-- **Mardi 2026-02-03** (30min): Instruction MSST et Sécurité
-- **Mercredi 2026-02-04** (30min): Apprentissage entre pairs, Reviser: Grandeurs photométriques fondamentales, Reviser: Contrôle de sécurité électrique (OIBT/NIBT)
-- **Jeudi 2026-02-05** (30min): Réponse au cahier des charges
-- **Vendredi 2026-02-06** (30min): Gestion du trac (via la respiration)
-- **Samedi 2026-02-07** (480min): Ingénierie de formation (Analyse des besoins), Processus de dépannage et gestion des avaries, Sécurité des interventions d'urgence
-- **Dimanche 2026-02-08** (480min): Mise en situation et Simulation, Apprentissage par entraînement (Stage), Objectifs SMART
-- **Lundi 2026-02-09** (30min): Sécurité des Personnes et Mise à la Terre
-- **Mardi 2026-02-10** (30min): Les 3 Méthodes de Travail (EN 50110-1)
-- **Dimanche 2026-02-15** (480min): Travaux hors tension (Méthode 1), Les 5 Règles de Sécurité, Équipements de Protection (EPI/EPC)
-- **Lundi 2026-02-16** (30min): Inspection et Maintenance Préventive des Postes
-- **Mardi 2026-02-17** (30min): Système de Mise à la Terre (MALT)
-- **Mercredi 2026-02-18** (30min): Signalisation et Sécurité des Installations
+- **Lundi 2026-02-02** (30min): Terminologie du Risque, Pyramide légale de la SST
+- **Mardi 2026-02-03** (30min): Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr), Planification de projet
+- **Mercredi 2026-02-04** (30min): Normes SIA, Responsabilités et Rôles
+- **Jeudi 2026-02-05** (30min): Directive MSST (CFST 6508), Mécanisme de l'accident
+- **Vendredi 2026-02-06** (30min): Constitution de la matière et charges électriques, Techniques de présentation actives
+- **Samedi 2026-02-07** (480min): Grandeurs photométriques fondamentales, Contrôle de sécurité électrique (OIBT/NIBT), Définition de l'objectif d'intervention
+- **Dimanche 2026-02-08** (480min): Complémentarité des modalités, Apprentissage Social (Social Learning), Analyse des besoins de formation
+- **Lundi 2026-02-09** (30min): Gestion du trac (via la respiration), Ingénierie de formation (Analyse des besoins)
+- **Mardi 2026-02-10** (30min): Processus de dépannage et gestion des avaries, Sécurité des interventions d'urgence
+- **Mercredi 2026-02-11** (45min): Reviser: Stabilité et maintenance des structures porteuses, Reviser: Structuration de l'action de formation, Reviser: Engagement du Management
+- **Jeudi 2026-02-12** (45min): Reviser: Technologies de sources lumineuses (LED), Reviser: Recueil des besoins en formation, Reviser: Apprentissage Actif
+- **Vendredi 2026-02-13** (45min): Reviser: La Lanterne Magique, Reviser: Technique de la Discussion Post-it, Reviser: Apprentissage Social (Social Learning)
+- **Samedi 2026-02-14** (30min): Reviser: Les 4 Pôles de la communication, Reviser: Structuration du plan de discussion
