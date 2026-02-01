@@ -99,7 +99,7 @@ Concentre-toi sur les concepts vraiment importants pour un futur spécialiste de
 
         try:
             # Délai de 2s entre requêtes pour éviter rate limiting
-            time.sleep(2)
+            time.sleep(3)
             
             response = self.model.generate_content(
                 prompt,
@@ -164,7 +164,7 @@ Sois précis et exhaustif - c'est crucial pour la préparation à l'examen."""
 
         try:
             # Délai de 2s entre requêtes pour éviter rate limiting
-            time.sleep(2)
+            time.sleep(3)
             
             response = self.model.generate_content(
                 prompt,
@@ -242,7 +242,7 @@ Réponds en JSON:
 
         try:
             # Délai de 2s entre requêtes pour éviter rate limiting
-            time.sleep(2)
+            time.sleep(3)
             
             response = self.model.generate_content(
                 prompt,
