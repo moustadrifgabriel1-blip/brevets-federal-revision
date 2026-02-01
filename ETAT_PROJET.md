@@ -14,6 +14,36 @@
 
 ---
 
+## 💾 Système de Stockage
+
+### Problème résolu
+Les fichiers de cours font **1.6 GB** (trop gros pour GitHub). Solution mise en place :
+
+| Type de données | Stockage | Taille |
+|-----------------|----------|--------|
+| **Cours (PDF, DOCX)** | Local uniquement | 1.6 GB |
+| **Données analysées** | GitHub + Streamlit Cloud | 384 KB |
+
+### Comment ça marche
+1. L'app charge les données depuis `exports/` (local) ou `cloud_data/` (Streamlit Cloud)
+2. Les analyses (concepts, planning) sont sauvegardées et synchronisées
+3. Les gros fichiers PDF restent en local
+
+### Commandes de backup
+```bash
+# Créer un backup
+python scripts/backup_data.py backup
+
+# Restaurer le dernier backup
+python scripts/backup_data.py restore
+
+# Exporter pour Streamlit Cloud
+python scripts/backup_data.py cloud
+
+# Lister les backups
+python scripts/backup_data.py list
+```
+
 ## ✅ Fonctionnalités Opérationnelles
 
 - [x] **Page d'accueil** - Tableau de bord avec compte à rebours examen

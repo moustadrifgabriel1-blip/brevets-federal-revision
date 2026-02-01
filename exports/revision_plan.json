@@ -1,0 +1,3420 @@
+{
+  "generated_at": "2026-02-01T16:49:52.595248",
+  "exam_date": "2027-03-01",
+  "total_sessions": 65,
+  "total_concepts": 503,
+  "total_hours": 182.5,
+  "weekday_minutes": 30,
+  "weekend_hours": 8,
+  "concepts_covered": [
+    "Grandeurs photométriques fondamentales",
+    "Contrôle de sécurité électrique (OIBT/NIBT)",
+    "Normes d'éclairage public (EN 13201 & SLG 202)",
+    "Stabilité et maintenance des structures porteuses",
+    "Technologies de sources lumineuses (LED)",
+    "Gestion et Commande de l'éclairage (Smart Lighting)",
+    "La Lanterne Magique",
+    "Les 4 Pôles de la communication",
+    "Définition de l'objectif d'intervention",
+    "Adaptation à l'auditoire",
+    "Carte Mentale (Heuristic Map)",
+    "Structuration de l'action de formation",
+    "Recueil des besoins en formation",
+    "Technique de la Discussion Post-it",
+    "Structuration du plan de discussion",
+    "Typologie des questions d'animation",
+    "Régulation de la dynamique de groupe",
+    "Parcours de formation mixte (Blended Learning)",
+    "Complémentarité des modalités",
+    "Engagement du Management",
+    "Apprentissage Actif",
+    "Apprentissage Social (Social Learning)",
+    "Analyse des besoins de formation",
+    "Méthode CQQCOQP",
+    "Démarche contractuelle par objectifs",
+    "Instruction MSST et Sécurité",
+    "Typologie des formations",
+    "Théorie de l'apprentissage social (Bandura)",
+    "Renforcement Vicariant",
+    "Apprentissage entre pairs",
+    "Changement de paradigme éducatif",
+    "Social Learning Digital",
+    "Réponse au cahier des charges",
+    "Analyse de la demande",
+    "Proposition commerciale",
+    "Co-construction",
+    "Contractualisation",
+    "Respiration en carré",
+    "Respiration abdominale",
+    "Gestion du trac (via la respiration)",
+    "Ingénierie de formation (Analyse des besoins)",
+    "Gestion du changement organisationnel",
+    "Processus de dépannage et gestion des avaries",
+    "Planification opérationnelle (Rotation)",
+    "Sécurité des interventions d'urgence",
+    "Objectifs Pédagogiques (OPG/OPP)",
+    "Scénario pédagogique",
+    "Progression Pédagogique",
+    "Méthodes et Techniques Actives",
+    "Évaluation de la formation",
+    "Guide Animateur",
+    "Chronobiologie en formation",
+    "Analyse du besoin de formation",
+    "Objectifs opérationnels et évaluables",
+    "Adaptation des contenus et modalités",
+    "Évaluation des acquis",
+    "Certification Qualité (Référentiel Qualiopi)",
+    "Climat d'apprentissage",
+    "Posture du formateur",
+    "Boussole de l'aide (Autonomie)",
+    "Gestion des situations délicates",
+    "Méthode DESC",
+    "Clôture et Transfert",
+    "Ingénierie de formation",
+    "Triangle Pédagogique (Houssaye)",
+    "Méthodes Pédagogiques",
+    "Stratégies d'apprentissage (Felder & Silverman)",
+    "AFEST (Action de Formation en Situation de Travail)",
+    "Transfert des Acquis",
+    "Dynamique de groupe (RAVI)",
+    "Changement de Paradigme (Formation vs Compétence)",
+    "Processus de Production de Compétences",
+    "Résistance au Changement et Freins",
+    "Rôle des Acteurs et Cadre Systémique",
+    "Typologie des compétences (Savoirs)",
+    "Contextualisation de l'évaluation",
+    "Outils d'évaluation en situation (Contexte fort)",
+    "Outils d'évaluation standardisés (Contexte faible)",
+    "Matrice de choix des outils",
+    "Analyse du contexte de formation",
+    "Formation en situation de travail vs Hors travail",
+    "Synchronisme pédagogique",
+    "Environnement Présentiel vs Distanciel",
+    "Situation de travail formatrice",
+    "Séquence réflexive",
+    "Distinction Prescrit vs Réel",
+    "Diagnostic d'opportunité et de faisabilité",
+    "Démonstration pratique (Enseignant/Étudiant)",
+    "Mise en situation et Simulation",
+    "Apprentissage par problème / Étude de cas",
+    "Apprentissage par projet",
+    "Enseignement par les pairs / Tutorat",
+    "Apprentissage par entraînement (Stage)",
+    "Objectifs SMART",
+    "Taxonomie de Bloom",
+    "Gestion de la Motivation (Participants Ravis)",
+    "Cycle de Formation",
+    "Phase de présentation des participants",
+    "Critères de sélection de la technique",
+    "Protocole de lancement d'activité",
+    "Techniques de présentation actives",
+    "Adaptation à la classe virtuelle",
+    "Grille d'observation",
+    "Débriefing bienveillant",
+    "Posture et Animation",
+    "Cadre légal et normatif (OLEl)",
+    "Distances de sécurité (Lignes aériennes)",
+    "Statique des supports et fondations",
+    "Technique de pose souterraine (Câbles)",
+    "Coexistence et Croisements de réseaux",
+    "Protection de l'environnement et de la faune",
+    "Systèmes d'Information Réseau (SIR)",
+    "Cadre légal de la documentation (OLEI)",
+    "Systèmes de Coordonnées Suisses (MN95)",
+    "Méthodes de Métrage et Relevé",
+    "Croquis de montage et Dessin technique",
+    "Gestion et Sécurité des Données",
+    "Gestion des données (Data Management)",
+    "Systèmes de métrage et relevé",
+    "GNSS (Global Navigation Satellite System)",
+    "SIG et SIR (GIS / NIS)",
+    "Cadre légal et Normes (SIA 405)",
+    "Représentation graphique et Schémas",
+    "Ligne Ordinaire",
+    "Profondeur d'implantation",
+    "Cadre légal et normatif (OLEI/OICF)",
+    "Sécurité sur poteaux en bois (CFST 6506)",
+    "Distances de sécurité",
+    "Statique des supports (Haubanage/Contrefiche)",
+    "Maintenance et contrôle des lignes",
+    "Flèche et Tension (Mécanique)",
+    "Surcharge (Hypothèse de charge)",
+    "Classes de solidité des supports bois",
+    "Matériaux Conducteurs",
+    "Somme des diamètres",
+    "Dimensionnement statique des supports",
+    "Calcul d'ancrage et haubanage",
+    "Comportement mécanique des conducteurs",
+    "Sécurité et Directive CFST 6506",
+    "Inspection et Maintenance des lignes",
+    "Respect des gabarits (OLEI)",
+    "Frottement (Friction)",
+    "Forces sur Plan Incliné",
+    "Levier et Couple (Moment)",
+    "Démultiplication de Force (Poulies et Treuils)",
+    "Résistance des Matériaux",
+    "Calcul Vectoriel des Forces",
+    "Inspection et Maintenance Préventive des Postes (TS)",
+    "Transformateur de Puissance (Distribution)",
+    "Appareillage Moyenne Tension (MT)",
+    "Distribution Basse Tension (BT) et Protection",
+    "Sécurité des Personnes et Mise à la Terre",
+    "Systèmes d'Information Réseau (NIS/SIG)",
+    "Les 3 Méthodes de Travail (EN 50110-1)",
+    "Travaux hors tension (Méthode 1)",
+    "Les 5 Règles de Sécurité",
+    "Travaux sous tension (AuS - Méthode 3)",
+    "Travaux à proximité de tension (Méthode 2)",
+    "Organisation et Responsabilités",
+    "Équipements de Protection (EPI/EPC)",
+    "Chaîne de sécurité antichute (Le système des 4 éléments)",
+    "Amortissement du choc d'arrêt",
+    "Distinction EN 361 vs EN 358",
+    "Ancrage et résistance structurelle",
+    "Antichutes mobiles (EN 353)",
+    "Sauvetage d'urgence et délai d'intervention",
+    "Antichutes à rappel automatique (EN 360)",
+    "Programme de manœuvre",
+    "Mandat de travail",
+    "Mesures de protection (5 règles vitales)",
+    "Maintenance de ligne aérienne MT",
+    "Exploitation en boucle (Ligne en boucle)",
+    "Mandat de travail et ordre de manœuvre",
+    "Hiérarchie des responsabilités (Rôles)",
+    "Déroulement chronologique des manœuvres",
+    "Gestion des modifications techniques et protections",
+    "Directive ESTI n°100",
+    "Stratégies de Maintenance",
+    "Niveaux d'Intervention (I-E-R)",
+    "Cadre Légal et Normatif",
+    "Méthodes de Travail Électriques",
+    "Plan de Maintenance",
+    "Diagnostic des Supports Bois",
+    "Mandat de Travail et Sécurité",
+    "Mesure de mise à la terre (Earthing Measurement)",
+    "Courant de court-circuit (Icc)",
+    "Contrôle périodique (OIBT)",
+    "Inspection visuelle des installations MT/BT",
+    "Système d'Information Réseau (NIS)",
+    "Les 4 mesures de base de la maintenance",
+    "Typologie des stratégies de maintenance",
+    "Cadre légal suisse (OICF/LIE/LApEl)",
+    "Optimisation technico-économique",
+    "Périodicité et Documentation (OICF)",
+    "Contrôle OIBT (NIV)",
+    "Mise à la terre (Earthing)",
+    "Paramètres de court-circuit",
+    "Technologie SF6 (Hexafluorure de soufre)",
+    "Gestion des substances dangereuses (Amiante)",
+    "Maintenance et évaluation d'état",
+    "Jugement de la stabilité du poteau",
+    "Contrôle de l'état du bois",
+    "Modification des forces statiques",
+    "Assurage contre le renversement",
+    "Protection contre les chutes (EPI)",
+    "Distinction Courant Fort vs Courant Faible",
+    "Méthodes de travail (AM1, AM2, AM3)",
+    "Organisation et Rôles de Sécurité",
+    "Évaluation du risque",
+    "Qualification du personnel",
+    "Gestion des Équipements (EPI et Outillage)",
+    "Clarification du mandat",
+    "Gestion de l'urgence",
+    "Inspection et Maintenance Préventive des Postes",
+    "Système de Mise à la Terre (MALT)",
+    "Tableau de Distribution Basse Tension (BT)",
+    "Appareillage de Coupure Moyenne Tension (MT)",
+    "Signalisation et Sécurité des Installations",
+    "Intégrité Structurelle (Génie Civil)",
+    "Remise en État (Instandsetzung)",
+    "Critères de Détermination des Intervalles",
+    "Cadre Légal et OPA (Art. 32b)",
+    "Révision (Partielle et Générale)",
+    "Les 7 Bases de la Maintenance",
+    "Cadre Légal et Normatif Suisse",
+    "Processus de Rétablissement de l'État de Référence",
+    "Tâches Spécifiques de l'Électricien de Réseau",
+    "Documentation et Traçabilité",
+    "Surveillance et Inspection",
+    "Maintenance des réseaux électriques",
+    "Stratégies de maintenance (CBM, CM, TPM)",
+    "Gestion des perturbations",
+    "Contrôle de l'état",
+    "Tribologie et Lubrification",
+    "Remise en état (Planifiée vs Non planifiée)",
+    "Communication et Mandats",
+    "Traitement des déchets de maintenance",
+    "Mission et objectifs de la maintenance",
+    "Surveillance des installations",
+    "Cadre sécuritaire de la maintenance",
+    "Gestion des incidents et perturbations",
+    "Cycle de vie et fiabilité (Courbe en baignoire)",
+    "Contrôle d'état (Condition Monitoring)",
+    "Système tribologique",
+    "Composition des graisses lubrifiantes",
+    "Document de suivi OMoD",
+    "Procédés d'élimination (Codes D)",
+    "Procédés de valorisation (Codes R)",
+    "Transport de marchandises dangereuses (ADR/SDR)",
+    "Identification des acteurs (N° OMoD)",
+    "Maintenance des réseaux énergétiques",
+    "Objectifs de la maintenance (DFS)",
+    "Processus de remise en état",
+    "Diagnostic et Surveillance",
+    "Tribologie",
+    "Gestion administrative de la maintenance",
+    "Gestion des déchets et Environnement",
+    "Catégories de mesure (CAT I-IV)",
+    "Mesure de la valeur efficace (TrueRMS)",
+    "Transformateurs de mesure (TI / TP)",
+    "Impédance de boucle et courant de court-circuit (Ik)",
+    "Champ tournant et comparaison de phases",
+    "Localisation de défauts de câbles",
+    "Qualité du réseau (Power Quality)",
+    "Mesure d'isolement",
+    "Procédure d'admission",
+    "Structure modulaire (Blocs)",
+    "Certification finale",
+    "Profil professionnel Electricien de réseau (NE/ER)",
+    "Cursus de formation (CFC vers Brevet)",
+    "Directives d'Examen Professionnel (EP)",
+    "Notation Scientifique et Préfixes d'Ingénierie",
+    "Conversion d'Unités (Système SI)",
+    "Manipulation de Formules Algébriques",
+    "Systèmes d'Équations Linéaires",
+    "Trigonométrie (Triangle rectangle)",
+    "Triangle des Puissances (AC)",
+    "Calcul Vectoriel",
+    "Calculs de Circuits RLC",
+    "Notation Scientifique et Puissances de 10",
+    "Système International d'Unités (SI)",
+    "Transformation de formules",
+    "Trigonométrie dans le Triangle Rectangle",
+    "Grandeurs Vectorielles",
+    "Préfixes SI et Puissances de dix",
+    "Opérations algébriques fondamentales",
+    "Maîtrise de la calculatrice scientifique",
+    "Transposition et Manipulation de Formules",
+    "Notation Scientifique et Unités SI",
+    "Résistance Électrique et Influence Thermique",
+    "Électromagnétisme Appliqué",
+    "Contrôle des documents d'exécution",
+    "Gestion des modifications de chantier",
+    "Marchés Publics (AIMP)",
+    "Coordination des parties prenantes",
+    "Cycle de vie documentaire",
+    "Calcul des indemnités (Pertes de culture)",
+    "Gestion de Projet et Rôle du Chef de Projet",
+    "Communication et Gestion des Parties Prenantes",
+    "Marchés Publics et Soumissions",
+    "Vérification et Contrôle Documentaire",
+    "Droits de Passage et Indemnités",
+    "Métrés et Calculs Techniques",
+    "Cadre Institutionnel (AES)",
+    "Gestion de projet et Coordination",
+    "Marchés Publics",
+    "Gestion des Parties Prenantes",
+    "Indemnités pour dommages de culture",
+    "Calculs de Génie Civil",
+    "Droit de passage et Servitude",
+    "Classification des sols agricoles (Aptitudes culturales)",
+    "Normes de pose en zone agricole",
+    "Mécanisme d'indemnisation des regards",
+    "Indemnisation des conduites souterraines",
+    "Facteurs économiques et temporels",
+    "Indemnités accessoires et dommages de construction",
+    "Principe de tolérance d'utilité publique",
+    "Structure de l'indemnisation agricole",
+    "Dommages de chantier vs Inconvénients permanents",
+    "Négociation foncière (Valeur vs Prix)",
+    "Taux USP (Union Suisse des Paysans)",
+    "Principes d'indemnisation des servitudes",
+    "Classification agronomique des terrains (A et P)",
+    "Barèmes pour supports (Poteaux et Pylônes)",
+    "Indemnité de passage de ligne (Survol)",
+    "Facteurs de majoration techniques",
+    "Capitalisation et Durée",
+    "Cadre Légal de la Sécurité (LAA vs LTr)",
+    "Obligations de l'employeur (Art. 82 LAA / Art. 328 CO)",
+    "Obligations du travailleur (Art. 82 LAA / OPA)",
+    "Système MSST (Directive CFST 6508)",
+    "Organes d'exécution et de surveillance",
+    "Ordonnance sur la prévention des accidents (OPA)",
+    "Hiérarchie des normes de sécurité",
+    "Responsabilité de l'employeur et du travailleur",
+    "Loi sur les installations électriques (LIE)",
+    "Facteur Humain",
+    "Hiérarchie des mesures de protection (STOP)",
+    "Équipements de Protection Individuelle (EPI)",
+    "OTConst (Ordonnance sur les travaux de construction)",
+    "Plan de sécurité et de protection de la santé",
+    "Installations existantes (Art. 30 OTConst)",
+    "Travaux en hauteur et Échelles (Art. 20-21 OTConst)",
+    "Substances dangereuses et Diagnostic (Art. 32 OTConst)",
+    "Organisation de la sécurité (Art. 5 OTConst)",
+    "Repérage et protection des infrastructures souterraines",
+    "Stabilité des parois : Talutage et Étayage",
+    "Dimensionnement et ergonomie de la fouille",
+    "Accès sécurisé aux fouilles",
+    "Protection périphérique et signalisation",
+    "Accès aux fouilles et puits",
+    "Stabilité des talus et justificatif de sécurité",
+    "Travaux en espaces confinés (Puits)",
+    "Audit de sécurité",
+    "Sécurité des fouilles et tranchées",
+    "Mesures de protection sur les toits",
+    "Travaux de peu d'ampleur sur toits",
+    "Utilisation d'échafaudages roulants",
+    "Éclairage de chantier",
+    "Portefeuille des phénomènes dangereux",
+    "Directive CFST 6508 (MSST)",
+    "Phénomènes dangereux particuliers",
+    "Règles reconnues (SST/PS)",
+    "Système de sécurité d'entreprise",
+    "Délimitation du système (Systèmes partiels)",
+    "Sécurité des opérations de levage",
+    "Arrimage et Élingage",
+    "Conformité des équipements de levage",
+    "Habilitations et Formation",
+    "Environnement de transbordement",
+    "Cadre légal de la sécurité (LTr, LAA, OPA, CO)",
+    "Ordonnance sur les travaux de construction (OTConst)",
+    "Facteur humain et Matrice des risques",
+    "Travaux à proximité de lignes électriques",
+    "Gestion des substances dangereuses",
+    "Directive CFST 6512 (Équipements de travail)",
+    "Substances Dangereuses Historiques (Amiante, Plomb, PCB)",
+    "Conformité et Mise en circulation (LSPro/OMach)",
+    "Travaux à proximité de lignes aériennes",
+    "Principe STOP",
+    "Protection contre les chutes",
+    "Utilisation des échelles portables",
+    "Planification de la sécurité avant travaux",
+    "Typologie des mesures (IDS)",
+    "Travaux de peu d'ampleur",
+    "Méthodologie d'identification des dangers",
+    "Planification des mesures de sécurité",
+    "Directive MSST (Appel à des spécialistes)",
+    "Sécurité des travaux en hauteur",
+    "Sécurité électrique sur chantier",
+    "Génie civil et travaux souterrains",
+    "Organisation en cas d'urgence",
+    "Directive MSST (CFST 6508)",
+    "Dangers particuliers (Annexe 1)",
+    "Solution de branche (Solution interentreprises)",
+    "Matrice de mise en œuvre (Critères d'assujettissement)",
+    "Spécialiste de la sécurité au travail (STPS)",
+    "Participation des travailleurs",
+    "Méthode en 5 étapes",
+    "Principe S-T-O-P",
+    "Responsabilité et Participation",
+    "Identification des dangers",
+    "Dangers électriques",
+    "Appel aux spécialistes MSST",
+    "Sécurisation contre l'ensevelissement",
+    "Balisage et protection contre les chutes",
+    "Accès et Évacuation",
+    "Risques Atmosphériques et Hydrauliques",
+    "Procédure STOP (Droit de retrait)",
+    "Cadre Législatif SST",
+    "Obligations de l'employeur (Art. 82 LAA)",
+    "Système MSST (Directive 6508)",
+    "Terminologie du Risque",
+    "Sécurité des fouilles et tranchées (OTConst)",
+    "Travaux en hauteur",
+    "Les 10 éléments du système de sécurité",
+    "Détermination des dangers et appréciation du risque",
+    "Règles vitales",
+    "Organisation de la sécurité (Rôles et Responsabilités)",
+    "Formation et Instruction",
+    "Planification et réalisation des mesures",
+    "Protection de la santé (Ergonomie et Hygiène)",
+    "Concept de sécurité OTConst",
+    "Règles vitales et Principe STOPP",
+    "Méthodologie des travaux électriques",
+    "EPI contre les arcs électriques",
+    "Travail en hauteur et protection antichute",
+    "Gestion de l'amiante",
+    "Travail seul",
+    "Pyramide légale de la SST",
+    "Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr)",
+    "Responsabilité Civile (Code des Obligations)",
+    "Mécanisme de l'accident",
+    "Norme SIA 112",
+    "Rôles et Responsabilités (Maîtrise)",
+    "Types de Rémunération",
+    "Planification Temporelle (Gantt & PERT)",
+    "Rapport de Régie",
+    "Calcul de Coûts et Métrés",
+    "Signalisation de Chantier",
+    "Planification de projet",
+    "Méthode QQOQCCP",
+    "Diagramme de Gantt",
+    "Méthode PERT",
+    "Rôles : Maître d'ouvrage vs Maître d'œuvre",
+    "Types de prix (Rémunération)",
+    "Normes SIA",
+    "Contrat d'entreprise",
+    "Définitions fondamentales de la maintenance",
+    "Cadre légal suisse (LAA et OPA)",
+    "Systèmes de Management QSE (ISO)",
+    "Responsabilités et Rôles",
+    "Contrôle des équipements spécifiques",
+    "Cycle de Maintenance (Définitions)",
+    "Personne compétente",
+    "Responsabilités Légales (LAA Art. 82)",
+    "Maintenance des équipements de travail",
+    "Cadre légal (LAA et OPA)",
+    "Terminologie de la maintenance",
+    "Systèmes de Management Intégré (ISO)",
+    "Constitution de la matière et charges électriques",
+    "Différence de Potentiel (DDP) et Potentiel électrique",
+    "Loi d'Ohm et Résistance électrique",
+    "Circuits Mixtes (Série-Parallèle)",
+    "Technique de Mesure et Extension de Calibre",
+    "Diviseurs de Tension et Potentiomètres",
+    "Chute de tension et dimensionnement des lignes",
+    "Puissances en courant alternatif (P, Q, S)",
+    "Systèmes triphasés et couplages (Étoile/Triangle)",
+    "Compensation du facteur de puissance (cos φ)",
+    "Charge asymétrique et courant de neutre",
+    "Résistance interne et sources de tension",
+    "Impédance (RLC) et déphasage",
+    "Influence de la Température sur la Résistance",
+    "Chute de tension en ligne",
+    "Éléments secondaires (Accumulateurs)",
+    "Corrosion électrochimique",
+    "Automates Programmables (API)",
+    "Transformateurs de puissance",
+    "Lecture de schémas électriques",
+    "Lois fondamentales du courant continu (DC)",
+    "Dimensionnement de lignes et Chute de tension",
+    "Influence de la température sur les résistances",
+    "Générateurs de tension et Stockage",
+    "Puissance, Énergie et Rendement",
+    "Courant Alternatif Monophasé (AC)",
+    "Transformateurs",
+    "Dimensionnement de Ligne et Chute de Tension",
+    "Systèmes Triphasés et Couplages",
+    "Puissances en Courant Alternatif",
+    "Sources de Tension Réelles et Résistance Interne",
+    "Impédance et Circuits RLC",
+    "Digitalisation de la formation (Digital Learning)",
+    "Outils collaboratifs en formation",
+    "Gamification et interactivité (Ludopédagogie)",
+    "Intelligence Artificielle en formation",
+    "Évaluation des compétences (Upskilling/Reskilling)",
+    "Électrotechnique fondamentale",
+    "Loi d'Ohm",
+    "Distribution électrique",
+    "Sécurité électrique et Hygiène au travail",
+    "Gestion de la documentation technique",
+    "Fiche de cours (FCP)"
+  ],
+  "categories": {
+    "Physique / Technique d'éclairage": [
+      "Grandeurs photométriques fondamentales"
+    ],
+    "Sécurité / Normes": [
+      "Contrôle de sécurité électrique (OIBT/NIBT)"
+    ],
+    "Planification / Réglementation": [
+      "Normes d'éclairage public (EN 13201 & SLG 202)"
+    ],
+    "Génie Civil / Maintenance": [
+      "Stabilité et maintenance des structures porteuses"
+    ],
+    "Technologie / Efficacité énergétique": [
+      "Technologies de sources lumineuses (LED)"
+    ],
+    "Exploitation réseau / Domotique": [
+      "Gestion et Commande de l'éclairage (Smart Lighting)"
+    ],
+    "Méthodologie de communication": [
+      "La Lanterne Magique"
+    ],
+    "Analyse systémique": [
+      "Les 4 Pôles de la communication"
+    ],
+    "Pédagogie": [
+      "Définition de l'objectif d'intervention",
+      "Typologie des formations",
+      "Objectifs opérationnels et évaluables",
+      "Situation de travail formatrice",
+      "Taxonomie de Bloom"
+    ],
+    "Communication": [
+      "Adaptation à l'auditoire",
+      "Posture du formateur",
+      "Communication et Gestion des Parties Prenantes",
+      "Gestion des Parties Prenantes"
+    ],
+    "Méthodologie et Pédagogie": [
+      "Carte Mentale (Heuristic Map)"
+    ],
+    "Ingénierie de Formation": [
+      "Structuration de l'action de formation",
+      "Clôture et Transfert",
+      "Processus de Production de Compétences",
+      "Progression Pédagogique"
+    ],
+    "Ingénierie de formation": [
+      "Recueil des besoins en formation",
+      "Analyse des besoins de formation",
+      "Analyse du besoin de formation",
+      "Contextualisation de l'évaluation",
+      "Analyse du contexte de formation",
+      "AFEST (Action de Formation en Situation de Travail)"
+    ],
+    "Animation et Communication": [
+      "Technique de la Discussion Post-it"
+    ],
+    "Méthodologie": [
+      "Structuration du plan de discussion",
+      "Co-construction",
+      "Les 4 mesures de base de la maintenance",
+      "Stratégies de maintenance (CBM, CM, TPM)",
+      "Méthode QQOQCCP",
+      "Gestion de la documentation technique"
+    ],
+    "Techniques de communication": [
+      "Typologie des questions d'animation"
+    ],
+    "Management d'équipe": [
+      "Régulation de la dynamique de groupe"
+    ],
+    "Ingénierie Pédagogique": [
+      "Parcours de formation mixte (Blended Learning)",
+      "Objectifs Pédagogiques (OPG/OPP)",
+      "Objectifs SMART",
+      "Grille d'observation"
+    ],
+    "Stratégie Pédagogique": [
+      "Complémentarité des modalités"
+    ],
+    "Gestion de la formation": [
+      "Engagement du Management",
+      "Cycle de Formation"
+    ],
+    "Psychopédagogie": [
+      "Apprentissage Actif",
+      "Stratégies d'apprentissage (Felder & Silverman)"
+    ],
+    "Méthodes Pédagogiques": [
+      "Apprentissage Social (Social Learning)"
+    ],
+    "Communication / Méthodologie": [
+      "Méthode CQQCOQP",
+      "Analyse de la demande"
+    ],
+    "Gestion de formation": [
+      "Démarche contractuelle par objectifs"
+    ],
+    "Sécurité (HSE) / Législation": [
+      "Instruction MSST et Sécurité"
+    ],
+    "Pédagogie professionnelle": [
+      "Apprentissage Social (Social Learning)",
+      "Typologie des compétences (Savoirs)"
+    ],
+    "Psychologie de l'apprentissage": [
+      "Théorie de l'apprentissage social (Bandura)",
+      "Renforcement Vicariant"
+    ],
+    "Méthodologie de formation": [
+      "Apprentissage entre pairs"
+    ],
+    "Stratégie de formation": [
+      "Changement de paradigme éducatif",
+      "Matrice de choix des outils"
+    ],
+    "Technologies éducatives": [
+      "Social Learning Digital"
+    ],
+    "Gestion de projet / Commercial": [
+      "Réponse au cahier des charges"
+    ],
+    "Commercial / Administration": [
+      "Proposition commerciale"
+    ],
+    "Juridique / Administratif": [
+      "Contractualisation"
+    ],
+    "Gestion du stress et Sécurité comportementale": [
+      "Respiration en carré"
+    ],
+    "Santé et Sécurité au travail": [
+      "Respiration abdominale"
+    ],
+    "Communication et Leadership (Module AA02)": [
+      "Gestion du trac (via la respiration)"
+    ],
+    "Management / Ressources Humaines": [
+      "Ingénierie de formation (Analyse des besoins)"
+    ],
+    "Management / Organisation": [
+      "Gestion du changement organisationnel"
+    ],
+    "Technique / Exploitation Réseau": [
+      "Processus de dépannage et gestion des avaries"
+    ],
+    "Gestion opérationnelle": [
+      "Planification opérationnelle (Rotation)"
+    ],
+    "Sécurité (HSE)": [
+      "Sécurité des interventions d'urgence",
+      "Sécurité des Personnes et Mise à la Terre",
+      "Cadre sécuritaire de la maintenance",
+      "Sécurité électrique et Hygiène au travail"
+    ],
+    "Planification": [
+      "Scénario Pédagogique",
+      "Respect des gabarits (OLEI)",
+      "Plan de Maintenance",
+      "Clarification du mandat",
+      "Critères de Détermination des Intervalles",
+      "Stratégies de maintenance (CBM, CM, TPM)",
+      "Planification Temporelle (Gantt & PERT)"
+    ],
+    "Didactique": [
+      "Progression Pédagogique",
+      "Gamification et interactivité (Ludopédagogie)"
+    ],
+    "Animation": [
+      "Méthodes et Techniques Actives",
+      "Méthodes Pédagogiques",
+      "Dynamique de groupe (RAVI)",
+      "Gestion de la Motivation (Participants Ravis)"
+    ],
+    "Contrôle Qualité": [
+      "Évaluation de la formation"
+    ],
+    "Outils du formateur": [
+      "Guide Animateur"
+    ],
+    "Gestion de groupe": [
+      "Chronobiologie en formation",
+      "Gestion des situations délicates"
+    ],
+    "Ingénierie pédagogique": [
+      "Adaptation des contenus et modalités",
+      "Critères de sélection de la technique"
+    ],
+    "Évaluation": [
+      "Évaluation des acquis"
+    ],
+    "Assurance Qualité": [
+      "Certification Qualité (Référentiel Qualiopi)"
+    ],
+    "Pédagogie et Animation": [
+      "Climat d'apprentissage"
+    ],
+    "Pédagogie Différenciée": [
+      "Boussole de l'aide (Autonomie)"
+    ],
+    "Communication Assertive": [
+      "Méthode DESC"
+    ],
+    "Planification Pédagogique": [
+      "Ingénierie de formation"
+    ],
+    "Théorie de l'apprentissage": [
+      "Triangle Pédagogique (Houssaye)",
+      "Triangle Pédagogique (Houssaye)"
+    ],
+    "Modalité pédagogique": [
+      "AFEST (Action de Formation En Situation de Travail)",
+      "Formation en situation de travail vs Hors travail"
+    ],
+    "Évaluation et Impact": [
+      "Transfert des acquis"
+    ],
+    "Outils Pédagogiques": [
+      "Guide Animateur"
+    ],
+    "Management de la Formation": [
+      "Changement de Paradigme (Formation vs Compétence)"
+    ],
+    "Psychologie du Travail / Leadership": [
+      "Résistance au Changement et Freins"
+    ],
+    "Performance Opérationnelle": [
+      "Transfert des Acquis"
+    ],
+    "Management Stratégique": [
+      "Rôle des Acteurs et Cadre Systémique"
+    ],
+    "Évaluation pratique": [
+      "Outils d'évaluation en situation (Contexte fort)"
+    ],
+    "Méthodologie d'évaluation": [
+      "Outils d'évaluation standardisés (Contexte faible)"
+    ],
+    "Temporalité d'apprentissage": [
+      "Synchronisme pédagogique"
+    ],
+    "Environnement d'apprentissage": [
+      "Environnement Présentiel vs Distanciel"
+    ],
+    "Méthode pédagogique": [
+      "Séquence réflexive"
+    ],
+    "Analyse du travail": [
+      "Distinction Prescrit vs Réel"
+    ],
+    "Gestion de projet de formation": [
+      "Diagnostic d'opportunité et de faisabilité"
+    ],
+    "Transmission de savoir-faire": [
+      "Démonstration pratique (Enseignant/Étudiant)"
+    ],
+    "Sécurité et Pratique": [
+      "Mise en situation et Simulation"
+    ],
+    "Analyse et Diagnostic": [
+      "Apprentissage par problème / Étude de cas"
+    ],
+    "Gestion et Planification": [
+      "Apprentissage par projet"
+    ],
+    "Pédagogie et Leadership": [
+      "Enseignement par les pairs / Tutorat"
+    ],
+    "Immersion professionnelle": [
+      "Apprentissage par entraînement (Stage)"
+    ],
+    "Dynamique de groupe": [
+      "Phase de présentation des participants"
+    ],
+    "Techniques d'animation": [
+      "Protocole de lancement d'activité",
+      "Posture et Animation"
+    ],
+    "Outils d'animation": [
+      "Techniques de présentation actives"
+    ],
+    "Formation digitale": [
+      "Adaptation à la classe virtuelle"
+    ],
+    "Communication & Management": [
+      "Méthode DESC"
+    ],
+    "Animation de formation": [
+      "Débriefing bienveillant"
+    ],
+    "Législation et Normes": [
+      "Cadre légal et normatif (OLEl)",
+      "Cadre légal de la documentation (OLEI)",
+      "Cadre Légal et Normatif",
+      "Contrôle périodique (OIBT)",
+      "Cadre Légal et Normatif Suisse",
+      "Directive CFST 6508 (MSST)",
+      "Conformité des équipements de levage",
+      "Cadre légal de la sécurité (LTr, LAA, OPA, CO)",
+      "Directive CFST 6512 (Équipements de travail)",
+      "Directive CFST 6508 (MSST)"
+    ],
+    "Sécurité et Conception": [
+      "Distances de sécurité (Lignes aériennes)"
+    ],
+    "Génie Civil et Mécanique": [
+      "Statique des supports et fondations"
+    ],
+    "Construction de Réseaux": [
+      "Technique de pose souterraine (Câbles)"
+    ],
+    "Planification de Réseau": [
+      "Coexistence et Croisements de réseaux"
+    ],
+    "Environnement": [
+      "Protection de l'environnement et de la faune",
+      "Traitement des déchets de maintenance"
+    ],
+    "Gestion de patrimoine / Informatique": [
+      "Systèmes d'Information Réseau (SIR)"
+    ],
+    "Géodésie / Topographie": [
+      "Systèmes de Coordonnées Suisses (MN95)"
+    ],
+    "Technique de mesure": [
+      "Méthodes de Métrage et Relevé",
+      "Mesure de la valeur efficace (TrueRMS)"
+    ],
+    "Documentation technique": [
+      "Croquis de montage et Dessin technique"
+    ],
+    "Administration / Cybersécurité": [
+      "Gestion et Sécurité des Données"
+    ],
+    "Administration et IT": [
+      "Gestion des données (Data Management)"
+    ],
+    "Mensuration": [
+      "Systèmes de métrage et relevé"
+    ],
+    "Mensuration / Technologie": [
+      "GNSS (Global Navigation Satellite System)"
+    ],
+    "Informatique de réseau": [
+      "SIG et SIR (GIS / NIS)"
+    ],
+    "Législation / Normes": [
+      "Cadre légal et Normes (SIA 405)"
+    ],
+    "Dessin technique": [
+      "Représentation graphique et Schémas"
+    ],
+    "Classification technique": [
+      "Ligne ordinaire"
+    ],
+    "Construction / Génie civil": [
+      "Profondeur d'implantation"
+    ],
+    "Réglementation": [
+      "Cadre légal et normatif (OLEI/OICF)",
+      "Ligne Ordinaire",
+      "Directives d'Examen Professionnel (EP)"
+    ],
+    "Sécurité au travail": [
+      "Sécurité sur poteaux en bois (CFST 6506)",
+      "Méthodes de Travail Électriques",
+      "Accès sécurisé aux fouilles",
+      "Équipements de Protection Individuelle (EPI)",
+      "Équipements de Protection Individuelle (EPI)"
+    ],
+    "Planification et Sécurité": [
+      "Distances de sécurité"
+    ],
+    "Mécanique / Statique": [
+      "Statique des supports (Haubanage/Contrefiche)"
+    ],
+    "Exploitation": [
+      "Maintenance et contrôle des lignes",
+      "Périodicité et Documentation (OICF)",
+      "Surveillance des installations"
+    ],
+    "Mécanique des lignes": [
+      "Flèche et Tension (Mécanique)",
+      "Dimensionnement statique des supports"
+    ],
+    "Dimensionnement": [
+      "Surcharge (Hypothèse de charge)",
+      "Somme des diamètres",
+      "Résistance des Matériaux"
+    ],
+    "Structure": [
+      "Classes de solidité des supports bois"
+    ],
+    "Matériaux": [
+      "Matériaux Conducteurs",
+      "Influence de la température sur la résistance"
+    ],
+    "Statique": [
+      "Calcul d'ancrage et haubanage",
+      "Forces sur Plan Incliné"
+    ],
+    "Physique appliquée": [
+      "Comportement mécanique des conducteurs",
+      "Tribologie et Lubrification",
+      "Puissance, Énergie et Rendement"
+    ],
+    "Sécurité et Législation": [
+      "Sécurité et Directive CFST 6506"
+    ],
+    "Maintenance": [
+      "Inspection et Maintenance des lignes",
+      "Inspection visuelle des installations MT/BT"
+    ],
+    "Mécanique générale": [
+      "Frottement (Friction)"
+    ],
+    "Mécanique statique": [
+      "Levier et Couple (Moment)"
+    ],
+    "Mécanique dynamique": [
+      "Démultiplication de Force (Poulies et Treuils)"
+    ],
+    "Mathématiques appliquées": [
+      "Calcul Vectoriel des Forces"
+    ],
+    "Exploitation et Maintenance": [
+      "Inspection et Maintenance Préventive des Postes (TS)"
+    ],
+    "Équipements Haute Tension": [
+      "Transformateur de Puissance (Distribution)",
+      "Appareillage Moyenne Tension (MT)"
+    ],
+    "Distribution Électrique": [
+      "Distribution Basse Tension (BT) et Protection",
+      "Tableau de Distribution Basse Tension (BT)"
+    ],
+    "Gestion de Réseau": [
+      "Systèmes d'Information Réseau (NIS/SIG)"
+    ],
+    "Normes et Sécurité": [
+      "Les 3 Méthodes de Travail (EN 50110-1)"
+    ],
+    "Procédures d'intervention": [
+      "Travaux hors tension (Méthode 1)",
+      "Travaux à proximité de tension (Méthode 2)"
+    ],
+    "Sécurité opérationnelle": [
+      "Les 5 Règles de Sécurité",
+      "Équipements de Protection Individuelle (EPI)",
+      "Installations existantes (Art. 30 OTConst)",
+      "Sécurité des fouilles et tranchées (OTConst)",
+      "Travaux en hauteur"
+    ],
+    "Techniques spéciales": [
+      "Travaux sous tension (AuS - Méthode 3)"
+    ],
+    "Gestion de chantier": [
+      "Organisation et Responsabilités",
+      "Organisation et Rôles de Sécurité"
+    ],
+    "Matériel de sécurité": [
+      "Équipements de Protection (EPI/EPC)"
+    ],
+    "Principes fondamentaux": [
+      "Chaîne de sécurité antichute (Le système des 4 éléments)"
+    ],
+    "Physique et physiologie": [
+      "Amortissement du choc d'arrêt"
+    ],
+    "Équipements (EPI)": [
+      "Distinction EN 361 vs EN 358",
+      "Antichutes mobiles (EN 353)",
+      "Antichutes à rappel automatique (EN 360)"
+    ],
+    "Infrastructure": [
+      "Ancrage et résistance structurelle"
+    ],
+    "Gestion de crise": [
+      "Sauvetage d'urgence et délai d'intervention"
+    ],
+    "Exploitation et Sécurité": [
+      "Programme de manœuvre"
+    ],
+    "Gestion de maintenance": [
+      "Mandat de travail"
+    ],
+    "Santé et Sécurité au Travail (SST)": [
+      "Mesures de protection (5 règles vitales)",
+      "Sécurité des opérations de levage"
+    ],
+    "Technique de réseau": [
+      "Maintenance de ligne aérienne MT"
+    ],
+    "Topologie de réseau": [
+      "Exploitation en boucle (Ligne en boucle)"
+    ],
+    "Sécurité et Administration": [
+      "Mandat de travail et ordre de manœuvre"
+    ],
+    "Organisation": [
+      "Hiérarchie des responsabilités (Rôles)",
+      "Organes d'exécution et de surveillance",
+      "Organisation en cas d'urgence"
+    ],
+    "Exploitation réseau": [
+      "Déroulement chronologique des manœuvres",
+      "Champ tournant et comparaison de phases"
+    ],
+    "Technique de protection et commande": [
+      "Gestion des modifications techniques et protections"
+    ],
+    "Normes et Réglementations": [
+      "Directive ESTI n°100"
+    ],
+    "Gestion de la maintenance": [
+      "Stratégies de Maintenance",
+      "Stratégies de Maintenance",
+      "Stratégies de Maintenance",
+      "Mission et objectifs de la maintenance"
+    ],
+    "Opérations techniques": [
+      "Niveaux d'Intervention (I-E-R)",
+      "Remise en État (Instandsetzung)",
+      "Révision (Partielle et Générale)",
+      "Processus de Rétablissement de l'État de Référence"
+    ],
+    "Technique Lignes Aériennes": [
+      "Diagnostic des Supports Bois"
+    ],
+    "Organisation du travail": [
+      "Mandat de Travail et Sécurité",
+      "Travail seul"
+    ],
+    "Sécurité et Protection": [
+      "Mesure de mise à la terre (Earthing Measurement)",
+      "Équipements de Protection Individuelle (EPI)"
+    ],
+    "Dimensionnement Réseau": [
+      "Courant de court-circuit (Icc)"
+    ],
+    "Gestion des Actifs (Asset Management)": [
+      "Système d'Information Réseau (NIS)"
+    ],
+    "Gestion d'actifs": [
+      "Typologie des stratégies de maintenance"
+    ],
+    "Législation": [
+      "Cadre légal suisse (OICF/LIE/LApEl)",
+      "Cadre Légal de la Sécurité (LAA vs LTr)",
+      "Travaux de peu d'ampleur",
+      "Responsabilité et Participation",
+      "Cadre Législatif SST",
+      "Cadre légal (LAA et OPA)"
+    ],
+    "Gestion financière": [
+      "Optimisation technico-économique",
+      "Types de Rémunération"
+    ],
+    "Réglementation et Sécurité": [
+      "Contrôle OIBT (NIV)"
+    ],
+    "Sécurité électrique": [
+      "Mise à la terre (Earthing)",
+      "Méthodes de travail (AM1, AM2, AM3)"
+    ],
+    "Dimensionnement réseau": [
+      "Paramètres de court-circuit"
+    ],
+    "Technologie MT": [
+      "Technologie SF6 (Hexafluorure de soufre)"
+    ],
+    "Santé et Sécurité au travail (SST)": [
+      "Gestion des substances dangereuses (Amiante)"
+    ],
+    "Asset Management": [
+      "Maintenance et évaluation d'état"
+    ],
+    "Sécurité et Statique": [
+      "Jugement de la stabilité du poteau"
+    ],
+    "Inspection et Matériaux": [
+      "Contrôle de l'état du bois"
+    ],
+    "Mécanique et Physique": [
+      "Modification des forces statiques"
+    ],
+    "Technique de travail": [
+      "Assurage contre le renversement",
+      "Travaux en hauteur et Échelles (Art. 20-21 OTConst)"
+    ],
+    "Santé et Sécurité (EPI)": [
+      "Protection contre les chutes (EPI)"
+    ],
+    "Réseaux électriques": [
+      "Distinction Courant Fort vs Courant Faible",
+      "Systèmes triphasés et couplages (Étoile/Triangle)"
+    ],
+    "Prévention": [
+      "Évaluation du risque",
+      "Principe STOP",
+      "Planification et réalisation des mesures"
+    ],
+    "Ressources Humaines": [
+      "Qualification du personnel",
+      "Formation et Instruction"
+    ],
+    "Matériel": [
+      "Gestion des Équipements (EPI et Outillage)"
+    ],
+    "Secours": [
+      "Gestion de l'urgence"
+    ],
+    "Exploitation & Maintenance": [
+      "Inspection et Maintenance Préventive des Postes"
+    ],
+    "Sécurité & Protection": [
+      "Système de Mise à la Terre (MALT)"
+    ],
+    "Haute Tension (MT)": [
+      "Appareillage de Coupure Moyenne Tension (MT)"
+    ],
+    "HSE (Hygiène Sécurité Environnement)": [
+      "Signalisation et Sécurité des Installations"
+    ],
+    "Génie Civil": [
+      "Intégrité Structurelle (Génie Civil)"
+    ],
+    "Législation et Sécurité": [
+      "Cadre Légal et OPA (Art. 32b)"
+    ],
+    "Théorie de la maintenance": [
+      "Les 7 Bases de la Maintenance",
+      "Les 7 Bases de la Maintenance",
+      "Définitions fondamentales de la maintenance",
+      "Terminologie de la maintenance"
+    ],
+    "Technique métier": [
+      "Tâches Spécifiques de l'Électricien de Réseau"
+    ],
+    "Gestion administrative": [
+      "Documentation et Traçabilité",
+      "Matrice de mise en œuvre (Critères d'assujettissement)",
+      "Documentation et Traçabilité"
+    ],
+    "Maintenance préventive": [
+      "Surveillance et Inspection"
+    ],
+    "Gestion technique": [
+      "Maintenance des réseaux électriques",
+      "Maintenance des réseaux énergétiques",
+      "Maintenance des équipements de travail"
+    ],
+    "Opérationnel": [
+      "Gestion des perturbations",
+      "Remise en état (Planifiée vs Non planifiée)"
+    ],
+    "Diagnostic": [
+      "Contrôle de l'état"
+    ],
+    "Administration": [
+      "Communication et Mandats",
+      "Identification des acteurs (N° OMoD)",
+      "Gestion administrative de la maintenance",
+      "Documentation et Traçabilité"
+    ],
+    "Gestion de la qualité": [
+      "Gestion des incidents et perturbations"
+    ],
+    "Ingénierie de maintenance": [
+      "Cycle de vie et fiabilité (Courbe en baignoire)"
+    ],
+    "Maintenance prédictive": [
+      "Contrôle d'état (Condition Monitoring)"
+    ],
+    "Mécanique": [
+      "Système tribologique"
+    ],
+    "Chimie industrielle / Mécanique": [
+      "Composition des graisses lubrifiantes"
+    ],
+    "Législation et Administration": [
+      "Document de suivi OMoD"
+    ],
+    "Gestion des déchets": [
+      "Procédés d'élimination (Codes D)",
+      "Procédés de valorisation (Codes R)"
+    ],
+    "Sécurité et Transport": [
+      "Transport de marchandises dangereuses (ADR/SDR)"
+    ],
+    "Stratégie": [
+      "Objectifs de la maintenance (DFS)"
+    ],
+    "Opérations": [
+      "Processus de remise en état"
+    ],
+    "Technique": [
+      "Diagnostic et Surveillance",
+      "Calculs de Génie Civil"
+    ],
+    "Mécanique / Physique": [
+      "Tribologie"
+    ],
+    "Environnement / Légal": [
+      "Gestion des déchets et Environnement"
+    ],
+    "Sécurité & Normes": [
+      "Catégories de mesure (CAT I-IV)"
+    ],
+    "Haute & Basse Tension": [
+      "Transformateurs de mesure (TI / TP)"
+    ],
+    "Protection de réseau": [
+      "Impédance de boucle et courant de court-circuit (Ik)"
+    ],
+    "Maintenance réseau": [
+      "Localisation de défauts de câbles"
+    ],
+    "Analyse réseau": [
+      "Qualité du réseau (Power Quality)"
+    ],
+    "Contrôle & Sécurité": [
+      "Mesure d'isolement"
+    ],
+    "Administration de la formation": [
+      "Procédure d'admission"
+    ],
+    "Organisation pédagogique": [
+      "Structure modulaire (Blocs)"
+    ],
+    "Certification": [
+      "Certification finale"
+    ],
+    "Fondamentaux du métier": [
+      "Profil professionnel Electricien de réseau (NE/ER)"
+    ],
+    "Formation Professionnelle": [
+      "Cursus de formation (CFC vers Brevet)"
+    ],
+    "Mathématiques Appliquées": [
+      "Notation Scientifique et Préfixes d'Ingénierie",
+      "Notation Scientifique et Puissances de 10",
+      "Transposition et Manipulation de Formules"
+    ],
+    "Physique / Métrologie": [
+      "Conversion d'Unités (Système SI)",
+      "Système International d'Unités (SI)"
+    ],
+    "Algèbre": [
+      "Manipulation de Formules Algébriques",
+      "Systèmes d'Équations Linéaires",
+      "Transformation de Formules",
+      "Systèmes d'Équations Linéaires",
+      "Transformation de formules",
+      "Opérations algébriques fondamentales"
+    ],
+    "Géométrie": [
+      "Trigonométrie (Triangle Rectangle)",
+      "Trigonométrie dans le Triangle Rectangle",
+      "Trigonométrie (Triangle rectangle)"
+    ],
+    "Électrotechnique": [
+      "Triangle des Puissances (AC)",
+      "Calculs de Circuits RLC",
+      "Triangle des Puissances (AC)",
+      "Résistance Électrique et Influence Thermique"
+    ],
+    "Physique / Mathématiques": [
+      "Calcul Vectoriel"
+    ],
+    "Mathématiques / Électricité": [
+      "Grandeurs Vectorielles"
+    ],
+    "Arithmétique": [
+      "Préfixes SI et Puissances de dix"
+    ],
+    "Géométrie vectorielle": [
+      "Calcul vectoriel"
+    ],
+    "Outils": [
+      "Maîtrise de la calculatrice scientifique"
+    ],
+    "Métrologie / Physique": [
+      "Notation Scientifique et Unités SI"
+    ],
+    "Mathématiques / Mécanique": [
+      "Calcul Vectoriel"
+    ],
+    "Physique": [
+      "Électromagnétisme Appliqué"
+    ],
+    "Gestion de Projet": [
+      "Contrôle des documents d'exécution",
+      "Gestion de Projet et Rôle du Chef de Projet"
+    ],
+    "Exécution de Mandats": [
+      "Gestion des modifications de chantier"
+    ],
+    "Droit et Administration": [
+      "Marchés Publics (AIMP)",
+      "Marchés Publics et Soumissions",
+      "Marchés Publics"
+    ],
+    "Communication et Management": [
+      "Coordination des parties prenantes"
+    ],
+    "Administration de Projet": [
+      "Cycle de vie documentaire"
+    ],
+    "Finances et Foncier": [
+      "Calcul des indemnités (Pertes de culture)"
+    ],
+    "Qualité et Technique": [
+      "Vérification et Contrôle Documentaire"
+    ],
+    "Droit Foncier": [
+      "Droits de Passage et Indemnités"
+    ],
+    "Technique / Génie Civil": [
+      "Métrés et Calculs Techniques"
+    ],
+    "Environnement Professionnel": [
+      "Cadre Institutionnel (AES)"
+    ],
+    "Gestion de projet": [
+      "Gestion de projet et Coordination",
+      "Gestion des modifications de chantier",
+      "Indemnités accessoires et dommages de construction",
+      "Rôles et Responsabilités (Maîtrise)",
+      "Planification de projet"
+    ],
+    "Technique et Qualité": [
+      "Contrôle des documents d'exécution"
+    ],
+    "Administration et Foncier": [
+      "Indemnités pour dommages de culture"
+    ],
+    "Droit & Administration": [
+      "Droit de passage et Servitude",
+      "Principes d'indemnisation des servitudes"
+    ],
+    "Environnement & Planification": [
+      "Classification des sols agricoles (Aptitudes culturales)"
+    ],
+    "Technique de construction": [
+      "Normes de pose en zone agricole",
+      "Dommages de chantier vs Inconvénients permanents"
+    ],
+    "Finances & Calculs": [
+      "Mécanisme d'indemnisation des regards",
+      "Indemnisation des conduites souterraines"
+    ],
+    "Économie": [
+      "Facteurs économiques et temporels"
+    ],
+    "Droit foncier": [
+      "Principe de tolérance d'utilité publique"
+    ],
+    "Gestion de projet / Finances": [
+      "Structure de l'indemnisation agricole"
+    ],
+    "Communication / Management": [
+      "Négociation foncière (Valeur vs Prix)"
+    ],
+    "Normes et Standards": [
+      "Taux USP (Union Suisse des Paysans)"
+    ],
+    "Environnement & Génie Civil": [
+      "Classification agronomique des terrains (A et P)"
+    ],
+    "Technologie Réseau": [
+      "Barèmes pour supports (Poteaux et Pylônes)"
+    ],
+    "Économie d'entreprise": [
+      "Indemnité de passage de ligne (Survol)"
+    ],
+    "Planification de tracé": [
+      "Facteurs de majoration techniques"
+    ],
+    "Finance": [
+      "Capitalisation et Durée"
+    ],
+    "Responsabilité": [
+      "Obligations de l'employeur (Art. 82 LAA / Art. 328 CO)",
+      "Obligations du travailleur (Art. 82 LAA / OPA)",
+      "Obligations de l'employeur (Art. 82 LAA)",
+      "Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr)",
+      "Obligations du travailleur (Art. 82 LAA / OPA)"
+    ],
+    "Gestion de la sécurité": [
+      "Système MSST (Directive CFST 6508)",
+      "Système MSST (Directive CFST 6508)",
+      "Méthode en 5 étapes",
+      "Système MSST (Directive 6508)",
+      "Les 10 éléments du système de sécurité",
+      "Directive MSST (CFST 6508)"
+    ],
+    "Législation technique": [
+      "Ordonnance sur la prévention des accidents (OPA)",
+      "Loi sur les installations électriques (LIE)"
+    ],
+    "Bases juridiques": [
+      "Hiérarchie des normes de sécurité"
+    ],
+    "Droit du travail": [
+      "Responsabilité de l'employeur et du travailleur",
+      "Participation des travailleurs",
+      "Responsabilités Légales (LAA Art. 82)"
+    ],
+    "Psychologie du travail": [
+      "Facteur Humain"
+    ],
+    "Prévention technique": [
+      "Hiérarchie des mesures de protection (STOP)",
+      "Principe STOP"
+    ],
+    "Législation et Réglementation": [
+      "OTConst (Ordonnance sur les travaux de construction)"
+    ],
+    "Gestion de projet et Sécurité": [
+      "Plan de sécurité et de protection de la santé"
+    ],
+    "Hygiène et Santé au travail": [
+      "Substances dangereuses et Diagnostic (Art. 32 OTConst)"
+    ],
+    "Management": [
+      "Organisation de la sécurité (Art. 5 OTConst)",
+      "Organisation de la sécurité (Rôles et Responsabilités)"
+    ],
+    "Planification et Préparation": [
+      "Repérage et protection des infrastructures souterraines"
+    ],
+    "Génie Civil / Sécurité": [
+      "Stabilité des parois : Talutage et Étayage",
+      "Sécurisation contre l'ensevelissement"
+    ],
+    "Technique de fouille": [
+      "Dimensionnement et ergonomie de la fouille"
+    ],
+    "Sécurité Chantier": [
+      "Protection périphérique et signalisation",
+      "Ordonnance sur les travaux de construction (OTConst)"
+    ],
+    "Sécurité de chantier": [
+      "Accès aux fouilles et puits",
+      "Balisage et protection contre les chutes"
+    ],
+    "Génie civil / Terrassement": [
+      "Stabilité des talus et justificatif de sécurité"
+    ],
+    "Risques spécifiques": [
+      "Travaux en espaces confinés (Puits)",
+      "Sécurité des travaux en hauteur",
+      "Sécurité électrique sur chantier",
+      "Génie civil et travaux souterrains"
+    ],
+    "Management de la sécurité": [
+      "Audit de sécurité",
+      "Système de sécurité d'entreprise"
+    ],
+    "Génie civil et Terrassement": [
+      "Sécurité des fouilles et tranchées"
+    ],
+    "Travaux en hauteur": [
+      "Mesures de protection sur les toits",
+      "Travaux de peu d'ampleur sur toits",
+      "Protection contre les chutes"
+    ],
+    "Équipements de travail": [
+      "Utilisation d'échafaudages roulants"
+    ],
+    "Installations électriques provisoires": [
+      "Éclairage de chantier"
+    ],
+    "Méthodologie de sécurité": [
+      "Portefeuille des phénomènes dangereux"
+    ],
+    "Identification des dangers": [
+      "Phénomènes dangereux particuliers"
+    ],
+    "Normes de sécurité": [
+      "Règles reconnues (SST/PS)"
+    ],
+    "Méthodologie d'analyse": [
+      "Délimitation du système (Systèmes partiels)"
+    ],
+    "Techniques de manutention": [
+      "Arrimage et Élingage"
+    ],
+    "Gestion des Ressources Humaines": [
+      "Habilitations et Formation"
+    ],
+    "Sécurité individuelle": [
+      "Équipements de Protection Individuelle (EPI)"
+    ],
+    "Logistique et Infrastructure": [
+      "Environnement de transbordement"
+    ],
+    "Gestion des Risques": [
+      "Facteur humain et Matrice des risques"
+    ],
+    "Contrôle et Qualité": [
+      "Audit de sécurité"
+    ],
+    "Sécurité Électrique": [
+      "Travaux à proximité de lignes électriques",
+      "Travaux à proximité de lignes aériennes",
+      "Méthodologie des travaux électriques"
+    ],
+    "Santé au travail": [
+      "Gestion des substances dangereuses",
+      "Protection de la santé (Ergonomie et Hygiène)"
+    ],
+    "Santé et Hygiène": [
+      "Substances Dangereuses Historiques (Amiante, Plomb, PCB)",
+      "Gestion de l'amiante"
+    ],
+    "Législation et Achat": [
+      "Conformité et Mise en circulation (LSPro/OMach)"
+    ],
+    "Gestion des risques": [
+      "Principe STOP",
+      "Typologie des mesures (IDS)",
+      "Dangers particuliers (Annexe 1)",
+      "Détermination des dangers et appréciation du risque"
+    ],
+    "Génie civil / Sécurité chantier": [
+      "Sécurité des fouilles et tranchées"
+    ],
+    "Equipements de travail": [
+      "Utilisation des échelles portables"
+    ],
+    "Organisation / Gestion de projet": [
+      "Planification de la sécurité avant travaux"
+    ],
+    "Gestion de la sécurité (SST)": [
+      "Méthodologie d'identification des dangers",
+      "Planification des mesures de sécurité"
+    ],
+    "Législation & Normes": [
+      "Directive MSST (Appel à des spécialistes)"
+    ],
+    "Mesures de protection": [
+      "Équipements de Protection Individuelle (EPI)"
+    ],
+    "Réglementation et Législation": [
+      "Directive MSST (CFST 6508)"
+    ],
+    "Organisation de la sécurité": [
+      "Solution de branche (Solution interentreprises)"
+    ],
+    "Rôles et Responsabilités": [
+      "Spécialiste de la sécurité au travail (STPS)"
+    ],
+    "Planification des mesures": [
+      "Principe S-T-O-P"
+    ],
+    "Analyse de risques": [
+      "Identification des dangers",
+      "Terminologie du Risque",
+      "Mécanisme de l'accident"
+    ],
+    "Risques techniques": [
+      "Dangers électriques"
+    ],
+    "Contrôle qualité": [
+      "Audit de sécurité"
+    ],
+    "Ressources": [
+      "Appel aux spécialistes MSST"
+    ],
+    "Logistique / Sécurité": [
+      "Accès et Évacuation"
+    ],
+    "Environnement / Santé": [
+      "Risques Atmosphériques et Hydrauliques"
+    ],
+    "Procédure / Responsabilité": [
+      "Procédure STOP (Droit de retrait)"
+    ],
+    "Institutionnel": [
+      "Organes d'exécution et de surveillance"
+    ],
+    "Règles de sécurité": [
+      "Règles vitales"
+    ],
+    "Intervention": [
+      "Organisation en cas d'urgence"
+    ],
+    "Législation et Organisation": [
+      "Concept de sécurité OTConst"
+    ],
+    "Comportement et Culture Sécurité": [
+      "Règles vitales et Principe STOPP"
+    ],
+    "Équipement de Protection": [
+      "EPI contre les arcs électriques"
+    ],
+    "Sécurité au Travail": [
+      "Travail en hauteur et protection antichute"
+    ],
+    "Droit et Législation": [
+      "Pyramide légale de la SST",
+      "Responsabilité Civile (Code des Obligations)"
+    ],
+    "Normes et Règlements": [
+      "Norme SIA 112",
+      "Normes SIA"
+    ],
+    "Administration de chantier": [
+      "Rapport de Régie"
+    ],
+    "Technique / Calcul": [
+      "Calcul de Coûts et Métrés"
+    ],
+    "Sécurité": [
+      "Signalisation de Chantier"
+    ],
+    "Planification temporelle": [
+      "Diagramme de Gantt",
+      "Méthode PERT"
+    ],
+    "Droit de la construction": [
+      "Rôles : Maître d'ouvrage vs Maître d'œuvre",
+      "Contrat d'entreprise"
+    ],
+    "Calcul de coûts": [
+      "Types de prix (Rémunération)"
+    ],
+    "Législation & Sécurité": [
+      "Cadre légal suisse (LAA et OPA)",
+      "Responsabilités et Rôles"
+    ],
+    "Management de la qualité": [
+      "Systèmes de Management QSE (ISO)"
+    ],
+    "Technique & Pratique": [
+      "Contrôle des équipements spécifiques"
+    ],
+    "Cadre Légal et Normatif": [
+      "Directive CFST 6512 (Équipements de travail)"
+    ],
+    "Maintenance Technique": [
+      "Cycle de Maintenance (Définitions)"
+    ],
+    "Sécurité et Équipement": [
+      "Équipements de Protection Individuelle (EPI)"
+    ],
+    "Ressources Humaines et Qualification": [
+      "Personne Compétente"
+    ],
+    "Gestion de la Qualité": [
+      "Documentation et Traçabilité"
+    ],
+    "Qualité et Environnement": [
+      "Systèmes de Management Intégré (ISO)"
+    ],
+    "Ressources Humaines / Sécurité": [
+      "Personne compétente"
+    ],
+    "Technique opérationnelle": [
+      "Contrôle des équipements spécifiques"
+    ],
+    "Physique fondamentale": [
+      "Constitution de la matière et charges électriques"
+    ],
+    "Électrotechnique de base": [
+      "Différence de Potentiel (DDP) et Potentiel électrique"
+    ],
+    "Analyse de circuits": [
+      "Loi d'Ohm et Résistance électrique",
+      "Circuits Mixtes (Série-Parallèle)",
+      "Diviseurs de Tension et Potentiomètres"
+    ],
+    "Métrologie": [
+      "Technique de Mesure et Extension de Calibre"
+    ],
+    "Distribution d'énergie": [
+      "Chute de tension et dimensionnement des lignes",
+      "Chute de tension en ligne",
+      "Dimensionnement de lignes et Chute de tension",
+      "Dimensionnement de Ligne et Chute de Tension"
+    ],
+    "Théorie AC": [
+      "Puissances en courant alternatif (P, Q, S)"
+    ],
+    "Qualité du réseau": [
+      "Compensation du facteur de puissance (cos φ)"
+    ],
+    "Distribution Basse Tension": [
+      "Charge asymétrique et courant de neutre"
+    ],
+    "Éléments galvaniques / Sécurité": [
+      "Résistance interne et sources de tension"
+    ],
+    "Théorie des circuits": [
+      "Impédance (RLC) et déphasage"
+    ],
+    "Stockage d'énergie": [
+      "Éléments secondaires (Accumulateurs)"
+    ],
+    "Maintenance & Matériaux": [
+      "Corrosion électrochimique"
+    ],
+    "Contrôle-Commande": [
+      "Automates Programmables (API)"
+    ],
+    "Machines électriques": [
+      "Transformateurs de puissance",
+      "Transformateurs"
+    ],
+    "Ingénierie & Sécurité": [
+      "Lecture de schémas électriques"
+    ],
+    "Théorie de base": [
+      "Lois fondamentales du courant continu (DC)",
+      "Électrotechnique fondamentale"
+    ],
+    "Physique des matériaux": [
+      "Influence de la température sur les résistances",
+      "Influence de la Température sur la Résistance"
+    ],
+    "Production & Stockage": [
+      "Générateurs de tension et Stockage"
+    ],
+    "Théorie des réseaux": [
+      "Courant Alternatif Monophasé (AC)"
+    ],
+    "Technique des réseaux": [
+      "Systèmes Triphasés et Couplages"
+    ],
+    "Électrotechnique générale": [
+      "Puissances en Courant Alternatif"
+    ],
+    "Courant Continu (DC)": [
+      "Sources de Tension Réelles et Résistance Interne"
+    ],
+    "Courant Alternatif (AC)": [
+      "Impédance et Circuits RLC"
+    ],
+    "Pédagogie / Andragogie": [
+      "Digitalisation de la formation (Digital Learning)"
+    ],
+    "Technologie éducative": [
+      "Outils collaboratifs en formation"
+    ],
+    "Innovation technologique": [
+      "Intelligence Artificielle en formation"
+    ],
+    "Gestion des compétences": [
+      "Évaluation des compétences (Upskilling/Reskilling)"
+    ],
+    "Lois physiques": [
+      "Loi d'Ohm"
+    ],
+    "Infrastructure Réseau": [
+      "Distribution électrique"
+    ],
+    "Méthodologie d'instruction (Module AA02)": [
+      "Scénario pédagogique"
+    ],
+    "Planification de la formation": [
+      "Fiche de cours (FCP)"
+    ]
+  },
+  "milestones": [
+    {
+      "date": "2026-05-10",
+      "name": "Premier Quart",
+      "objective": "Bases essentielles",
+      "progress": 25
+    },
+    {
+      "date": "2026-08-16",
+      "name": "Mi-parcours",
+      "objective": "Concepts avances",
+      "progress": 50
+    },
+    {
+      "date": "2026-11-22",
+      "name": "Dernier Sprint",
+      "objective": "Revisions intensives",
+      "progress": 75
+    },
+    {
+      "date": "2027-02-22",
+      "name": "Revision Finale",
+      "objective": "Consolidation",
+      "progress": 95
+    }
+  ],
+  "sessions": [
+    {
+      "date": "2026-02-01",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Les 4 Pôles de la communication",
+        "Phase de présentation des participants",
+        "Chaîne de sécurité antichute (Le système des 4 éléments)",
+        "Rôles : Maître d'ouvrage vs Maître d'œuvre",
+        "Cadre légal suisse (LAA et OPA)",
+        "Cadre légal (LAA et OPA)",
+        "Terminologie du Risque",
+        "Pyramide légale de la SST",
+        "Obligations de l'employeur (Art. 82 LAA / Art. 6 LTr)",
+        "Planification de projet",
+        "Normes SIA",
+        "Responsabilités et Rôles",
+        "Directive MSST (CFST 6508)",
+        "Mécanisme de l'accident",
+        "Constitution de la matière et charges électriques",
+        "Techniques de présentation actives",
+        "Grandeurs photométriques fondamentales",
+        "Contrôle de sécurité électrique (OIBT/NIBT)",
+        "Définition de l'objectif d'intervention",
+        "Structuration de l'action de formation",
+        "Recueil des besoins en formation",
+        "Parcours de formation mixte (Blended Learning)",
+        "Complémentarité des modalités",
+        "Apprentissage Social (Social Learning)"
+      ],
+      "category": "Ingénierie de Formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Les 4 Pôles de la communication"
+      ]
+    },
+    {
+      "date": "2026-02-02",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Analyse des besoins de formation"
+      ],
+      "category": "Ingénierie de formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Analyse des besoins de formation"
+      ]
+    },
+    {
+      "date": "2026-02-03",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Instruction MSST et Sécurité"
+      ],
+      "category": "Sécurité (HSE) / Législation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Instruction MSST et Sécurité"
+      ]
+    },
+    {
+      "date": "2026-02-04",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Apprentissage entre pairs",
+        "Reviser: Grandeurs photométriques fondamentales",
+        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
+        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
+        "Reviser: Stabilité et maintenance des structures porteuses",
+        "Reviser: Technologies de sources lumineuses (LED)",
+        "Reviser: La Lanterne Magique",
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Définition de l'objectif d'intervention",
+        "Reviser: Adaptation à l'auditoire",
+        "Reviser: Carte Mentale (Heuristic Map)",
+        "Reviser: Structuration de l'action de formation",
+        "Reviser: Recueil des besoins en formation",
+        "Reviser: Technique de la Discussion Post-it",
+        "Reviser: Structuration du plan de discussion",
+        "Reviser: Typologie des questions d'animation",
+        "Reviser: Parcours de formation mixte (Blended Learning)",
+        "Reviser: Complémentarité des modalités",
+        "Reviser: Engagement du Management",
+        "Reviser: Apprentissage Actif",
+        "Reviser: Apprentissage Social (Social Learning)",
+        "Reviser: Analyse des besoins de formation",
+        "Reviser: Méthode CQQCOQP",
+        "Reviser: Démarche contractuelle par objectifs",
+        "Reviser: Instruction MSST et Sécurité",
+        "Reviser: Théorie de l'apprentissage social (Bandura)",
+        "Reviser: Renforcement Vicariant",
+        "Reviser: Réponse au cahier des charges",
+        "Reviser: Analyse de la demande",
+        "Reviser: Proposition commerciale"
+      ],
+      "category": "Méthodologie de formation",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Apprentissage entre pairs"
+      ]
+    },
+    {
+      "date": "2026-02-05",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Réponse au cahier des charges"
+      ],
+      "category": "Gestion de projet / Commercial",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Réponse au cahier des charges"
+      ]
+    },
+    {
+      "date": "2026-02-06",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Gestion du trac (via la respiration)"
+      ],
+      "category": "Communication et Leadership (Module AA02)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Gestion du trac (via la respiration)"
+      ]
+    },
+    {
+      "date": "2026-02-07",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Ingénierie de formation (Analyse des besoins)",
+        "Processus de dépannage et gestion des avaries",
+        "Sécurité des interventions d'urgence",
+        "Objectifs Pédagogiques (OPG/OPP)",
+        "Scénario pédagogique",
+        "Progression Pédagogique",
+        "Objectifs opérationnels et évaluables",
+        "Évaluation des acquis",
+        "Posture du formateur",
+        "Boussole de l'aide (Autonomie)",
+        "Méthode DESC",
+        "Clôture et Transfert",
+        "Ingénierie de formation",
+        "Méthodes Pédagogiques",
+        "AFEST (Action de Formation en Situation de Travail)",
+        "Transfert des Acquis",
+        "Changement de Paradigme (Formation vs Compétence)",
+        "Typologie des compétences (Savoirs)",
+        "Outils d'évaluation en situation (Contexte fort)",
+        "Analyse du contexte de formation",
+        "Formation en situation de travail vs Hors travail",
+        "Situation de travail formatrice",
+        "Séquence réflexive",
+        "Démonstration pratique (Enseignant/Étudiant)"
+      ],
+      "category": "Pédagogie Différenciée",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Ingénierie de formation (Analyse des besoins)"
+      ]
+    },
+    {
+      "date": "2026-02-08",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Mise en situation et Simulation",
+        "Apprentissage par entraînement (Stage)",
+        "Objectifs SMART",
+        "Protocole de lancement d'activité",
+        "Débriefing bienveillant",
+        "Cadre légal et normatif (OLEl)",
+        "Distances de sécurité (Lignes aériennes)",
+        "Systèmes d'Information Réseau (SIR)",
+        "Cadre légal de la documentation (OLEI)",
+        "Gestion des données (Data Management)",
+        "SIG et SIR (GIS / NIS)",
+        "Ligne Ordinaire",
+        "Cadre légal et normatif (OLEI/OICF)",
+        "Sécurité sur poteaux en bois (CFST 6506)",
+        "Flèche et Tension (Mécanique)",
+        "Classes de solidité des supports bois",
+        "Dimensionnement statique des supports",
+        "Calcul d'ancrage et haubanage",
+        "Sécurité et Directive CFST 6506",
+        "Forces sur Plan Incliné",
+        "Levier et Couple (Moment)",
+        "Résistance des Matériaux",
+        "Inspection et Maintenance Préventive des Postes (TS)",
+        "Transformateur de Puissance (Distribution)",
+        "Reviser: Grandeurs photométriques fondamentales",
+        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
+        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
+        "Reviser: Stabilité et maintenance des structures porteuses",
+        "Reviser: Technologies de sources lumineuses (LED)",
+        "Reviser: La Lanterne Magique",
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Définition de l'objectif d'intervention",
+        "Reviser: Adaptation à l'auditoire",
+        "Reviser: Carte Mentale (Heuristic Map)",
+        "Reviser: Structuration de l'action de formation",
+        "Reviser: Recueil des besoins en formation",
+        "Reviser: Technique de la Discussion Post-it",
+        "Reviser: Structuration du plan de discussion",
+        "Reviser: Typologie des questions d'animation",
+        "Reviser: Parcours de formation mixte (Blended Learning)",
+        "Reviser: Complémentarité des modalités",
+        "Reviser: Engagement du Management",
+        "Reviser: Apprentissage Actif",
+        "Reviser: Apprentissage Social (Social Learning)",
+        "Reviser: Analyse des besoins de formation",
+        "Reviser: Méthode CQQCOQP",
+        "Reviser: Démarche contractuelle par objectifs",
+        "Reviser: Instruction MSST et Sécurité",
+        "Reviser: Théorie de l'apprentissage social (Bandura)",
+        "Reviser: Renforcement Vicariant",
+        "Reviser: Apprentissage entre pairs",
+        "Reviser: Réponse au cahier des charges",
+        "Reviser: Analyse de la demande",
+        "Reviser: Proposition commerciale"
+      ],
+      "category": "Équipements Haute Tension",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Mise en situation et Simulation"
+      ]
+    },
+    {
+      "date": "2026-02-09",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Sécurité des Personnes et Mise à la Terre"
+      ],
+      "category": "Sécurité (HSE)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Sécurité des Personnes et Mise à la Terre"
+      ]
+    },
+    {
+      "date": "2026-02-10",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Les 3 Méthodes de Travail (EN 50110-1)"
+      ],
+      "category": "Normes et Sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Les 3 Méthodes de Travail (EN 50110-1)"
+      ]
+    },
+    {
+      "date": "2026-02-15",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Travaux hors tension (Méthode 1)",
+        "Les 5 Règles de Sécurité",
+        "Équipements de Protection (EPI/EPC)",
+        "Amortissement du choc d'arrêt",
+        "Distinction EN 361 vs EN 358",
+        "Sauvetage d'urgence et délai d'intervention",
+        "Programme de manœuvre",
+        "Mesures de protection (5 règles vitales)",
+        "Mandat de travail et ordre de manœuvre",
+        "Hiérarchie des responsabilités (Rôles)",
+        "Directive ESTI n°100",
+        "Stratégies de Maintenance",
+        "Niveaux d'Intervention (I-E-R)",
+        "Méthodes de Travail Électriques",
+        "Mesure de mise à la terre (Earthing Measurement)",
+        "Les 4 mesures de base de la maintenance",
+        "Cadre légal suisse (OICF/LIE/LApEl)",
+        "Contrôle OIBT (NIV)",
+        "Mise à la terre (Earthing)",
+        "Jugement de la stabilité du poteau",
+        "Contrôle de l'état du bois",
+        "Protection contre les chutes (EPI)",
+        "Méthodes de travail (AM1, AM2, AM3)",
+        "Organisation et Rôles de Sécurité",
+        "Reviser: Grandeurs photométriques fondamentales",
+        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
+        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
+        "Reviser: Stabilité et maintenance des structures porteuses",
+        "Reviser: Technologies de sources lumineuses (LED)",
+        "Reviser: La Lanterne Magique",
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Définition de l'objectif d'intervention",
+        "Reviser: Adaptation à l'auditoire",
+        "Reviser: Carte Mentale (Heuristic Map)",
+        "Reviser: Structuration de l'action de formation",
+        "Reviser: Recueil des besoins en formation",
+        "Reviser: Technique de la Discussion Post-it",
+        "Reviser: Structuration du plan de discussion",
+        "Reviser: Typologie des questions d'animation",
+        "Reviser: Parcours de formation mixte (Blended Learning)",
+        "Reviser: Complémentarité des modalités",
+        "Reviser: Engagement du Management",
+        "Reviser: Apprentissage Actif",
+        "Reviser: Apprentissage Social (Social Learning)",
+        "Reviser: Analyse des besoins de formation",
+        "Reviser: Méthode CQQCOQP",
+        "Reviser: Démarche contractuelle par objectifs",
+        "Reviser: Instruction MSST et Sécurité",
+        "Reviser: Théorie de l'apprentissage social (Bandura)",
+        "Reviser: Renforcement Vicariant",
+        "Reviser: Apprentissage entre pairs",
+        "Reviser: Réponse au cahier des charges",
+        "Reviser: Analyse de la demande",
+        "Reviser: Proposition commerciale"
+      ],
+      "category": "Santé et Sécurité au Travail (SST)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Travaux hors tension (Méthode 1)"
+      ]
+    },
+    {
+      "date": "2026-02-16",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Inspection et Maintenance Préventive des Postes"
+      ],
+      "category": "Exploitation & Maintenance",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Inspection et Maintenance Préventive des Postes"
+      ]
+    },
+    {
+      "date": "2026-02-17",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Système de Mise à la Terre (MALT)"
+      ],
+      "category": "Sécurité & Protection",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Système de Mise à la Terre (MALT)"
+      ]
+    },
+    {
+      "date": "2026-02-18",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Signalisation et Sécurité des Installations"
+      ],
+      "category": "HSE (Hygiène Sécurité Environnement)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Signalisation et Sécurité des Installations"
+      ]
+    },
+    {
+      "date": "2026-02-19",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Remise en État (Instandsetzung)"
+      ],
+      "category": "Opérations techniques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Remise en État (Instandsetzung)"
+      ]
+    },
+    {
+      "date": "2026-02-20",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Cadre Légal et OPA (Art. 32b)"
+      ],
+      "category": "Législation et Sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Cadre Légal et OPA (Art. 32b)"
+      ]
+    },
+    {
+      "date": "2026-02-21",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Cadre Légal et Normatif Suisse",
+        "Tâches Spécifiques de l'Électricien de Réseau",
+        "Maintenance des réseaux électriques",
+        "Gestion des perturbations",
+        "Mission et objectifs de la maintenance",
+        "Cadre sécuritaire de la maintenance",
+        "Document de suivi OMoD",
+        "Transport de marchandises dangereuses (ADR/SDR)",
+        "Maintenance des réseaux énergétiques",
+        "Objectifs de la maintenance (DFS)",
+        "Catégories de mesure (CAT I-IV)",
+        "Transformateurs de mesure (TI / TP)",
+        "Impédance de boucle et courant de court-circuit (Ik)",
+        "Champ tournant et comparaison de phases",
+        "Procédure d'admission",
+        "Certification finale",
+        "Profil professionnel Electricien de réseau (NE/ER)",
+        "Directives d'Examen Professionnel (EP)",
+        "Notation Scientifique et Préfixes d'Ingénierie",
+        "Manipulation de Formules Algébriques",
+        "Triangle des Puissances (AC)",
+        "Système International d'Unités (SI)",
+        "Transformation de formules",
+        "Trigonométrie dans le Triangle Rectangle"
+      ],
+      "category": "Sécurité et Transport",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Cadre Légal et Normatif Suisse"
+      ]
+    },
+    {
+      "date": "2026-02-22",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Grandeurs Vectorielles",
+        "Préfixes SI et Puissances de dix",
+        "Transposition et Manipulation de Formules",
+        "Notation Scientifique et Unités SI",
+        "Gestion de Projet et Rôle du Chef de Projet",
+        "Gestion de projet et Coordination",
+        "Marchés Publics",
+        "Droit de passage et Servitude",
+        "Normes de pose en zone agricole",
+        "Principe de tolérance d'utilité publique",
+        "Principes d'indemnisation des servitudes",
+        "Cadre Légal de la Sécurité (LAA vs LTr)",
+        "Obligations de l'employeur (Art. 82 LAA / Art. 328 CO)",
+        "Obligations du travailleur (Art. 82 LAA / OPA)",
+        "Hiérarchie des normes de sécurité",
+        "Responsabilité de l'employeur et du travailleur",
+        "Loi sur les installations électriques (LIE)",
+        "Équipements de Protection Individuelle (EPI)",
+        "OTConst (Ordonnance sur les travaux de construction)",
+        "Plan de sécurité et de protection de la santé",
+        "Installations existantes (Art. 30 OTConst)",
+        "Repérage et protection des infrastructures souterraines",
+        "Stabilité des parois : Talutage et Étayage",
+        "Stabilité des talus et justificatif de sécurité"
+      ],
+      "category": "Arithmétique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA11",
+      "completed": false,
+      "objectives": [
+        "Comprendre Grandeurs Vectorielles"
+      ]
+    },
+    {
+      "date": "2026-02-23",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Travaux en espaces confinés (Puits)"
+      ],
+      "category": "Risques spécifiques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Travaux en espaces confinés (Puits)"
+      ]
+    },
+    {
+      "date": "2026-02-24",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Sécurité des fouilles et tranchées"
+      ],
+      "category": "Génie civil / Sécurité chantier",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Sécurité des fouilles et tranchées"
+      ]
+    },
+    {
+      "date": "2026-02-25",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Portefeuille des phénomènes dangereux"
+      ],
+      "category": "Méthodologie de sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Portefeuille des phénomènes dangereux"
+      ]
+    },
+    {
+      "date": "2026-02-26",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Directive CFST 6508 (MSST)"
+      ],
+      "category": "Législation et Normes",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Directive CFST 6508 (MSST)"
+      ]
+    },
+    {
+      "date": "2026-02-27",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Sécurité des opérations de levage"
+      ],
+      "category": "Santé et Sécurité au Travail (SST)",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Sécurité des opérations de levage"
+      ]
+    },
+    {
+      "date": "2026-03-01",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Arrimage et Élingage",
+        "Cadre légal de la sécurité (LTr, LAA, OPA, CO)",
+        "Ordonnance sur les travaux de construction (OTConst)",
+        "Travaux à proximité de lignes électriques",
+        "Directive CFST 6512 (Équipements de travail)",
+        "Travaux à proximité de lignes aériennes",
+        "Principe STOP",
+        "Protection contre les chutes",
+        "Méthodologie d'identification des dangers",
+        "Planification des mesures de sécurité",
+        "Sécurité des travaux en hauteur",
+        "Sécurité électrique sur chantier",
+        "Dangers particuliers (Annexe 1)",
+        "Méthode en 5 étapes",
+        "Principe S-T-O-P",
+        "Identification des dangers",
+        "Dangers électriques",
+        "Sécurisation contre l'ensevelissement",
+        "Risques Atmosphériques et Hydrauliques",
+        "Procédure STOP (Droit de retrait)",
+        "Cadre Législatif SST",
+        "Obligations de l'employeur (Art. 82 LAA)",
+        "Système MSST (Directive 6508)",
+        "Sécurité des fouilles et tranchées (OTConst)"
+      ],
+      "category": "Procédure / Responsabilité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Arrimage et Élingage"
+      ]
+    },
+    {
+      "date": "2026-03-02",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Les 10 éléments du système de sécurité"
+      ],
+      "category": "Gestion de la sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Les 10 éléments du système de sécurité"
+      ]
+    },
+    {
+      "date": "2026-03-03",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Détermination des dangers et appréciation du risque",
+        "Reviser: Grandeurs photométriques fondamentales",
+        "Reviser: Contrôle de sécurité électrique (OIBT/NIBT)",
+        "Reviser: Normes d'éclairage public (EN 13201 & SLG 202)",
+        "Reviser: Stabilité et maintenance des structures porteuses",
+        "Reviser: Technologies de sources lumineuses (LED)",
+        "Reviser: La Lanterne Magique",
+        "Reviser: Les 4 Pôles de la communication",
+        "Reviser: Définition de l'objectif d'intervention",
+        "Reviser: Adaptation à l'auditoire",
+        "Reviser: Carte Mentale (Heuristic Map)",
+        "Reviser: Structuration de l'action de formation",
+        "Reviser: Recueil des besoins en formation",
+        "Reviser: Technique de la Discussion Post-it",
+        "Reviser: Structuration du plan de discussion",
+        "Reviser: Typologie des questions d'animation",
+        "Reviser: Parcours de formation mixte (Blended Learning)",
+        "Reviser: Complémentarité des modalités",
+        "Reviser: Engagement du Management",
+        "Reviser: Apprentissage Actif",
+        "Reviser: Apprentissage Social (Social Learning)",
+        "Reviser: Analyse des besoins de formation",
+        "Reviser: Méthode CQQCOQP",
+        "Reviser: Démarche contractuelle par objectifs",
+        "Reviser: Instruction MSST et Sécurité",
+        "Reviser: Théorie de l'apprentissage social (Bandura)",
+        "Reviser: Renforcement Vicariant",
+        "Reviser: Apprentissage entre pairs",
+        "Reviser: Réponse au cahier des charges",
+        "Reviser: Analyse de la demande",
+        "Reviser: Proposition commerciale"
+      ],
+      "category": "Gestion des risques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Détermination des dangers et appréciation du risque"
+      ]
+    },
+    {
+      "date": "2026-03-08",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Règles vitales",
+        "Concept de sécurité OTConst",
+        "Règles vitales et Principe STOPP",
+        "Méthodologie des travaux électriques",
+        "Norme SIA 112",
+        "Types de Rémunération",
+        "Rapport de Régie",
+        "Signalisation de Chantier",
+        "Diagramme de Gantt",
+        "Méthode PERT",
+        "Définitions fondamentales de la maintenance",
+        "Cycle de Maintenance (Définitions)",
+        "Responsabilités Légales (LAA Art. 82)",
+        "Maintenance des équipements de travail",
+        "Différence de Potentiel (DDP) et Potentiel électrique",
+        "Loi d'Ohm et Résistance électrique",
+        "Circuits Mixtes (Série-Parallèle)",
+        "Chute de tension et dimensionnement des lignes",
+        "Puissances en courant alternatif (P, Q, S)",
+        "Systèmes triphasés et couplages (Étoile/Triangle)",
+        "Chute de tension en ligne",
+        "Transformateurs de puissance",
+        "Lois fondamentales du courant continu (DC)",
+        "Dimensionnement de lignes et Chute de tension"
+      ],
+      "category": "Théorie de base",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Règles vitales"
+      ]
+    },
+    {
+      "date": "2026-03-09",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Puissance, Énergie et Rendement"
+      ],
+      "category": "Physique appliquée",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Puissance, Énergie et Rendement"
+      ]
+    },
+    {
+      "date": "2026-03-10",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Courant Alternatif Monophasé (AC)"
+      ],
+      "category": "Théorie des réseaux",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Courant Alternatif Monophasé (AC)"
+      ]
+    },
+    {
+      "date": "2026-03-11",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Dimensionnement de Ligne et Chute de Tension"
+      ],
+      "category": "Distribution d'énergie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Dimensionnement de Ligne et Chute de Tension"
+      ]
+    },
+    {
+      "date": "2026-03-12",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Systèmes Triphasés et Couplages"
+      ],
+      "category": "Technique des réseaux",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes Triphasés et Couplages"
+      ]
+    },
+    {
+      "date": "2026-03-13",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Évaluation des compétences (Upskilling/Reskilling)"
+      ],
+      "category": "Gestion des compétences",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Évaluation des compétences (Upskilling/Reskilling)"
+      ]
+    },
+    {
+      "date": "2026-03-14",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Électrotechnique fondamentale",
+        "Loi d'Ohm",
+        "Distribution électrique",
+        "Sécurité électrique et Hygiène au travail",
+        "Normes d'éclairage public (EN 13201 & SLG 202)",
+        "Stabilité et maintenance des structures porteuses",
+        "Technologies de sources lumineuses (LED)",
+        "La Lanterne Magique",
+        "Adaptation à l'auditoire",
+        "Carte Mentale (Heuristic Map)",
+        "Technique de la Discussion Post-it",
+        "Structuration du plan de discussion",
+        "Typologie des questions d'animation",
+        "Engagement du Management",
+        "Apprentissage Actif",
+        "Méthode CQQCOQP",
+        "Démarche contractuelle par objectifs",
+        "Théorie de l'apprentissage social (Bandura)",
+        "Renforcement Vicariant",
+        "Analyse de la demande",
+        "Proposition commerciale",
+        "Respiration en carré",
+        "Gestion du changement organisationnel",
+        "Méthodes et Techniques Actives"
+      ],
+      "category": "Infrastructure Réseau",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": null,
+      "completed": false,
+      "objectives": [
+        "Comprendre Électrotechnique fondamentale"
+      ]
+    },
+    {
+      "date": "2026-03-15",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Évaluation de la formation",
+        "Guide Animateur",
+        "Analyse du besoin de formation",
+        "Climat d'apprentissage",
+        "Gestion des situations délicates",
+        "Processus de Production de Compétences",
+        "Résistance au Changement et Freins",
+        "Contextualisation de l'évaluation",
+        "Matrice de choix des outils",
+        "Synchronisme pédagogique",
+        "Environnement Présentiel vs Distanciel",
+        "Distinction Prescrit vs Réel",
+        "Apprentissage par problème / Étude de cas",
+        "Apprentissage par projet",
+        "Taxonomie de Bloom",
+        "Gestion de la Motivation (Participants Ravis)",
+        "Cycle de Formation",
+        "Critères de sélection de la technique",
+        "Adaptation à la classe virtuelle",
+        "Grille d'observation",
+        "Posture et Animation",
+        "Statique des supports et fondations",
+        "Technique de pose souterraine (Câbles)",
+        "Coexistence et Croisements de réseaux"
+      ],
+      "category": "Gestion et Planification",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Évaluation de la formation"
+      ]
+    },
+    {
+      "date": "2026-03-16",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Systèmes de Coordonnées Suisses (MN95)"
+      ],
+      "category": "Géodésie / Topographie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes de Coordonnées Suisses (MN95)"
+      ]
+    },
+    {
+      "date": "2026-03-17",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Méthodes de Métrage et Relevé"
+      ],
+      "category": "Technique de mesure",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Méthodes de Métrage et Relevé"
+      ]
+    },
+    {
+      "date": "2026-03-18",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Croquis de montage et Dessin technique"
+      ],
+      "category": "Documentation technique",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Croquis de montage et Dessin technique"
+      ]
+    },
+    {
+      "date": "2026-03-19",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Systèmes de métrage et relevé"
+      ],
+      "category": "Mensuration",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Systèmes de métrage et relevé"
+      ]
+    },
+    {
+      "date": "2026-03-20",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "GNSS (Global Navigation Satellite System)"
+      ],
+      "category": "Mensuration / Technologie",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre GNSS (Global Navigation Satellite System)"
+      ]
+    },
+    {
+      "date": "2026-03-21",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Cadre légal et Normes (SIA 405)",
+        "Profondeur d'implantation",
+        "Distances de sécurité",
+        "Surcharge (Hypothèse de charge)",
+        "Matériaux Conducteurs",
+        "Comportement mécanique des conducteurs",
+        "Respect des gabarits (OLEI)",
+        "Frottement (Friction)",
+        "Démultiplication de Force (Poulies et Treuils)",
+        "Calcul Vectoriel des Forces",
+        "Appareillage Moyenne Tension (MT)",
+        "Distribution Basse Tension (BT) et Protection",
+        "Travaux sous tension (AuS - Méthode 3)",
+        "Travaux à proximité de tension (Méthode 2)",
+        "Organisation et Responsabilités",
+        "Ancrage et résistance structurelle",
+        "Antichutes mobiles (EN 353)",
+        "Mandat de travail",
+        "Maintenance de ligne aérienne MT",
+        "Déroulement chronologique des manœuvres",
+        "Gestion des modifications techniques et protections",
+        "Cadre Légal et Normatif",
+        "Plan de Maintenance",
+        "Mandat de Travail et Sécurité"
+      ],
+      "category": "Équipements Haute Tension",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Cadre légal et Normes (SIA 405)"
+      ]
+    },
+    {
+      "date": "2026-03-22",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Courant de court-circuit (Icc)",
+        "Contrôle périodique (OIBT)",
+        "Typologie des stratégies de maintenance",
+        "Périodicité et Documentation (OICF)",
+        "Paramètres de court-circuit",
+        "Technologie SF6 (Hexafluorure de soufre)",
+        "Modification des forces statiques",
+        "Assurage contre le renversement",
+        "Évaluation du risque",
+        "Qualification du personnel",
+        "Gestion de l'urgence",
+        "Tableau de Distribution Basse Tension (BT)",
+        "Appareillage de Coupure Moyenne Tension (MT)",
+        "Critères de Détermination des Intervalles",
+        "Révision (Partielle et Générale)",
+        "Les 7 Bases de la Maintenance",
+        "Processus de Rétablissement de l'État de Référence",
+        "Documentation et Traçabilité",
+        "Surveillance et Inspection",
+        "Stratégies de maintenance (CBM, CM, TPM)",
+        "Contrôle de l'état",
+        "Remise en état (Planifiée vs Non planifiée)",
+        "Surveillance des installations",
+        "Gestion des incidents et perturbations"
+      ],
+      "category": "Opérationnel",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Courant de court-circuit (Icc)"
+      ]
+    },
+    {
+      "date": "2026-03-23",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Contrôle d'état (Condition Monitoring)"
+      ],
+      "category": "Maintenance prédictive",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Contrôle d'état (Condition Monitoring)"
+      ]
+    },
+    {
+      "date": "2026-03-28",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Procédés d'élimination (Codes D)",
+        "Procédés de valorisation (Codes R)",
+        "Processus de remise en état",
+        "Diagnostic et Surveillance",
+        "Gestion des déchets et Environnement",
+        "Mesure de la valeur efficace (TrueRMS)",
+        "Localisation de défauts de câbles",
+        "Mesure d'isolement",
+        "Structure modulaire (Blocs)",
+        "Cursus de formation (CFC vers Brevet)",
+        "Conversion d'Unités (Système SI)",
+        "Trigonométrie (Triangle rectangle)",
+        "Calcul Vectoriel",
+        "Calculs de Circuits RLC",
+        "Notation Scientifique et Puissances de 10",
+        "Résistance Électrique et Influence Thermique",
+        "Contrôle des documents d'exécution",
+        "Gestion des modifications de chantier",
+        "Marchés Publics (AIMP)",
+        "Communication et Gestion des Parties Prenantes",
+        "Marchés Publics et Soumissions",
+        "Vérification et Contrôle Documentaire",
+        "Gestion des Parties Prenantes",
+        "Classification des sols agricoles (Aptitudes culturales)"
+      ],
+      "category": "Gestion des déchets",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Procédés d'élimination (Codes D)"
+      ]
+    },
+    {
+      "date": "2026-03-29",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Mécanisme d'indemnisation des regards",
+        "Indemnisation des conduites souterraines",
+        "Structure de l'indemnisation agricole",
+        "Dommages de chantier vs Inconvénients permanents",
+        "Taux USP (Union Suisse des Paysans)",
+        "Classification agronomique des terrains (A et P)",
+        "Barèmes pour supports (Poteaux et Pylônes)",
+        "Facteurs de majoration techniques",
+        "Système MSST (Directive CFST 6508)",
+        "Organes d'exécution et de surveillance",
+        "Ordonnance sur la prévention des accidents (OPA)",
+        "Facteur Humain",
+        "Hiérarchie des mesures de protection (STOP)",
+        "Travaux en hauteur et Échelles (Art. 20-21 OTConst)",
+        "Substances dangereuses et Diagnostic (Art. 32 OTConst)",
+        "Dimensionnement et ergonomie de la fouille",
+        "Accès sécurisé aux fouilles",
+        "Protection périphérique et signalisation",
+        "Accès aux fouilles et puits",
+        "Audit de sécurité",
+        "Mesures de protection sur les toits",
+        "Utilisation d'échafaudages roulants",
+        "Phénomènes dangereux particuliers",
+        "Règles reconnues (SST/PS)"
+      ],
+      "category": "Technique de fouille",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Mécanisme d'indemnisation des regards"
+      ]
+    },
+    {
+      "date": "2026-03-30",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Conformité des équipements de levage"
+      ],
+      "category": "Législation et Normes",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Conformité des équipements de levage"
+      ]
+    },
+    {
+      "date": "2026-03-31",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Habilitations et Formation"
+      ],
+      "category": "Gestion des Ressources Humaines",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Habilitations et Formation"
+      ]
+    },
+    {
+      "date": "2026-04-01",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Facteur humain et Matrice des risques"
+      ],
+      "category": "Gestion des Risques",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Facteur humain et Matrice des risques"
+      ]
+    },
+    {
+      "date": "2026-04-02",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Substances Dangereuses Historiques (Amiante, Plomb, PCB)"
+      ],
+      "category": "Santé et Hygiène",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Substances Dangereuses Historiques (Amiante, Plomb, PCB)"
+      ]
+    },
+    {
+      "date": "2026-04-03",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Utilisation des échelles portables"
+      ],
+      "category": "Equipements de travail",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Utilisation des échelles portables"
+      ]
+    },
+    {
+      "date": "2026-04-04",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Planification de la sécurité avant travaux",
+        "Directive MSST (Appel à des spécialistes)",
+        "Génie civil et travaux souterrains",
+        "Organisation en cas d'urgence",
+        "Solution de branche (Solution interentreprises)",
+        "Spécialiste de la sécurité au travail (STPS)",
+        "Responsabilité et Participation",
+        "Balisage et protection contre les chutes",
+        "Accès et Évacuation",
+        "Travaux en hauteur",
+        "Organisation de la sécurité (Rôles et Responsabilités)",
+        "Formation et Instruction",
+        "Planification et réalisation des mesures",
+        "EPI contre les arcs électriques",
+        "Travail en hauteur et protection antichute",
+        "Responsabilité Civile (Code des Obligations)",
+        "Rôles et Responsabilités (Maîtrise)",
+        "Planification Temporelle (Gantt & PERT)",
+        "Calcul de Coûts et Métrés",
+        "Types de prix (Rémunération)",
+        "Contrat d'entreprise",
+        "Systèmes de Management QSE (ISO)",
+        "Personne compétente",
+        "Terminologie de la maintenance"
+      ],
+      "category": "Ressources Humaines / Sécurité",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Planification de la sécurité avant travaux"
+      ]
+    },
+    {
+      "date": "2026-04-05",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Technique de Mesure et Extension de Calibre",
+        "Diviseurs de Tension et Potentiomètres",
+        "Compensation du facteur de puissance (cos φ)",
+        "Charge asymétrique et courant de neutre",
+        "Impédance (RLC) et déphasage",
+        "Éléments secondaires (Accumulateurs)",
+        "Automates Programmables (API)",
+        "Lecture de schémas électriques",
+        "Influence de la température sur les résistances",
+        "Générateurs de tension et Stockage",
+        "Transformateurs",
+        "Puissances en Courant Alternatif",
+        "Sources de Tension Réelles et Résistance Interne",
+        "Digitalisation de la formation (Digital Learning)",
+        "Outils collaboratifs en formation",
+        "Fiche de cours (FCP)",
+        "Gestion et Commande de l'éclairage (Smart Lighting)",
+        "Régulation de la dynamique de groupe",
+        "Typologie des formations",
+        "Changement de paradigme éducatif",
+        "Social Learning Digital",
+        "Co-construction",
+        "Contractualisation",
+        "Respiration abdominale"
+      ],
+      "category": "Technologie éducative",
+      "priority": "high",
+      "session_type": "new_learning",
+      "module": "AA09",
+      "completed": false,
+      "objectives": [
+        "Comprendre Technique de Mesure et Extension de Calibre"
+      ]
+    },
+    {
+      "date": "2026-04-06",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Planification opérationnelle (Rotation)"
+      ],
+      "category": "Gestion opérationnelle",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Planification opérationnelle (Rotation)"
+      ]
+    },
+    {
+      "date": "2026-04-07",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Chronobiologie en formation"
+      ],
+      "category": "Gestion de groupe",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Chronobiologie en formation"
+      ]
+    },
+    {
+      "date": "2026-04-08",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Adaptation des contenus et modalités"
+      ],
+      "category": "Ingénierie pédagogique",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Adaptation des contenus et modalités"
+      ]
+    },
+    {
+      "date": "2026-04-09",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Triangle Pédagogique (Houssaye)"
+      ],
+      "category": "Théorie de l'apprentissage",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Triangle Pédagogique (Houssaye)"
+      ]
+    },
+    {
+      "date": "2026-04-10",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Stratégies d'apprentissage (Felder & Silverman)"
+      ],
+      "category": "Psychopédagogie",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Stratégies d'apprentissage (Felder & Silverman)"
+      ]
+    },
+    {
+      "date": "2026-04-11",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Dynamique de groupe (RAVI)",
+        "Rôle des Acteurs et Cadre Systémique",
+        "Outils d'évaluation standardisés (Contexte faible)",
+        "Diagnostic d'opportunité et de faisabilité",
+        "Enseignement par les pairs / Tutorat",
+        "Protection de l'environnement et de la faune",
+        "Gestion et Sécurité des Données",
+        "Représentation graphique et Schémas",
+        "Statique des supports (Haubanage/Contrefiche)",
+        "Maintenance et contrôle des lignes",
+        "Somme des diamètres",
+        "Inspection et Maintenance des lignes",
+        "Systèmes d'Information Réseau (NIS/SIG)",
+        "Antichutes à rappel automatique (EN 360)",
+        "Exploitation en boucle (Ligne en boucle)",
+        "Diagnostic des Supports Bois",
+        "Inspection visuelle des installations MT/BT",
+        "Système d'Information Réseau (NIS)",
+        "Optimisation technico-économique",
+        "Gestion des substances dangereuses (Amiante)",
+        "Maintenance et évaluation d'état",
+        "Distinction Courant Fort vs Courant Faible",
+        "Gestion des Équipements (EPI et Outillage)",
+        "Clarification du mandat"
+      ],
+      "category": "Maintenance",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA02",
+      "completed": false,
+      "objectives": [
+        "Comprendre Dynamique de groupe (RAVI)"
+      ]
+    },
+    {
+      "date": "2026-04-12",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Intégrité Structurelle (Génie Civil)",
+        "Tribologie et Lubrification",
+        "Communication et Mandats",
+        "Traitement des déchets de maintenance",
+        "Cycle de vie et fiabilité (Courbe en baignoire)",
+        "Système tribologique",
+        "Identification des acteurs (N° OMoD)",
+        "Tribologie",
+        "Gestion administrative de la maintenance",
+        "Qualité du réseau (Power Quality)",
+        "Systèmes d'Équations Linéaires",
+        "Opérations algébriques fondamentales",
+        "Maîtrise de la calculatrice scientifique",
+        "Électromagnétisme Appliqué",
+        "Coordination des parties prenantes",
+        "Cycle de vie documentaire",
+        "Calcul des indemnités (Pertes de culture)",
+        "Droits de Passage et Indemnités",
+        "Métrés et Calculs Techniques",
+        "Indemnités pour dommages de culture",
+        "Calculs de Génie Civil",
+        "Facteurs économiques et temporels",
+        "Indemnités accessoires et dommages de construction",
+        "Négociation foncière (Valeur vs Prix)"
+      ],
+      "category": "Ingénierie de maintenance",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AE10",
+      "completed": false,
+      "objectives": [
+        "Comprendre Intégrité Structurelle (Génie Civil)"
+      ]
+    },
+    {
+      "date": "2026-04-13",
+      "day_name": "Lundi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Indemnité de passage de ligne (Survol)"
+      ],
+      "category": "Économie d'entreprise",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Indemnité de passage de ligne (Survol)"
+      ]
+    },
+    {
+      "date": "2026-04-14",
+      "day_name": "Mardi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Capitalisation et Durée"
+      ],
+      "category": "Finance",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA04",
+      "completed": false,
+      "objectives": [
+        "Comprendre Capitalisation et Durée"
+      ]
+    },
+    {
+      "date": "2026-04-15",
+      "day_name": "Mercredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Organisation de la sécurité (Art. 5 OTConst)"
+      ],
+      "category": "Management",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Organisation de la sécurité (Art. 5 OTConst)"
+      ]
+    },
+    {
+      "date": "2026-04-16",
+      "day_name": "Jeudi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Travaux de peu d'ampleur sur toits"
+      ],
+      "category": "Travaux en hauteur",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Travaux de peu d'ampleur sur toits"
+      ]
+    },
+    {
+      "date": "2026-04-17",
+      "day_name": "Vendredi",
+      "duration_minutes": 30,
+      "concepts": [
+        "Éclairage de chantier"
+      ],
+      "category": "Installations électriques provisoires",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Éclairage de chantier"
+      ]
+    },
+    {
+      "date": "2026-04-18",
+      "day_name": "Samedi",
+      "duration_minutes": 480,
+      "concepts": [
+        "Système de sécurité d'entreprise",
+        "Délimitation du système (Systèmes partiels)",
+        "Environnement de transbordement",
+        "Gestion des substances dangereuses",
+        "Conformité et Mise en circulation (LSPro/OMach)",
+        "Typologie des mesures (IDS)",
+        "Travaux de peu d'ampleur",
+        "Matrice de mise en œuvre (Critères d'assujettissement)",
+        "Participation des travailleurs",
+        "Appel aux spécialistes MSST",
+        "Protection de la santé (Ergonomie et Hygiène)",
+        "Gestion de l'amiante",
+        "Travail seul",
+        "Méthode QQOQCCP",
+        "Contrôle des équipements spécifiques",
+        "Systèmes de Management Intégré (ISO)",
+        "Résistance interne et sources de tension",
+        "Influence de la Température sur la Résistance",
+        "Corrosion électrochimique",
+        "Impédance et Circuits RLC",
+        "Gamification et interactivité (Ludopédagogie)",
+        "Intelligence Artificielle en formation",
+        "Gestion de la documentation technique",
+        "Certification Qualité (Référentiel Qualiopi)"
+      ],
+      "category": "Maintenance & Matériaux",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA05",
+      "completed": false,
+      "objectives": [
+        "Comprendre Système de sécurité d'entreprise"
+      ]
+    },
+    {
+      "date": "2026-04-19",
+      "day_name": "Dimanche",
+      "duration_minutes": 480,
+      "concepts": [
+        "Composition des graisses lubrifiantes",
+        "Cadre Institutionnel (AES)"
+      ],
+      "category": "Environnement Professionnel",
+      "priority": "medium",
+      "session_type": "new_learning",
+      "module": "AA07",
+      "completed": false,
+      "objectives": [
+        "Comprendre Composition des graisses lubrifiantes"
+      ]
+    }
+  ],
+  "statistics": {
+    "total_revision_hours": 182.5,
+    "sessions_by_priority": {
+      "high": 51,
+      "medium": 14,
+      "low": 0
+    },
+    "sessions_by_type": {
+      "new_learning": 65,
+      "revision": 0,
+      "practice": 0
+    },
+    "average_concepts_per_session": 9.6,
+    "days_until_exam": 392
+  }
+}

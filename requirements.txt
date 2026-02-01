@@ -39,3 +39,5 @@ python-dateutil>=2.8.0
 # Base de données locale
 tinydb>=4.8.0         # Base de données légère JSON
 plotly>=5.0.0
+google-api-python-client>=2.0.0
+google-auth>=2.0.0
