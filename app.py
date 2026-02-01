@@ -978,7 +978,45 @@ elif page == "🔬 Analyser":
         
         st.divider()
     
-    if len(cours_files) == 0:
+    # Vérifier si on est sur Streamlit Cloud
+    if is_streamlit_cloud():
+        st.info("""
+### ☁️ Mode Cloud actif
+
+Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
+
+**Bonne nouvelle:** L'analyse a déjà été faite ! Tu as accès à:
+- ✅ **503 concepts** analysés
+- ✅ **Planning de révision** généré
+- ✅ **Cartographie** des modules
+
+👉 Va dans **🗺️ Concepts** ou **📆 Planning Révisions** pour voir les résultats.
+
+---
+**Pour relancer une analyse:**
+1. Clone le projet sur ton Mac
+2. Assure-toi que les cours sont synchronisés avec Google Drive
+3. Lance l'analyse en local
+4. Exécute `python scripts/backup_data.py cloud` pour exporter
+        """)
+        
+        # Afficher un aperçu des données analysées
+        concept_map = load_concept_map()
+        if concept_map and 'nodes' in concept_map:
+            st.success(f"📊 **{len(concept_map['nodes'])} concepts** disponibles dans la base de données")
+            
+            # Compter par catégorie
+            categories = {}
+            for node in concept_map['nodes']:
+                cat = node.get('category', 'Autre')
+                categories[cat] = categories.get(cat, 0) + 1
+            
+            if categories:
+                st.markdown("**Répartition par catégorie:**")
+                for cat, count in sorted(categories.items(), key=lambda x: -x[1])[:5]:
+                    st.write(f"- {cat}: {count} concepts")
+    
+    elif len(cours_files) == 0:
         st.warning("⚠️ Veuillez d'abord importer vos documents dans l'onglet 'Mes Documents'")
     else:
         st.info("🤖 **Gemini 2.5 Pro** sera utilisé pour l'analyse (délai de 2s entre chaque document)")
