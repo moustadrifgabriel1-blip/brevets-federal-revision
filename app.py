@@ -1615,52 +1615,159 @@ elif page == "⚙️ Paramètres":
     
     config = load_config()
     
-    if config:
-        st.subheader("🔑 Configuration API")
+    tab_api, tab_planning, tab_drive = st.tabs(["🔑 API", "📅 Planning", "☁️ Google Drive"])
+    
+    with tab_api:
+        if config:
+            st.subheader("🔑 Configuration API")
+            
+            api_key = st.text_input(
+                "Clé API Google Gemini",
+                value=config['api'].get('gemini_api_key', ''),
+                type="password"
+            )
+            
+            model = st.selectbox(
+                "Modèle IA",
+                ["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"],
+                index=0
+            )
+            
+            if st.button("💾 Sauvegarder API", type="primary"):
+                config['api']['gemini_api_key'] = api_key
+                config['api']['model'] = model
+                
+                with open("config/config.yaml", 'w', encoding='utf-8') as f:
+                    yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
+                
+                st.success("✅ Configuration API sauvegardée!")
+                st.cache_data.clear()
+    
+    with tab_planning:
+        if config:
+            st.subheader("📅 Dates importantes")
+            
+            exam_date = st.date_input(
+                "Date de l'examen",
+                value=datetime.strptime(config['user'].get('exam_date', '2029-03-01'), '%Y-%m-%d')
+            )
+            
+            st.divider()
+            st.subheader("⏱️ Planning")
+            
+            hours_per_day = st.slider(
+                "Heures de révision par jour",
+                min_value=0.5,
+                max_value=8.0,
+                value=float(config['planning'].get('default_hours_per_day', 2)),
+                step=0.5
+            )
+            
+            if st.button("💾 Sauvegarder Planning", type="primary"):
+                config['user']['exam_date'] = exam_date.strftime('%Y-%m-%d')
+                config['planning']['default_hours_per_day'] = hours_per_day
+                
+                with open("config/config.yaml", 'w', encoding='utf-8') as f:
+                    yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
+                
+                st.success("✅ Planning sauvegardé!")
+                st.cache_data.clear()
+    
+    with tab_drive:
+        st.subheader("☁️ Synchronisation Google Drive")
         
-        api_key = st.text_input(
-            "Clé API Google Gemini",
-            value=config['api'].get('gemini_api_key', ''),
-            type="password"
-        )
-        
-        model = st.selectbox(
-            "Modèle IA",
-            ["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"],
-            index=0
-        )
+        st.markdown("""
+### 📂 Comment ça fonctionne ?
+
+Tes fichiers de cours sont stockés sur **Google Drive** pour:
+- 📱 Accéder depuis n'importe quel appareil
+- 💾 Sauvegarde automatique (2 To disponibles)
+- 🔄 Synchronisation en temps réel
+
+### 🗂️ Structure sur Google Drive
+
+```
+Mon Drive/
+└── Brevets_Federal_Backup/
+    ├── cours/                    ← Tes PDFs de cours (1.6 GB)
+    ├── Brevets Fédéral.../       ← Documents originaux
+    ├── directives_examen/        ← Directives officielles
+    ├── exports/                  ← Planning exporté
+    ├── data/                     ← Base de données
+    └── config/                   ← Configuration
+```
+
+### 🔗 Mode de fonctionnement
+
+| Mode | Description |
+|------|-------------|
+| **🔗 Lien Drive** | L'app lit directement depuis Drive (recommandé) |
+| **📁 Copie locale** | Fichiers copiés sur ton ordinateur |
+| **☁️ Cloud uniquement** | Streamlit Cloud utilise `cloud_data/` |
+        """)
         
         st.divider()
-        st.subheader("📅 Dates importantes")
         
-        exam_date = st.date_input(
-            "Date de l'examen",
-            value=datetime.strptime(config['user'].get('exam_date', '2026-06-15'), '%Y-%m-%d')
-        )
+        # Vérifier le statut
+        st.subheader("📊 Statut actuel")
+        
+        # Vérifier si les dossiers sont des liens symboliques
+        cours_path = Path("cours")
+        brevets_path = Path("Brevets Fédéral Electricien de réseaux")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            if cours_path.is_symlink():
+                st.success("✅ **cours/** → Google Drive")
+                try:
+                    files = len(list(cours_path.iterdir()))
+                    st.caption(f"📁 {files} modules accessibles")
+                except:
+                    st.caption("⚠️ Vérifier l'accès")
+            elif cours_path.exists():
+                st.warning("📁 **cours/** (local)")
+                st.caption("💡 Utilise `sync_drive.py drive` pour lier à Drive")
+            else:
+                st.error("❌ **cours/** non trouvé")
+        
+        with col2:
+            if brevets_path.is_symlink():
+                st.success("✅ **Brevets.../** → Google Drive")
+                try:
+                    files = len(list(brevets_path.iterdir()))
+                    st.caption(f"📁 {files} modules accessibles")
+                except:
+                    st.caption("⚠️ Vérifier l'accès")
+            elif brevets_path.exists():
+                st.warning("📁 **Brevets.../** (local)")
+            else:
+                st.error("❌ **Brevets.../** non trouvé")
         
         st.divider()
-        st.subheader("⏱️ Planning")
         
-        hours_per_day = st.slider(
-            "Heures de révision par jour",
-            min_value=0.5,
-            max_value=8.0,
-            value=float(config['planning'].get('default_hours_per_day', 2)),
-            step=0.5
-        )
+        st.subheader("🛠️ Commandes Terminal")
         
-        if st.button("💾 Sauvegarder les paramètres", type="primary"):
-            config['api']['gemini_api_key'] = api_key
-            config['api']['model'] = model
-            config['user']['exam_date'] = exam_date.strftime('%Y-%m-%d')
-            config['planning']['default_hours_per_day'] = hours_per_day
-            
-            with open("config/config.yaml", 'w', encoding='utf-8') as f:
-                yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
-            
-            st.success("✅ Paramètres sauvegardés!")
-            st.cache_data.clear()
-    else:
+        st.code("""
+# Voir le statut de synchronisation
+python scripts/sync_drive.py status
+
+# Synchroniser local → Drive
+python scripts/sync_drive.py sync
+
+# Travailler depuis Drive (créer liens)
+python scripts/sync_drive.py drive
+
+# Restaurer depuis Drive → local
+python scripts/sync_drive.py restore
+        """, language="bash")
+        
+        st.info("""
+**💡 Conseil:** Lance `python scripts/sync_drive.py status` dans le terminal 
+pour voir un rapport détaillé de la synchronisation.
+        """)
+    
+    if not config:
         st.error("Fichier de configuration non trouvé!")
 
 
