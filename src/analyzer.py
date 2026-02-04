@@ -32,6 +32,9 @@ class Concept:
     related_concepts: List[str] = field(default_factory=list)
     exam_relevant: bool = False
     exam_topics: List[str] = field(default_factory=list)  # Liens avec directives d'examen
+    # Références pour retrouver le contenu facilement
+    page_references: str = ""  # Ex: "p.5-8" ou "Chapitre 2" ou "Section 3.1"
+    keywords: List[str] = field(default_factory=list)  # Mots-clés pour recherche rapide
 
 
 @dataclass
@@ -51,34 +54,61 @@ class ContentAnalyzer:
     def __init__(self, config: dict):
         self.config = config
         # Configuration de Google Gemini
-        genai.configure(api_key=config['api']['gemini_api_key'])
+        import os
+        api_key = config['api'].get('gemini_api_key') or os.getenv('GOOGLE_API_KEY')
+        genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel(config['api']['model'])
         self.generation_config = genai.types.GenerationConfig(
             temperature=config['api']['temperature'],
             response_mime_type="application/json"
         )
         self.concepts: List[Concept] = []
+        
+        # Orientation et contexte d'examen
+        self.orientation = config.get('formation', {}).get('orientation', 'Énergie')
+        self.directives_loaded = False
+        self.exam_context = ""
         self.exam_requirements: List[ExamRequirement] = []
+    
+    def load_directives_context(self, directives_content: str):
+        """Charge le contexte des directives d'examen pour guider l'analyse"""
+        self.exam_context = directives_content[:8000]  # Limite pour le contexte
+        self.directives_loaded = True
         
     def analyze_course_document(self, content: str, filename: str, module: Optional[str] = None) -> List[Concept]:
         """Analyse un document de cours et extrait les concepts clés"""
         
+        # Contexte des directives d'examen si disponible
+        directives_section = ""
+        if self.directives_loaded and self.exam_context:
+            directives_section = f"""
+CONTEXTE DIRECTIVES D'EXAMEN:
+Les concepts doivent être évalués selon leur pertinence pour l'examen du Brevet Fédéral.
+Orientation: {self.orientation}
+Critères d'évaluation clés extraits des directives:
+{self.exam_context[:3000]}
+"""
+        
         prompt = f"""Tu es un expert en formation professionnelle pour les spécialistes de réseaux énergétiques en Suisse.
+Tu analyses des documents de cours pour le BREVET FÉDÉRAL - Spécialiste de Réseau orientation {self.orientation}.
 
-Analyse ce document de cours et extrais les concepts clés pour un étudiant préparant le brevet fédéral.
+OBJECTIF: Extraire les concepts clés alignés avec les exigences de l'examen professionnel.
 
 DOCUMENT: {filename}
 MODULE: {module or 'Non spécifié'}
+ORIENTATION: {self.orientation}
+{directives_section}
 
-CONTENU:
-{content[:15000]}  # Limite pour le contexte
+CONTENU DU COURS:
+{content[:12000]}
 
 INSTRUCTIONS:
-1. Identifie les concepts techniques essentiels
-2. Pour chaque concept, détermine:
-   - Son importance (critical/high/medium/low)
-   - Les prérequis nécessaires pour le comprendre
-   - Les concepts liés
+1. Identifie les concepts techniques essentiels pour l'orientation {self.orientation}
+2. Priorise les concepts qui correspondent aux critères d'évaluation de l'examen
+3. Pour chaque concept, détermine:
+   - Son importance (critical si mentionné dans directives, high si fondamental, medium si utile, low si secondaire)
+   - Les prérequis nécessaires
+   - Si le concept est susceptible d'être évalué à l'examen (exam_relevant: true/false)
 
 Réponds en JSON avec cette structure:
 {{
@@ -88,9 +118,12 @@ Réponds en JSON avec cette structure:
             "description": "Description claire et concise",
             "category": "Catégorie technique",
             "importance": "critical|high|medium|low",
+            "exam_relevant": true,
             "prerequisites": ["Concept prérequis 1", "Concept prérequis 2"],
             "related_concepts": ["Concept lié 1", "Concept lié 2"],
-            "key_points": ["Point clé 1", "Point clé 2"]
+            "key_points": ["Point clé 1", "Point clé 2"],
+            "page_references": "Pages ou sections où trouver ce concept (ex: p.5-8, Chapitre 2, Section 3.1)",
+            "keywords": ["mot-clé1", "mot-clé2"]
         }}
     ]
 }}
@@ -119,7 +152,9 @@ Concentre-toi sur les concepts vraiment importants pour un futur spécialiste de
                     source_module=module,
                     importance=c.get('importance', 'medium'),
                     prerequisites=c.get('prerequisites', []),
-                    related_concepts=c.get('related_concepts', [])
+                    related_concepts=c.get('related_concepts', []),
+                    page_references=c.get('page_references', ''),
+                    keywords=c.get('keywords', [])
                 )
                 concepts.append(concept)
             

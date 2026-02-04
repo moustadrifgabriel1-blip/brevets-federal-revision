@@ -53,6 +53,11 @@ class ConceptMapper:
                 dependents=set(),
                 module=concept.source_module
             )
+            # Ajouter les attributs supplémentaires
+            node.source_document = concept.source_document
+            node.page_references = getattr(concept, 'page_references', '')
+            node.keywords = getattr(concept, 'keywords', [])
+            
             self.nodes[concept.name.lower()] = node
             
             # Organiser par catégorie
@@ -276,7 +281,10 @@ class ConceptMapper:
                     "exam_relevant": node.exam_relevant,
                     "prerequisites": list(node.prerequisites),
                     "dependents": list(node.dependents),
-                    "module": node.module
+                    "module": node.module,
+                    "source_document": getattr(node, 'source_document', ''),
+                    "page_references": getattr(node, 'page_references', ''),
+                    "keywords": getattr(node, 'keywords', [])
                 }
                 for node in self.nodes.values()
             ],

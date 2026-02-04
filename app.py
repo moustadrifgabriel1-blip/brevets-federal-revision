@@ -11,10 +11,20 @@ from pathlib import Path
 from datetime import datetime, timedelta
 import pandas as pd
 
+# Charger les variables d'environnement dès le démarrage
+from dotenv import load_dotenv
+load_dotenv()
+
 # Charger la clé API depuis .env ou secrets.toml
 def get_api_key():
+    # Priorité 1: Variable d'environnement (chargée par dotenv)
+    env_key = os.getenv('GOOGLE_API_KEY')
+    if env_key:
+        return env_key
+    # Priorité 2: Streamlit secrets
     if hasattr(st, 'secrets') and 'api' in st.secrets:
         return st.secrets['api'].get('GOOGLE_API_KEY', '')
+    # Priorité 3: Lecture directe du fichier .env
     env_path = Path('.env')
     if env_path.exists():
         with open(env_path, 'r') as f:
@@ -75,7 +85,7 @@ st.markdown("""
 # ===== CONFIGURATION =====
 import yaml
 
-@st.cache_data
+@st.cache_data(ttl=60)  # Cache expire après 60 secondes pour recharger la clé API
 def load_config():
     config_path = Path("config/config.yaml")
     if config_path.exists():
@@ -177,7 +187,7 @@ with st.sidebar:
     
     page = st.radio(
         "Menu",
-        ["🏠 Accueil", "📚 Mes Documents", "� Planning Cours", "🔬 Analyser", "🗺️ Concepts", "📆 Planning Révisions", "📖 Ressources", "⚙️ Paramètres"],
+        ["🏠 Accueil", "📚 Mes Documents", "� Planning Cours", "🔬 Analyser", "🗺️ Concepts", "📆 Planning Révisions", "� Ma Progression", "🧠 Quiz", "�📖 Ressources", "⚙️ Paramètres"],
         index=0
     )
     
@@ -1019,7 +1029,7 @@ Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
     elif len(cours_files) == 0:
         st.warning("⚠️ Veuillez d'abord importer vos documents dans l'onglet 'Mes Documents'")
     else:
-        st.info("🤖 **Gemini 2.5 Pro** sera utilisé pour l'analyse (délai de 2s entre chaque document)")
+        st.info("🤖 **Gemini 3 Pro** sera utilisé pour l'analyse (délai de 2s entre chaque document)")
         
         if st.button("🚀 Lancer l'analyse IA", type="primary", use_container_width=True):
             
@@ -1047,6 +1057,23 @@ Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
                     st.info("🤖 Analyse IA en cours...")
                     analyzer = ContentAnalyzer(config)
                     
+                    # Vérifier que la clé API est bien chargée
+                    api_key = config.get('api', {}).get('gemini_api_key', '')
+                    if api_key:
+                        st.success(f"🔑 Clé API détectée ({api_key[:10]}...)")
+                    else:
+                        st.error("❌ Aucune clé API trouvée ! L'analyse ne fonctionnera pas.")
+                    
+                    # Charger les directives d'examen pour guider l'analyse
+                    directives_docs = results.get('directives', [])
+                    if directives_docs:
+                        st.info(f"📋 Chargement de {len(directives_docs)} directive(s) d'examen...")
+                        directives_content = "\n\n".join([doc.content[:5000] for doc in directives_docs])
+                        analyzer.load_directives_context(directives_content)
+                        st.success(f"✅ Directives chargées - Orientation: {analyzer.orientation}")
+                    else:
+                        st.warning("⚠️ Aucune directive d'examen trouvée - analyse sans contexte d'examen")
+                    
                     all_concepts = []
                     
                     cours_docs = scanner.get_documents_by_category('cours')
@@ -1065,22 +1092,33 @@ Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
                     # Barre de progression avec %
                     progress_bar = st.progress(0)
                     status_text = st.empty()
+                    error_count = 0
                     
                     for i, doc in enumerate(cours_docs):
                         percent = int(((i + 1) / len(cours_docs)) * 100)
                         status_text.text(f"⏳ Analyse en cours... {i+1}/{len(cours_docs)} documents ({percent}%)")
                         
-                        concepts = analyzer.analyze_course_document(
-                            doc.content, 
-                            doc.filename, 
-                            doc.module
-                        )
-                        all_concepts.extend(concepts)
+                        try:
+                            concepts = analyzer.analyze_course_document(
+                                doc.content, 
+                                doc.filename, 
+                                doc.module
+                            )
+                            all_concepts.extend(concepts)
+                        except Exception as e:
+                            error_count += 1
+                            st.warning(f"⚠️ Erreur d'analyse pour {doc.filename}: {str(e)[:100]}")
+                            # Continuer avec le prochain document
+                            continue
+                        
                         progress_bar.progress((i + 1) / len(cours_docs))
                     
                     # Clear progress et afficher succès
                     status_text.empty()
                     progress_bar.empty()
+                    
+                    if error_count > 0:
+                        st.warning(f"⚠️ {error_count} document(s) n'ont pas pu être analysés (PDFs corrompus)")
                     
                     st.success(f"✅ {len(all_concepts)} concepts identifiés")
                     
@@ -1186,6 +1224,21 @@ elif page == "🗺️ Concepts":
                         st.markdown(f"### {icon} {node.get('name', 'Concept')} {exam_icon}")
                         st.markdown(f"**Catégorie:** {node.get('category', 'N/A')}")
                         st.markdown(f"**Importance:** {importance}")
+                        
+                        # Références du document source
+                        source_doc = node.get('source_document', '')
+                        page_ref = node.get('page_references', '')
+                        if source_doc or page_ref:
+                            st.markdown("**📖 Où réviser:**")
+                            if source_doc:
+                                st.caption(f"📄 Document: {source_doc}")
+                            if page_ref:
+                                st.caption(f"📖 Références: {page_ref}")
+                        
+                        # Mots-clés
+                        keywords = node.get('keywords', [])
+                        if keywords:
+                            st.markdown(f"**🔑 Mots-clés:** {', '.join(keywords)}")
                         
                         prereqs = node.get('prerequisites', [])
                         if prereqs:
@@ -1488,8 +1541,30 @@ elif page == "📆 Planning Révisions":
                         with col1:
                             st.markdown(f"**Catégorie:** {session['category']}")
                             st.markdown("**Concepts à étudier:**")
-                            for concept in session['concepts'][:10]:
-                                st.markdown(f"  - {concept}")
+                            
+                            # Charger la cartographie des concepts pour afficher les références
+                            concept_map = load_concept_map()
+                            concepts_with_refs = []
+                            if concept_map and 'nodes' in concept_map:
+                                concept_dict = {node['name']: node for node in concept_map['nodes']}
+                            else:
+                                concept_dict = {}
+                            
+                            for concept_name in session['concepts'][:10]:
+                                concept_info = concept_dict.get(concept_name, {})
+                                source_doc = concept_info.get('source_document', '')
+                                page_ref = concept_info.get('page_references', '')
+                                
+                                # Afficher le concept avec ses références
+                                if page_ref and source_doc:
+                                    st.markdown(f"  - **{concept_name}**")
+                                    st.caption(f"    📄 {source_doc} • 📖 {page_ref}")
+                                elif source_doc:
+                                    st.markdown(f"  - **{concept_name}**")
+                                    st.caption(f"    📄 {source_doc}")
+                                else:
+                                    st.markdown(f"  - {concept_name}")
+                            
                             if len(session['concepts']) > 10:
                                 st.caption(f"... et {len(session['concepts']) - 10} autres")
                         with col2:
@@ -1537,7 +1612,421 @@ elif page == "📆 Planning Révisions":
                 )
 
 
-elif page == "📖 Ressources":
+elif page == "� Ma Progression":
+    st.header("📊 Suivi de Ma Progression")
+    
+    # Charger le tracker de progression
+    from src.progress_tracker import ProgressTracker
+    tracker = ProgressTracker()
+    
+    # Charger le planning de révision
+    revision_plan = load_revision_plan()
+    concept_map = load_concept_map()
+    
+    if not revision_plan:
+        st.warning("⚠️ Vous devez d'abord générer un planning de révision")
+        if st.button("📆 Aller au Planning Révisions"):
+            st.session_state['page'] = "📆 Planning Révisions"
+            st.rerun()
+        st.stop()
+    
+    # Mettre à jour les totaux
+    total_sessions = len(revision_plan.get('sessions', []))
+    total_concepts = len(concept_map.get('nodes', [])) if concept_map else 0
+    tracker.update_totals(total_sessions, total_concepts)
+    
+    # Afficher les statistiques globales
+    st.markdown("### 📈 Statistiques Globales")
+    
+    stats = tracker.get_stats()
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        completion_rate = stats['completion_rate']
+        st.metric(
+            "Sessions Complétées", 
+            f"{stats['completed_sessions']}/{stats['total_sessions']}",
+            f"{completion_rate:.1f}%"
+        )
+        st.progress(completion_rate / 100)
+    
+    with col2:
+        mastery_rate = stats['mastery_rate']
+        st.metric(
+            "Concepts Maîtrisés",
+            f"{stats['mastered_concepts']}/{stats['total_concepts']}",
+            f"{mastery_rate:.1f}%"
+        )
+        st.progress(mastery_rate / 100)
+    
+    with col3:
+        remaining_sessions = stats['total_sessions'] - stats['completed_sessions']
+        st.metric("Sessions Restantes", remaining_sessions)
+    
+    with col4:
+        if stats['last_update']:
+            from datetime import datetime
+            last_update = datetime.fromisoformat(stats['last_update'])
+            st.metric("Dernière MAJ", last_update.strftime("%d/%m/%Y"))
+        else:
+            st.metric("Dernière MAJ", "Jamais")
+    
+    st.divider()
+    
+    # Onglets pour les différentes vues
+    tab1, tab2, tab3 = st.tabs(["📅 Sessions de Révision", "🎯 Concepts", "📊 Historique"])
+    
+    with tab1:
+        st.markdown("### Sessions de Révision")
+        st.caption("Cochez les sessions que vous avez complétées")
+        
+        sessions = revision_plan.get('sessions', [])
+        
+        # Grouper par catégorie
+        categories = {}
+        for session in sessions:
+            cat = session.get('category', 'Autre')
+            if cat not in categories:
+                categories[cat] = []
+            categories[cat].append(session)
+        
+        # Afficher par catégorie
+        for category, cat_sessions in categories.items():
+            with st.expander(f"📚 {category} ({len([s for s in cat_sessions if tracker.is_session_completed(s.get('id', ''))])}/{len(cat_sessions)} complétées)", expanded=False):
+                for idx, session in enumerate(cat_sessions):
+                    # Créer un ID unique pour chaque session
+                    session_id = session.get('id') or f"{category}_{session.get('date', '')}_{idx}"
+                    is_completed = tracker.is_session_completed(session_id)
+                    
+                    col_check, col_info = st.columns([1, 9])
+                    
+                    with col_check:
+                        if st.checkbox("", value=is_completed, key=f"session_{session_id}", label_visibility="collapsed"):
+                            if not is_completed:
+                                tracker.mark_session_completed(session_id)
+                                st.rerun()
+                        else:
+                            if is_completed:
+                                tracker.unmark_session_completed(session_id)
+                                st.rerun()
+                    
+                    with col_info:
+                        status_icon = "✅" if is_completed else "⏳"
+                        st.markdown(f"{status_icon} **{session.get('module', 'Module')}** - {session.get('topics', ['Divers'])[0] if session.get('topics') else 'Divers'}")
+                        st.caption(f"Date: {session.get('date', 'N/A')} | Durée: {session.get('duration', 0)} min | Répétition: {session.get('repetition', 1)}")
+    
+    with tab2:
+        st.markdown("### 🎯 Concepts à Maîtriser")
+        st.caption("Marquez les concepts que vous maîtrisez parfaitement")
+        
+        if not concept_map or not concept_map.get('nodes'):
+            st.info("Aucun concept analysé pour le moment")
+        else:
+            nodes = concept_map['nodes']
+            
+            # Filtrer par niveau d'importance
+            importance_filter = st.selectbox(
+                "Filtrer par importance",
+                ["Tous", "5 - Critique", "4 - Très Important", "3 - Important", "2 - Moyen", "1 - Faible"]
+            )
+            
+            if importance_filter != "Tous":
+                importance_level = int(importance_filter[0])
+                nodes = [n for n in nodes if n.get('importance', 3) == importance_level]
+            
+            # Grouper par catégorie
+            concept_categories = {}
+            for node in nodes:
+                cat = node.get('category', 'Autre')
+                if cat not in concept_categories:
+                    concept_categories[cat] = []
+                concept_categories[cat].append(node)
+            
+            for cat, concepts in concept_categories.items():
+                mastered_count = len([c for c in concepts if tracker.is_concept_mastered(c.get('id', ''))])
+                with st.expander(f"📖 {cat} ({mastered_count}/{len(concepts)} maîtrisés)", expanded=False):
+                    for concept in concepts:
+                        concept_id = concept.get('id', '')
+                        is_mastered = tracker.is_concept_mastered(concept_id)
+                        
+                        col_check, col_info = st.columns([1, 9])
+                        
+                        with col_check:
+                            if st.checkbox("", value=is_mastered, key=f"concept_{concept_id}", label_visibility="collapsed"):
+                                if not is_mastered:
+                                    tracker.mark_concept_mastered(concept_id)
+                                    st.rerun()
+                            else:
+                                if is_mastered:
+                                    tracker.unmark_concept_mastered(concept_id)
+                                    st.rerun()
+                        
+                        with col_info:
+                            status_icon = "🌟" if is_mastered else "📝"
+                            importance = concept.get('importance', 'medium')
+                            # Mapper les niveaux d'importance aux emojis
+                            importance_emoji = {
+                                'critical': '🔴',
+                                'high': '🟠', 
+                                'medium': '🟡',
+                                'low': '🟢'
+                            }.get(importance, '🟡')
+                            st.markdown(f"{status_icon} **{concept.get('name', 'Concept')}** {importance_emoji}")
+                            st.caption(concept.get('description', '')[:150] + "...")
+    
+    with tab3:
+        st.markdown("### 📊 Historique et Tendances")
+        
+        # Afficher les dernières activités
+        st.subheader("Activité Récente")
+        recent = tracker.get_recent_activity(limit=10)
+        
+        if recent:
+            for activity in recent:
+                st.write(f"✅ Session {activity['session_id']} complétée")
+        else:
+            st.info("Aucune activité récente")
+        
+        # Bouton pour réinitialiser
+        st.divider()
+        st.warning("⚠️ Zone Dangereuse")
+        if st.button("🔄 Réinitialiser Toute la Progression", type="secondary"):
+            if st.button("⚠️ Confirmer la réinitialisation", type="primary"):
+                tracker.reset_progress()
+                st.success("✅ Progression réinitialisée")
+                st.rerun()
+
+
+elif page == "🧠 Quiz":
+    st.header("🧠 Quiz d'Auto-Évaluation")
+    
+    from src.quiz_generator import QuizGenerator
+    import time
+    
+    # Charger les concepts
+    concept_map = load_concept_map()
+    
+    if not concept_map or not concept_map.get('nodes'):
+        st.warning("⚠️ Vous devez d'abord analyser vos documents pour générer des quiz")
+        if st.button("🔬 Aller à l'Analyseur"):
+            st.session_state['page'] = "🔬 Analyser"
+            st.rerun()
+        st.stop()
+    
+    # Initialiser le générateur
+    config = load_config()
+    api_key = config.get('api', {}).get('gemini_api_key') or os.getenv('GOOGLE_API_KEY')
+    model = config.get('api', {}).get('model', 'gemini-3-pro-preview')
+    
+    quiz_gen = QuizGenerator(api_key=api_key, model=model)
+    
+    # Afficher les statistiques
+    st.markdown("### 📊 Vos Statistiques")
+    quiz_stats = quiz_gen.get_stats()
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Quiz Complétés", quiz_stats['total_quizzes'])
+    with col2:
+        st.metric("Score Moyen", f"{quiz_stats['average_score']:.1f}%")
+    with col3:
+        st.metric("Meilleur Score", f"{quiz_stats['best_score']:.1f}%")
+    with col4:
+        st.metric("Questions Totales", quiz_stats['total_questions'])
+    
+    st.divider()
+    
+    # Onglets
+    tab1, tab2 = st.tabs(["🆕 Nouveau Quiz", "📜 Historique"])
+    
+    with tab1:
+        st.markdown("### Configurer votre Quiz")
+        
+        # Extraire les modules disponibles
+        concepts = concept_map['nodes']
+        modules = sorted(list(set(c.get('module', 'Non classé') for c in concepts if c.get('module'))))
+        
+        col_a, col_b, col_c = st.columns(3)
+        
+        with col_a:
+            selected_module = st.selectbox(
+                "Module",
+                ["Tous modules"] + modules,
+                help="Choisir un module spécifique ou mélanger tous"
+            )
+        
+        with col_b:
+            num_questions = st.slider("Nombre de questions", 5, 20, 10)
+        
+        with col_c:
+            difficulty = st.select_slider(
+                "Difficulté",
+                options=["facile", "moyen", "difficile"],
+                value="moyen"
+            )
+        
+        st.divider()
+        
+        if st.button("🚀 Générer et Démarrer le Quiz", type="primary", use_container_width=True):
+            with st.spinner("🤖 Génération du quiz par l'IA..."):
+                module_filter = None if selected_module == "Tous modules" else selected_module
+                quiz = quiz_gen.generate_quiz(
+                    concepts=concepts,
+                    module=module_filter,
+                    num_questions=num_questions,
+                    difficulty=difficulty
+                )
+                
+                if 'error' in quiz:
+                    st.error(f"❌ {quiz['error']}")
+                else:
+                    st.session_state['current_quiz'] = quiz
+                    st.session_state['quiz_answers'] = {}
+                    st.session_state['quiz_start_time'] = time.time()
+                    st.session_state['quiz_submitted'] = False
+                    st.rerun()
+        
+        # Afficher le quiz si généré
+        if 'current_quiz' in st.session_state and not st.session_state.get('quiz_submitted', False):
+            quiz = st.session_state['current_quiz']
+            
+            st.markdown("---")
+            st.markdown(f"### 📝 Quiz: {quiz['module']}")
+            st.caption(f"Difficulté: {quiz['difficulty']} | {quiz['num_questions']} questions")
+            
+            # Afficher les questions
+            for i, question in enumerate(quiz['questions'], 1):
+                st.markdown(f"#### Question {i}/{quiz['num_questions']}")
+                st.markdown(f"**{question['question']}**")
+                
+                # Options de réponse
+                answer = st.radio(
+                    f"Choisissez votre réponse:",
+                    question['options'],
+                    key=f"q_{i}",
+                    index=None
+                )
+                
+                if answer:
+                    st.session_state['quiz_answers'][i] = question['options'].index(answer)
+                
+                st.markdown("---")
+            
+            # Bouton soumettre
+            if len(st.session_state.get('quiz_answers', {})) == quiz['num_questions']:
+                if st.button("✅ Soumettre le Quiz", type="primary", use_container_width=True):
+                    st.session_state['quiz_submitted'] = True
+                    st.rerun()
+            else:
+                remaining = quiz['num_questions'] - len(st.session_state.get('quiz_answers', {}))
+                st.info(f"⏳ Veuillez répondre à toutes les questions ({remaining} restante(s))")
+        
+        # Afficher les résultats si soumis
+        if st.session_state.get('quiz_submitted', False):
+            quiz = st.session_state['current_quiz']
+            answers = st.session_state['quiz_answers']
+            
+            # Calculer le score
+            correct = 0
+            results = []
+            
+            for i, question in enumerate(quiz['questions'], 1):
+                user_answer = answers.get(i, -1)
+                correct_answer = question['correct_answer']
+                is_correct = user_answer == correct_answer
+                
+                if is_correct:
+                    correct += 1
+                
+                results.append({
+                    'question_num': i,
+                    'user_answer': user_answer,
+                    'correct_answer': correct_answer,
+                    'is_correct': is_correct,
+                    'concept_id': question.get('concept_id')
+                })
+            
+            score = correct
+            total = quiz['num_questions']
+            percentage = (score / total * 100) if total > 0 else 0
+            
+            # Temps écoulé
+            time_spent = int(time.time() - st.session_state.get('quiz_start_time', time.time()))
+            
+            # Sauvegarder dans l'historique
+            quiz_gen.save_quiz_result(
+                quiz_id=quiz['id'],
+                score=score,
+                total=total,
+                time_spent=time_spent,
+                answers=results
+            )
+            
+            # Afficher le résultat
+            st.markdown("---")
+            st.markdown("## 🎉 Résultats du Quiz")
+            
+            col_r1, col_r2, col_r3 = st.columns(3)
+            with col_r1:
+                st.metric("Score", f"{score}/{total}")
+            with col_r2:
+                color = "🟢" if percentage >= 70 else "🟡" if percentage >= 50 else "🔴"
+                st.metric("Pourcentage", f"{color} {percentage:.1f}%")
+            with col_r3:
+                st.metric("Temps", f"{time_spent // 60}:{time_spent % 60:02d}")
+            
+            # Analyse détaillée
+            st.markdown("### 📋 Analyse Détaillée")
+            
+            for i, question in enumerate(quiz['questions'], 1):
+                result = results[i-1]
+                is_correct = result['is_correct']
+                
+                with st.expander(
+                    f"{'✅' if is_correct else '❌'} Question {i} - {'Correct' if is_correct else 'Incorrect'}",
+                    expanded=not is_correct
+                ):
+                    st.markdown(f"**{question['question']}**")
+                    st.markdown(f"**Votre réponse:** {question['options'][result['user_answer']]}")
+                    st.markdown(f"**Bonne réponse:** {question['options'][question['correct_answer']]}")
+                    st.markdown("**Explication:**")
+                    st.info(question['explanation'])
+            
+            # Bouton pour recommencer
+            if st.button("🔄 Nouveau Quiz", use_container_width=True):
+                del st.session_state['current_quiz']
+                del st.session_state['quiz_answers']
+                del st.session_state['quiz_submitted']
+                st.rerun()
+    
+    with tab2:
+        st.markdown("### 📜 Historique des Quiz")
+        
+        history = quiz_gen.get_history(limit=20)
+        
+        if not history:
+            st.info("Vous n'avez pas encore complété de quiz")
+        else:
+            for quiz_result in history:
+                percentage = quiz_result['percentage']
+                color = "🟢" if percentage >= 70 else "🟡" if percentage >= 50 else "🔴"
+                
+                with st.expander(
+                    f"{color} {percentage:.1f}% - {quiz_result['score']}/{quiz_result['total']} - {quiz_result['completed_at'][:10]}",
+                    expanded=False
+                ):
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Score", f"{quiz_result['score']}/{quiz_result['total']}")
+                    with col2:
+                        st.metric("Pourcentage", f"{percentage:.1f}%")
+                    with col3:
+                        time_spent = quiz_result.get('time_spent', 0)
+                        st.metric("Temps", f"{time_spent // 60}:{time_spent % 60:02d}")
+
+
+elif page == "�📖 Ressources":
     st.header("📖 Ressources et Guides")
     
     tab1, tab2, tab3, tab4 = st.tabs(["📘 Guide Complet", "🏫 CIFER Info", "🎴 Flashcards", "📐 Formules"])
@@ -1701,7 +2190,7 @@ elif page == "⚙️ Paramètres":
             
             model = st.selectbox(
                 "Modèle IA",
-                ["gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"],
+                ["gemini-3-pro-preview", "gemini-2.0-flash", "gemini-1.5-pro"],
                 index=0
             )
             
