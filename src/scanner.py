@@ -5,10 +5,31 @@ Scanne et extrait le texte de tous les documents (PDF, Word, etc.)
 """
 
 import os
+import sys
+import warnings
 from pathlib import Path
 from typing import Dict, List, Optional
 from dataclasses import dataclass
 from datetime import datetime
+
+# Supprimer les warnings pdfplumber liés aux PDFs corrompus
+warnings.filterwarnings('ignore', category=UserWarning, module='pdfminer')
+warnings.filterwarnings('ignore', message='.*invalid float value.*')
+warnings.filterwarnings('ignore', message='.*Cannot set.*color.*')
+
+# Rediriger stderr temporairement pour supprimer les messages pdfminer
+import io
+import contextlib
+
+@contextlib.contextmanager
+def suppress_pdfminer_warnings():
+    """Supprime les messages d'erreur de pdfminer sur stderr"""
+    old_stderr = sys.stderr
+    sys.stderr = io.StringIO()
+    try:
+        yield
+    finally:
+        sys.stderr = old_stderr
 
 # Importations pour le traitement de documents
 try:
@@ -105,24 +126,35 @@ class DocumentScanner:
             raise ValueError(f"Extension non supportée: {ext}")
     
     def _extract_pdf(self, file_path: Path) -> str:
-        """Extrait le texte d'un PDF"""
+        """Extrait le texte d'un PDF avec gestion d'erreurs robuste"""
         text_parts = []
         
         # Essai avec pdfplumber (meilleure extraction)
         try:
             with pdfplumber.open(file_path) as pdf:
                 for page in pdf.pages:
-                    text = page.extract_text()
-                    if text:
-                        text_parts.append(text)
+                    try:
+                        text = page.extract_text()
+                        if text:
+                            text_parts.append(text)
+                    except Exception:
+                        # Ignorer silencieusement les pages problématiques
+                        continue
         except Exception:
             # Fallback avec PyPDF2
-            with open(file_path, 'rb') as f:
-                reader = PyPDF2.PdfReader(f)
-                for page in reader.pages:
-                    text = page.extract_text()
-                    if text:
-                        text_parts.append(text)
+            try:
+                with open(file_path, 'rb') as f:
+                    reader = PyPDF2.PdfReader(f)
+                    for i, page in enumerate(reader.pages):
+                        try:
+                            text = page.extract_text()
+                            if text:
+                                text_parts.append(text)
+                        except Exception:
+                            continue
+            except Exception as e:
+                # Si tout échoue, retourner une chaîne vide
+                return ""
         
         return "\n\n".join(text_parts)
     

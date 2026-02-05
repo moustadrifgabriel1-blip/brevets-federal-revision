@@ -175,7 +175,7 @@ directives:
 
 user:
   completed_modules: []
-  exam_date: '2029-03-01'
-  formation_start: '2027-09-01'
+  exam_date: '2027-03-20'
+  formation_start: '2025-09-01'
   name: Gabriel
   centre_formation: "CIFER"
