@@ -32,7 +32,7 @@ Dans Streamlit Cloud :
 2. Ajoutez :
 ```toml
 [general]
-GOOGLE_API_KEY = "AIzaSyAAYGSAwWt5E7YTH_ywxhMxIdqKYTUNY5M"
+GOOGLE_API_KEY = "VOTRE_CLE_API_GOOGLE_GEMINI"
 ```
 
 ### 5. URL de l'application
