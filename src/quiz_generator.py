@@ -235,6 +235,8 @@ class QuizGenerator:
         self.history_file = Path("data/quiz_history.json")
         self.question_bank_file = Path("data/question_bank.json")
         self.model = None
+        # Anti-doublon : stocke les textes de questions déjà utilisées dans le quiz courant
+        self._used_questions: set = set()
         
         if self.api_key:
             genai.configure(api_key=self.api_key)
@@ -494,6 +496,9 @@ class QuizGenerator:
         - Chaque question inclut un indice (hint)
         - Diversité des types forcée
         """
+        # Reset anti-doublon pour ce nouveau quiz
+        self._used_questions = set()
+        
         # Filtrer par module si spécifié
         filtered_concepts = concepts
         if module:
@@ -637,8 +642,10 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
             if not isinstance(questions_data, list):
                 return []
             
-            # Valider et enrichir chaque question
+            # Valider, dédupliquer et enrichir chaque question
             valid_questions = []
+            seen_questions = set()  # Anti-doublon dans le batch
+            
             for i, (q_data, concept) in enumerate(zip(questions_data, concepts)):
                 q_type = q_data.get('type', assigned_types[i] if i < len(assigned_types) else 'qcm')
                 q_data['type'] = q_type
@@ -647,7 +654,6 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
                 if q_type in ('qcm', 'mise_en_situation'):
                     if not self._validate_qcm(q_data):
                         q_data = self._generate_fallback(concept, i + 1, q_type)
-                        q_data['type'] = q_type
                 
                 if q_type == 'vrai_faux':
                     q_data['correct_answer'] = bool(q_data.get('correct_answer', True))
@@ -657,13 +663,22 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
                         q_data['correct_answer'] = float(q_data.get('correct_answer', 0))
                     except (ValueError, TypeError):
                         q_data = self._generate_fallback(concept, i + 1, 'calcul')
-                        q_data['type'] = 'calcul'
                     q_data.setdefault('tolerance', 0.02)
                     q_data.setdefault('unit', '')
                 
                 if q_type == 'texte_trous':
                     if q_data.get('correct_answer') not in q_data.get('acceptable_answers', []):
                         q_data.setdefault('acceptable_answers', []).append(str(q_data.get('correct_answer', '')))
+                
+                # Anti-doublon : vérifier si la question est unique
+                q_text = q_data.get('question', '')[:60]
+                if q_text in seen_questions or q_text in self._used_questions:
+                    # Question dupliquée — générer un fallback unique
+                    q_data = self._generate_fallback(concept, i + 1, q_data.get('type', q_type))
+                    q_text = q_data.get('question', '')[:60]
+                
+                seen_questions.add(q_text)
+                self._used_questions.add(q_text)
                 
                 # Ajouter hint par défaut si manquant
                 if not q_data.get('hint'):
@@ -747,7 +762,16 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
         question = generator(concept, difficulty, question_num)
 
         if question:
-            question["type"] = chosen_type
+            # Respecter le type retourné par le fallback (ne pas écraser si différent)
+            if not question.get('type'):
+                question["type"] = chosen_type
+            
+            # Anti-doublon : si question déjà vue, régénérer via fallback
+            q_text = question.get('question', '')[:60]
+            if q_text in self._used_questions:
+                question = self._generate_fallback(concept, question_num, question.get('type', chosen_type))
+            else:
+                self._used_questions.add(q_text)
         return question
 
     # --- Utilitaires internes ---
@@ -1541,198 +1565,254 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
         """
         Génère une question de secours de qualité professionnelle.
         
-        Stratégie V3 :
-        1. Banque par module/type (questions techniques réelles)
-        2. Banque cross-module (si module sans questions)
+        Stratégie V3.1 :
+        1. Banque par module/type (questions techniques réelles) — AVEC anti-doublon
+        2. Banque d'un module voisin MÊME TYPE (jamais de cross-type)
         3. Questions techniques construites à partir des compétences d'examen
-        JAMAIS de question triviale du type "Que représente le concept X ?"
+        JAMAIS de question triviale, JAMAIS de mismatch de type
         """
         name = concept.get('name', 'inconnu')
         module = concept.get('module', '')
         keywords = concept.get('keywords', [])
         
-        # 1. Essayer la banque de questions pour ce module et ce type
+        # 1. Essayer la banque de questions pour ce module et ce type (anti-doublon)
         module_bank = self.FALLBACK_BANK.get(module, {})
         type_bank = module_bank.get(q_type, [])
         if type_bank:
-            question = random.choice(type_bank).copy()
-            question['fallback'] = True
-            return self._add_metadata(question, concept, question_num)
-        
-        # 2. Essayer un autre type de question dans ce module
-        for alt_type in ['qcm', 'vrai_faux', 'mise_en_situation', 'calcul']:
-            alt_bank = module_bank.get(alt_type, [])
-            if alt_bank:
-                question = random.choice(alt_bank).copy()
-                question['type'] = alt_type
+            # Filtrer les questions déjà utilisées
+            available = [q for q in type_bank if q['question'][:60] not in self._used_questions]
+            if available:
+                question = random.choice(available).copy()
                 question['fallback'] = True
+                question['type'] = q_type
+                self._used_questions.add(question['question'][:60])
                 return self._add_metadata(question, concept, question_num)
         
-        # 3. Essayer un module voisin (AA ou AE)
+        # 2. Essayer un module voisin (même préfixe AA/AE) MÊME TYPE seulement
         prefix = module[:2] if module else 'AA'
         for other_mod, other_bank in self.FALLBACK_BANK.items():
             if other_mod.startswith(prefix) and other_mod != module:
-                for try_type in [q_type, 'qcm', 'vrai_faux']:
-                    if try_type in other_bank and other_bank[try_type]:
-                        question = random.choice(other_bank[try_type]).copy()
-                        question['fallback'] = True
-                        return self._add_metadata(question, concept, question_num)
+                other_type_bank = other_bank.get(q_type, [])
+                available = [q for q in other_type_bank if q['question'][:60] not in self._used_questions]
+                if available:
+                    question = random.choice(available).copy()
+                    question['fallback'] = True
+                    question['type'] = q_type
+                    self._used_questions.add(question['question'][:60])
+                    return self._add_metadata(question, concept, question_num)
         
-        # 4. Construire une question technique à partir des compétences et keywords
+        # 3. Essayer n'importe quel module MÊME TYPE
+        for other_mod, other_bank in self.FALLBACK_BANK.items():
+            if other_mod != module:
+                other_type_bank = other_bank.get(q_type, [])
+                available = [q for q in other_type_bank if q['question'][:60] not in self._used_questions]
+                if available:
+                    question = random.choice(available).copy()
+                    question['fallback'] = True
+                    question['type'] = q_type
+                    self._used_questions.add(question['question'][:60])
+                    return self._add_metadata(question, concept, question_num)
+        
+        # 4. Construire une question du bon type à partir des compétences et keywords
         exam_comps = EXAM_COMPETENCES.get(module, [])
         mod_label = self._get_module_label(module)
+        
+        # Générer le texte unique avec le nom du concept pour éviter les doublons
+        generated = self._build_generated_fallback(q_type, concept, exam_comps, mod_label)
+        if generated and generated['question'][:60] not in self._used_questions:
+            self._used_questions.add(generated['question'][:60])
+            generated['type'] = q_type
+            return self._add_metadata(generated, concept, question_num)
+        
+        # 5. Dernier recours — question minimale mais correcte pour le type
+        return self._build_last_resort(q_type, concept, mod_label, question_num)
+    
+    def _build_generated_fallback(self, q_type: str, concept: Dict, 
+                                   exam_comps: List[str], mod_label: str) -> Optional[Dict]:
+        """Construit une question fallback dynamique du bon type."""
+        name = concept.get('name', 'inconnu')
+        module = concept.get('module', '')
+        keywords = concept.get('keywords', [])
         
         if q_type == "vrai_faux":
             if exam_comps:
                 comp = random.choice(exam_comps)
-                # Construire une vraie affirmation technique (pas juste "ce concept existe")
-                return self._add_metadata({
+                return {
                     "question": f"Pour le Brevet Fédéral, la compétence suivante est requise dans le module {module} ({mod_label}) : « {comp} ».",
                     "correct_answer": True,
-                    "explanation": f"Cette compétence est explicitement listée dans les directives d'examen pour le module {module}. Elle est évaluée à l'examen professionnel.",
+                    "explanation": f"Cette compétence est explicitement listée dans les directives d'examen pour le module {module}.",
                     "fallback": True,
-                    "hint": f"Pensez aux compétences attendues d'un spécialiste de réseau pour le domaine {mod_label}."
-                }, concept, question_num)
-            # Avec keywords — affirmation technique
+                    "hint": f"Pensez aux compétences attendues d'un spécialiste de réseau pour {mod_label}."
+                }
             if keywords:
                 kw = random.choice(keywords)
-                return self._add_metadata({
+                return {
                     "question": f"Le terme technique « {kw} » fait partie du vocabulaire professionnel essentiel du module {module} ({mod_label}).",
                     "correct_answer": True,
-                    "explanation": f"« {kw} » est un concept clé du module {module} ({mod_label}), directement lié au sujet « {name} ».",
+                    "explanation": f"« {kw} » est un concept clé du module {module}, directement lié au sujet « {name} ».",
                     "fallback": True,
                     "hint": f"Ce terme est associé au domaine de {mod_label}."
-                }, concept, question_num)
+                }
 
         elif q_type == "texte_trous":
             if keywords and len(keywords) >= 2:
                 keyword = random.choice(keywords)
                 other_kw = [k for k in keywords if k != keyword]
                 hint_kw = other_kw[0] if other_kw else mod_label
-                return self._add_metadata({
+                return {
                     "question": f"Dans le domaine « {name} » (module {module} — {mod_label}), le terme technique _____ est étroitement lié aux concepts de {hint_kw}.",
                     "correct_answer": keyword,
                     "acceptable_answers": [keyword, keyword.lower(), keyword.upper(), keyword.replace('-', ' ')],
-                    "explanation": f"« {keyword} » est un terme technique fondamental du concept « {name} » dans le module {module}. Il est lié à : {', '.join(keywords)}.",
+                    "explanation": f"« {keyword} » est un terme technique fondamental du concept « {name} » dans le module {module}.",
                     "fallback": True,
                     "hint": f"C'est un terme du domaine {mod_label}, lié à {hint_kw}."
-                }, concept, question_num)
+                }
 
         elif q_type == "calcul":
-            # Questions de calcul universelles — toujours pertinentes pour un spécialiste réseau
             calcul_fallbacks = [
                 {
                     "question": "Un circuit monophasé 230V alimente une charge résistive de 46 Ω. Calculer le courant en ampères.",
-                    "correct_answer": 5.0,
-                    "tolerance": 0.01,
-                    "unit": "A",
+                    "correct_answer": 5.0, "tolerance": 0.01, "unit": "A",
                     "explanation": "Loi d'Ohm : I = U/R = 230/46 = 5.0 A",
-                    "hint": "Appliquez la loi d'Ohm : I = U/R"
+                    "hint": "Appliquez la loi d'Ohm : I = U/R", "fallback": True
                 },
                 {
                     "question": "Calculer la puissance apparente S d'un moteur triphasé alimenté en 400V avec un courant de ligne de 10A.",
-                    "correct_answer": 6928.0,
-                    "tolerance": 0.02,
-                    "unit": "VA",
-                    "explanation": "S = √3 × U × I = 1.732 × 400 × 10 = 6'928 VA ≈ 6.93 kVA",
-                    "hint": "En triphasé : S = √3 × U × I"
+                    "correct_answer": 6928.0, "tolerance": 0.02, "unit": "VA",
+                    "explanation": "S = √3 × U × I = 1.732 × 400 × 10 = 6'928 VA",
+                    "hint": "En triphasé : S = √3 × U × I", "fallback": True
                 },
                 {
-                    "question": "Deux résistances de 100 Ω et 150 Ω sont montées en parallèle. Calculer la résistance équivalente en ohms.",
-                    "correct_answer": 60.0,
-                    "tolerance": 0.02,
-                    "unit": "Ω",
-                    "explanation": "1/Req = 1/R1 + 1/R2 = 1/100 + 1/150 = 3/300 + 2/300 = 5/300\nReq = 300/5 = 60 Ω",
-                    "hint": "Formule parallèle : 1/Req = 1/R1 + 1/R2"
+                    "question": "Deux résistances de 100 Ω et 150 Ω en parallèle. Calculer la résistance équivalente en ohms.",
+                    "correct_answer": 60.0, "tolerance": 0.02, "unit": "Ω",
+                    "explanation": "1/Req = 1/100 + 1/150 = 5/300 → Req = 60 Ω",
+                    "hint": "Formule parallèle : 1/Req = 1/R1 + 1/R2", "fallback": True
                 },
                 {
-                    "question": "Un câble de 25m (cuivre, ρ=0.0175 Ω·mm²/m, section 4mm²) alimente une charge de 20A en monophasé. Calculer la chute de tension aller-retour en volts.",
-                    "correct_answer": 4.375,
-                    "tolerance": 0.03,
-                    "unit": "V",
-                    "explanation": "R = ρ×L/S = 0.0175×25/4 = 0.109375 Ω\nΔU = 2×R×I = 2×0.109375×20 = 4.375 V",
-                    "hint": "ΔU = 2 × R × I, avec R = ρ × L / S"
+                    "question": "Un câble cuivre 25m (ρ=0.0175 Ω·mm²/m, section 4mm²) avec 20A monophasé. Chute de tension aller-retour ?",
+                    "correct_answer": 4.375, "tolerance": 0.03, "unit": "V",
+                    "explanation": "R = 0.0175×25/4 = 0.109375 Ω → ΔU = 2×R×I = 4.375 V",
+                    "hint": "ΔU = 2 × R × I, avec R = ρ × L / S", "fallback": True
                 },
             ]
-            question = random.choice(calcul_fallbacks).copy()
-            question['fallback'] = True
-            return self._add_metadata(question, concept, question_num)
+            available = [q for q in calcul_fallbacks if q['question'][:60] not in self._used_questions]
+            if available:
+                return random.choice(available)
 
         elif q_type == "mise_en_situation":
             if exam_comps:
                 comp = random.choice(exam_comps)
-                return self._add_metadata({
-                    "scenario": f"Vous êtes chef d'équipe sur un chantier de réseau électrique. Une intervention nécessite des compétences en « {name} » ({mod_label}). Votre équipe de 3 personnes doit intervenir dans des conditions normales.",
-                    "question": f"Quelle est la démarche prioritaire avant de commencer l'intervention ?",
+                return {
+                    "scenario": f"Vous êtes chef d'équipe pour une intervention impliquant « {name} » ({mod_label}). Votre équipe de 3 personnes doit intervenir.",
+                    "question": "Quelle est la démarche prioritaire avant de commencer l'intervention ?",
                     "options": [
-                        f"Évaluer les risques, consulter les normes applicables, briefer l'équipe et vérifier les EPI",
+                        "Évaluer les risques, consulter les normes applicables, briefer l'équipe et vérifier les EPI",
                         "Commencer les travaux directement car l'équipe est expérimentée",
                         "Déléguer entièrement la responsabilité au plus ancien",
                         "Reporter l'intervention en attendant des renforts"
                     ],
                     "correct_answer": 0,
-                    "explanation": f"Toute intervention de réseau exige une évaluation des risques, la consultation des normes (ESTI, SUVA, NIBT), un briefing d'équipe et la vérification des EPI. Compétence visée : « {comp} ».",
+                    "explanation": f"Toute intervention exige une évaluation des risques, consultation des normes et briefing. Compétence : « {comp} ».",
                     "fallback": True,
-                    "hint": "Pensez à ce qui doit TOUJOURS être fait avant de commencer un travail sur réseau."
-                }, concept, question_num)
+                    "hint": "Que doit-on TOUJOURS faire avant un travail sur réseau ?"
+                }
 
-        # QCM par défaut — basé sur les compétences réelles avec distracteurs plausibles
-        if exam_comps and len(exam_comps) >= 2:
-            correct_comp = random.choice(exam_comps)
-            # Distracteurs : compétences d'AUTRES modules (plausibles mais fausses pour CE module)
-            other_comps = []
-            for other_mod, other_comp_list in EXAM_COMPETENCES.items():
-                if other_mod != module:
-                    other_comps.extend(other_comp_list)
-            random.shuffle(other_comps)
-            distractors = other_comps[:3] if len(other_comps) >= 3 else [
-                "Dimensionner les installations photovoltaïques",
-                "Programmer des automates industriels complexes",
-                "Concevoir des circuits imprimés multicouches"
-            ]
-            
-            options = [correct_comp] + distractors[:3]
-            random.shuffle(options)
-            correct_idx = options.index(correct_comp)
-            
-            return self._add_metadata({
-                "question": f"Parmi les compétences suivantes, laquelle est spécifiquement requise dans le module {module} ({mod_label}) du Brevet Fédéral ?",
-                "options": options,
-                "correct_answer": correct_idx,
-                "explanation": f"La compétence « {correct_comp} » est listée dans les directives d'examen pour le module {module}. Les autres compétences appartiennent à d'autres modules.",
-                "fallback": True,
-                "hint": f"Réfléchissez à ce qu'un spécialiste en {mod_label} doit maîtriser."
-            }, concept, question_num)
+        elif q_type == "qcm":
+            if exam_comps and len(exam_comps) >= 2:
+                correct_comp = random.choice(exam_comps)
+                other_comps = []
+                for other_mod, other_comp_list in EXAM_COMPETENCES.items():
+                    if other_mod != module:
+                        other_comps.extend(other_comp_list)
+                random.shuffle(other_comps)
+                distractors = other_comps[:3] if len(other_comps) >= 3 else [
+                    "Dimensionner les installations photovoltaïques",
+                    "Programmer des automates industriels complexes",
+                    "Concevoir des circuits imprimés multicouches"
+                ]
+                options = [correct_comp] + distractors[:3]
+                random.shuffle(options)
+                correct_idx = options.index(correct_comp)
+                return {
+                    "question": f"Parmi les compétences suivantes, laquelle est spécifiquement requise pour le module {module} ({mod_label}) ?",
+                    "options": options,
+                    "correct_answer": correct_idx,
+                    "explanation": f"La compétence « {correct_comp} » est dans les directives d'examen du module {module}.",
+                    "fallback": True,
+                    "hint": f"Réfléchissez à ce qu'un spécialiste en {mod_label} doit maîtriser."
+                }
+            if keywords:
+                correct_kw = keywords[0]
+                wrong_keywords = ["Photovoltaïque bifacial", "Domotique KNX avancée", "Fibre optique monomode", "Automate Siemens S7"]
+                options = [correct_kw] + wrong_keywords[:3]
+                random.shuffle(options)
+                correct_idx = options.index(correct_kw)
+                return {
+                    "question": f"Quel terme technique est directement associé au domaine « {name} » dans le module {module} ({mod_label}) ?",
+                    "options": options,
+                    "correct_answer": correct_idx,
+                    "explanation": f"Le terme « {correct_kw} » est un mot-clé du concept « {name} ». Mots-clés : {', '.join(keywords)}.",
+                    "fallback": True,
+                    "hint": f"Pensez au vocabulaire spécifique de {mod_label}."
+                }
         
-        # Dernier recours absolu — question technique sur les keywords
-        if keywords:
-            correct_kw = keywords[0]
-            wrong_keywords = [
-                "Photovoltaïque bifacial", "Domotique KNX avancée",
-                "Fibre optique monomode", "Automate Siemens S7"
-            ]
-            options = [correct_kw] + wrong_keywords[:3]
-            random.shuffle(options)
-            correct_idx = options.index(correct_kw)
-            
-            return self._add_metadata({
-                "question": f"Quel terme technique est directement associé au domaine « {name} » dans le module {module} ({mod_label}) ?",
-                "options": options,
-                "correct_answer": correct_idx,
-                "explanation": f"Le terme « {correct_kw} » est un mot-clé technique du concept « {name} ». Les mots-clés associés sont : {', '.join(keywords)}.",
-                "fallback": True,
-                "hint": f"Pensez au vocabulaire spécifique du domaine {mod_label}."
-            }, concept, question_num)
+        return None
+    
+    def _build_last_resort(self, q_type: str, concept: Dict, mod_label: str, question_num: int) -> Dict:
+        """Dernier recours absolu — toujours du bon type, toujours unique."""
+        name = concept.get('name', 'inconnu')
+        module = concept.get('module', '')
         
-        # Ultra dernier recours — ne devrait jamais arriver
-        return self._add_metadata({
-            "question": f"Quel module du Brevet Fédéral Spécialiste de Réseau couvre le domaine « {mod_label} » ?",
-            "options": [module, "AA00", "AE00", "ZZ99"],
-            "correct_answer": 0,
-            "explanation": f"Le module {module} couvre « {mod_label} » dans le programme du Brevet Fédéral.",
-            "fallback": True,
-            "hint": f"Le code du module commence par {module[:2]}."
-        }, concept, question_num)
+        if q_type == "vrai_faux":
+            q = {
+                "question": f"Le sujet « {name} » est couvert dans le programme du Brevet Fédéral, module {module} ({mod_label}).",
+                "correct_answer": True,
+                "explanation": f"« {name} » fait partie du module {module}.",
+                "type": "vrai_faux", "fallback": True,
+                "hint": f"Ce sujet est lié au domaine {mod_label}."
+            }
+        elif q_type == "texte_trous":
+            q = {
+                "question": f"Le module qui couvre « {name} » dans le Brevet Fédéral porte le code _____.",
+                "correct_answer": module,
+                "acceptable_answers": [module, module.lower()],
+                "type": "texte_trous", "fallback": True,
+                "explanation": f"Le code du module est {module} ({mod_label}).",
+                "hint": f"Le code commence par {module[:2]}."
+            }
+        elif q_type == "calcul":
+            q = {
+                "question": "Calculer le courant dans une charge résistive de 23 Ω alimentée en monophasé 230V.",
+                "correct_answer": 10.0, "tolerance": 0.01, "unit": "A",
+                "type": "calcul", "fallback": True,
+                "explanation": "I = U/R = 230/23 = 10 A",
+                "hint": "Loi d'Ohm : I = U/R"
+            }
+        elif q_type == "mise_en_situation":
+            q = {
+                "scenario": f"Vous devez intervenir sur un équipement lié à « {name} » ({mod_label}). L'installation est sous tension.",
+                "question": "Quelle est la première action à effectuer ?",
+                "options": [
+                    "Appliquer les 5 règles de sécurité avant toute intervention",
+                    "Commencer les travaux rapidement pour minimiser le temps d'arrêt",
+                    "Demander à un collègue de surveiller pendant que vous travaillez",
+                    "Utiliser des gants isolants et travailler sous tension"
+                ],
+                "correct_answer": 0, "type": "mise_en_situation", "fallback": True,
+                "explanation": "Les 5 règles de sécurité (déclencher, sécuriser, vérifier, mettre à terre, protéger) sont TOUJOURS obligatoires.",
+                "hint": "Pensez aux 5 règles de sécurité."
+            }
+        else:  # qcm
+            q = {
+                "question": f"Quel module du Brevet Fédéral couvre le domaine « {mod_label} » ?",
+                "options": [module, "AA00", "AE00", "ZZ99"],
+                "correct_answer": 0, "type": "qcm", "fallback": True,
+                "explanation": f"Le module {module} couvre « {mod_label} ».",
+                "hint": f"Le code commence par {module[:2]}."
+            }
+        
+        self._used_questions.add(q['question'][:60])
+        return self._add_metadata(q, concept, question_num)
     
     def save_quiz_result(self, quiz_id: str, score: int, total: int, 
                         time_spent: int, answers: List[Dict],
