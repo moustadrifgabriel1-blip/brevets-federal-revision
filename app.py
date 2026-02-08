@@ -185,10 +185,18 @@ with st.sidebar:
     st.image("https://img.icons8.com/color/96/000000/graduation-cap.png", width=80)
     st.title("Navigation")
     
+    PAGES = ["🏠 Accueil", "📚 Mes Documents", "📅 Planning Cours", "🔬 Analyser", "🗺️ Concepts", "🎯 Couverture Examen", "📆 Planning Révisions", "📊 Ma Progression", "🧠 Quiz", "📇 Flashcards", "📖 Ressources", "⚙️ Paramètres"]
+    
+    # Synchroniser avec les boutons de navigation
+    default_index = 0
+    if 'page' in st.session_state and st.session_state['page'] in PAGES:
+        default_index = PAGES.index(st.session_state['page'])
+    
     page = st.radio(
         "Menu",
-        ["🏠 Accueil", "📚 Mes Documents", "� Planning Cours", "🔬 Analyser", "🗺️ Concepts", "📆 Planning Révisions", "� Ma Progression", "🧠 Quiz", "�📖 Ressources", "⚙️ Paramètres"],
-        index=0
+        PAGES,
+        index=default_index,
+        key="nav_radio"
     )
     
     st.divider()
@@ -289,7 +297,7 @@ if page == "🏠 Accueil":
     # Configuration requise
     config = load_config()
     if config:
-        exam_date = config.get('user', {}).get('exam_date', '2026-06-15')
+        exam_date = config.get('user', {}).get('exam_date', '2027-03-20')
         exam_dt = datetime.strptime(exam_date, '%Y-%m-%d')
         days_left = (exam_dt - datetime.now()).days
         
@@ -324,16 +332,72 @@ if page == "🏠 Accueil":
             
             st.subheader(f"📊 Modules: {with_content}/{total} avec cours")
             st.progress(with_content / total if total > 0 else 0)
+        
+        # ---- ALERTE COUVERTURE DIRECTIVES D'EXAMEN ----
+        st.divider()
+        st.subheader("🎯 Couverture des Directives d'Examen")
+        
+        from src.directives_coverage import get_module_coverage, get_coverage_summary
+        
+        cov_concept_map = load_concept_map()
+        cov_data = get_module_coverage(cov_concept_map, config)
+        cov_summary = get_coverage_summary(cov_data)
+        
+        cov_rate = cov_summary['coverage_rate'] * 100
+        
+        # Barre de couverture globale avec couleur
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            cov_color = "🟢" if cov_rate >= 70 else ("🟡" if cov_rate >= 40 else "🔴")
+            st.metric(f"{cov_color} Couverture examen", f"{cov_rate:.0f}%")
+        with col2:
+            st.metric("Compétences couvertes", f"{cov_summary['covered_competences']}/{cov_summary['total_competences']}")
+        with col3:
+            st.metric("🚨 Lacunes", cov_summary['total_gaps'])
+        
+        st.progress(cov_summary['coverage_rate'])
+        
+        # Alerte modules manquants
+        modules_manquants = [c for c in cov_data.values() if c['status'] == 'manquant']
+        modules_insuffisants = [c for c in cov_data.values() if c['status'] == 'insuffisant']
+        
+        if modules_manquants:
+            st.error(
+                f"🚨 **{len(modules_manquants)} modules évalués à l'examen n'ont AUCUN cours importé !**\n\n"
+                + "\n".join(
+                    f"- **{code}** — {cov_data[code]['name']} ({cov_data[code]['poids_examen']})"
+                    for code in sorted(cov_data.keys()) if cov_data[code]['status'] == 'manquant'
+                )
+                + "\n\n👉 Importe les cours manquants ou consulte la page **🎯 Couverture Examen** pour les détails."
+            )
+        
+        if modules_insuffisants:
+            st.warning(
+                f"⚠️ **{len(modules_insuffisants)} modules ont une couverture insuffisante** (< 30%)\n\n"
+                + "\n".join(
+                    f"- **{code}** — {cov_data[code]['name']} : {cov_data[code]['coverage_score']*100:.0f}% couvert"
+                    for code in sorted(cov_data.keys()) if cov_data[code]['status'] == 'insuffisant'
+                )
+            )
+        
+        if not modules_manquants and not modules_insuffisants:
+            st.success("✅ Tous les modules d'examen sont couverts ! Continue à réviser.")
 
 
 elif page == "📚 Mes Documents":
     st.header("📚 Gestion des Documents")
     
-    # Bouton supprimer tout
+    # Bouton supprimer tout (avec session_state pour éviter le nested-interaction pattern)
     col1, col2 = st.columns([4, 1])
     with col2:
         if st.button("🗑️ Tout Supprimer", type="secondary", key="del_all"):
-            if st.checkbox("✓ Confirmer", key="confirm_del"):
+            st.session_state['confirm_delete_all'] = True
+    
+    if st.session_state.get('confirm_delete_all', False):
+        st.warning("⚠️ **Êtes-vous sûr de vouloir tout supprimer ?**")
+        col_yes, col_no = st.columns(2)
+        with col_yes:
+            if st.button("✅ Oui, supprimer", type="primary", key="confirm_del_yes"):
                 try:
                     import shutil
                     deleted = 0
@@ -344,10 +408,15 @@ elif page == "📚 Mes Documents":
                             else:
                                 item.unlink()
                             deleted += 1
+                    st.session_state['confirm_delete_all'] = False
                     st.success(f"✅ {deleted} supprimé(s)")
                     st.rerun()
                 except Exception as e:
                     st.error(f"❌ {e}")
+        with col_no:
+            if st.button("❌ Annuler", key="confirm_del_no"):
+                st.session_state['confirm_delete_all'] = False
+                st.rerun()
     
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["📤 Upload", "📁 Import Dossiers", "📖 Cours", "📋 Directives", "📊 Vue Modules"])
     
@@ -398,8 +467,10 @@ elif page == "📚 Mes Documents":
             if uploaded_files:
                 st.write(f"📦 {len(uploaded_files)} fichier(s)")
                 
-                module_codes = ["AA01", "AA02", "AA03", "AA04", "AA05", "AA06", "AA07", "AA08", "AA09", "AA10",
-                              "AE01", "AE02", "AE03", "AE04", "AE05", "AE06", "AE07", "AE08", "AE09", "AE10"]
+                module_codes = sorted(load_config().get('modules', {}).keys()) if load_config() and 'modules' in load_config() else [
+                    "AA01", "AA02", "AA03", "AA04", "AA05", "AA06", "AA07", "AA08", "AA09", "AA10", "AA11",
+                    "AE01", "AE02", "AE03", "AE04", "AE05", "AE06", "AE07", "AE09", "AE10", "AE11", "AE12", "AE13"
+                ]
                 selected_module = st.selectbox("📂 Module", module_codes)
                 
                 if st.button("💾 Sauvegarder", type="primary", key="save_uploaded"):
@@ -470,83 +541,104 @@ elif page == "📚 Mes Documents":
             include_empty = st.checkbox("Inclure dossiers vides", value=True,
                                        help="Créer les dossiers même s'ils n'ont pas encore de cours")
         
+        # --- Scan avec session_state pour éviter le nested-button pattern ---
         if source_path and st.button("🚀 Scanner et Importer", type="primary", use_container_width=True):
-            # Nettoyer le chemin (enlever guillemets, espaces en début/fin)
             source_path_clean = source_path.strip().strip("'").strip('"')
             
             if Path(source_path_clean).exists():
-                with st.spinner("Analyse des dossiers en cours..."):
-                    try:
-                        import sys
-                        sys.path.insert(0, str(Path.cwd()))
-                        from src.folder_importer import FolderImporter, calculate_study_time
-                        
-                        config = load_config()
-                        importer = FolderImporter(config)
-                        
-                        # Scanner
-                        modules = importer.scan_source_folder(source_path_clean)
-                        
-                        st.success(f"✅ {len(modules)} modules détectés!")
-                        
-                        # Afficher le résumé
-                        status = importer.get_modules_status()
-                        
-                        col1, col2, col3 = st.columns(3)
-                        with col1:
-                            st.metric("📚 Avec contenu", len(status['with_content']))
-                        with col2:
-                            st.metric("📭 Sans contenu", len(status['empty']))
-                        with col3:
-                            total_files = sum(m.file_count for m in modules)
-                            st.metric("📄 Fichiers total", total_files)
-                        
-                        st.divider()
-                        
-                        # Liste des modules
-                        st.subheader("📋 Modules détectés")
-                        
-                        for module in sorted(modules, key=lambda x: (x.category, x.order)):
-                            icon = "✅" if module.has_content else "🔴"
-                            cat_icon = "📘" if module.category == "base" else "📙"
-                            
-                            with st.expander(f"{icon} {cat_icon} {module.code} - {module.name} ({module.file_count} fichiers)"):
-                                st.write(f"**Catégorie:** {'Base (AA)' if module.category == 'base' else 'Avancé (AE)'}")
-                                st.write(f"**Fichiers:** {module.file_count}")
-                                st.write(f"**Taille:** {module.total_size_kb:.1f} KB")
-                                if module.files:
-                                    st.write("**Contenu:**")
-                                    for f in module.files[:10]:
-                                        st.caption(f"  • {f}")
-                                    if len(module.files) > 10:
-                                        st.caption(f"  ... et {len(module.files) - 10} autres fichiers")
-                        
-                        st.divider()
-                        
-                        # Bouton pour confirmer l'import
-                        if st.button("✅ Confirmer l'import", type="primary"):
-                            with st.spinner("Copie des fichiers en cours..."):
-                                report = importer.import_folders(
-                                    source_path_clean, 
-                                    "cours",
-                                    copy_mode=copy_files
-                                )
-                                
-                                # Mettre à jour la config
-                                importer.update_config_modules("config/config.yaml")
-                                
-                                st.success(f"✅ Import terminé!")
-                                st.write(f"- {len(report['modules_imported'])} modules avec contenu")
-                                st.write(f"- {len(report['modules_empty'])} modules en attente de cours")
-                                st.write(f"- {report['total_files']} fichiers copiés")
-                                st.balloons()
-                                
-                    except Exception as e:
-                        st.error(f"Erreur: {e}")
-                        st.exception(e)
+                try:
+                    import sys
+                    sys.path.insert(0, str(Path.cwd()))
+                    from src.folder_importer import FolderImporter, calculate_study_time
+                    
+                    config = load_config()
+                    importer = FolderImporter(config)
+                    modules = importer.scan_source_folder(source_path_clean)
+                    
+                    # Stocker les résultats dans session_state
+                    st.session_state['scan_results'] = {
+                        'source_path': source_path_clean,
+                        'modules': modules,
+                        'status': importer.get_modules_status(),
+                        'total_files': sum(m.file_count for m in modules),
+                    }
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Erreur: {e}")
+                    st.exception(e)
             else:
                 st.error(f"❌ Le dossier n'existe pas: {source_path_clean}")
                 st.info("💡 Vérifiez que le chemin est correct. Essayez de glisser-déposer le dossier dans le champ ci-dessus.")
+        
+        # Afficher les résultats du scan (persistés dans session_state)
+        if 'scan_results' in st.session_state:
+            scan = st.session_state['scan_results']
+            modules = scan['modules']
+            status = scan['status']
+            
+            st.success(f"✅ {len(modules)} modules détectés!")
+            
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("📚 Avec contenu", len(status['with_content']))
+            with col2:
+                st.metric("📭 Sans contenu", len(status['empty']))
+            with col3:
+                st.metric("📄 Fichiers total", scan['total_files'])
+            
+            st.divider()
+            st.subheader("📋 Modules détectés")
+            
+            for module in sorted(modules, key=lambda x: (x.category, x.order)):
+                icon = "✅" if module.has_content else "🔴"
+                cat_icon = "📘" if module.category == "base" else "📙"
+                
+                with st.expander(f"{icon} {cat_icon} {module.code} - {module.name} ({module.file_count} fichiers)"):
+                    st.write(f"**Catégorie:** {'Base (AA)' if module.category == 'base' else 'Avancé (AE)'}")
+                    st.write(f"**Fichiers:** {module.file_count}")
+                    st.write(f"**Taille:** {module.total_size_kb:.1f} KB")
+                    if module.files:
+                        st.write("**Contenu:**")
+                        for f in module.files[:10]:
+                            st.caption(f"  • {f}")
+                        if len(module.files) > 10:
+                            st.caption(f"  ... et {len(module.files) - 10} autres fichiers")
+            
+            st.divider()
+            
+            col_btn1, col_btn2 = st.columns(2)
+            with col_btn1:
+                if st.button("✅ Confirmer l'import", type="primary"):
+                    with st.spinner("Copie des fichiers en cours..."):
+                        try:
+                            import sys
+                            sys.path.insert(0, str(Path.cwd()))
+                            from src.folder_importer import FolderImporter
+                            
+                            config = load_config()
+                            importer = FolderImporter(config)
+                            importer.scan_source_folder(scan['source_path'])
+                            
+                            report = importer.import_folders(
+                                scan['source_path'],
+                                "cours",
+                                copy_mode=copy_files
+                            )
+                            importer.update_config_modules("config/config.yaml")
+                            
+                            del st.session_state['scan_results']
+                            st.success(f"✅ Import terminé!")
+                            st.write(f"- {len(report['modules_imported'])} modules avec contenu")
+                            st.write(f"- {len(report['modules_empty'])} modules en attente de cours")
+                            st.write(f"- {report['total_files']} fichiers copiés")
+                            st.balloons()
+                        except Exception as e:
+                            st.error(f"Erreur: {e}")
+                            st.exception(e)
+            with col_btn2:
+                if st.button("❌ Annuler"):
+                    del st.session_state['scan_results']
+                    st.rerun()
         
         # Afficher les modules déjà configurés
         st.divider()
@@ -571,7 +663,7 @@ elif page == "📚 Mes Documents":
                 df = pd.DataFrame(data)
                 st.dataframe(df, use_container_width=True, hide_index=True)
     
-    with tab2:
+    with tab3:
         st.subheader("📖 Fichiers de cours importés")
         
         cours_files = get_files_in_folder("cours")
@@ -600,7 +692,7 @@ elif page == "📚 Mes Documents":
         else:
             st.info("Aucun cours importé. Utilisez l'onglet 'Import Dossiers' pour commencer.")
     
-    with tab3:
+    with tab4:
         st.subheader("Importer les directives d'examen")
         
         uploaded_directives = st.file_uploader(
@@ -627,7 +719,7 @@ elif page == "📚 Mes Documents":
         else:
             st.info("Aucune directive importée.")
     
-    with tab4:
+    with tab5:
         st.subheader("📊 Vue d'ensemble des modules")
         
         config = load_config()
@@ -699,7 +791,7 @@ elif page == "📚 Mes Documents":
             st.info("Importez vos dossiers dans l'onglet 'Import Dossiers' pour voir la vue d'ensemble.")
 
 
-elif page == "� Planning Cours":
+elif page == "📅 Planning Cours":
     st.header("📅 Planning de Formation")
     
     st.markdown("""
@@ -1031,14 +1123,84 @@ Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
     else:
         st.info("🤖 **Gemini 3 Pro** sera utilisé pour l'analyse (délai de 2s entre chaque document)")
         
-        if st.button("🚀 Lancer l'analyse IA", type="primary", use_container_width=True):
+        # --- ANALYSE INCRÉMENTALE ---
+        import sys
+        sys.path.insert(0, str(Path.cwd()))
+        from src.incremental_analyzer import IncrementalAnalyzer
+        
+        incr = IncrementalAnalyzer()
+        last_info = incr.get_last_analysis_info()
+        
+        if last_info:
+            last_dt = last_info['date'][:19].replace('T', ' ')
+            st.success(f"📊 Dernière analyse : **{last_dt}** ({last_info['total_files']} fichiers)")
+        
+        # Choix du mode
+        analysis_mode = st.radio(
+            "Mode d'analyse",
+            ["⚡ Incrémentale (recommandé)", "🔄 Complète (tout ré-analyser)"],
+            horizontal=True,
+            help="L'analyse incrémentale ne ré-analyse que les documents nouveaux ou modifiés."
+        )
+        
+        is_incremental = analysis_mode.startswith("⚡")
+        
+        # Pré-scan pour estimer le travail
+        if is_incremental and last_info:
+            if st.button("🔍 Pré-scanner les changements", use_container_width=True):
+                try:
+                    from src.scanner import DocumentScanner
+                    config = load_config()
+                    scanner = DocumentScanner(config)
+                    results = scanner.scan_all()
+                    cours_docs = scanner.get_documents_by_category('cours')
+                    
+                    comparison = incr.compare_with_previous(cours_docs)
+                    summary = incr.get_comparison_summary(comparison)
+                    
+                    st.session_state['incr_comparison'] = comparison
+                    st.session_state['incr_summary'] = summary
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"❌ Erreur de scan : {e}")
+            
+            if 'incr_summary' in st.session_state:
+                s = st.session_state['incr_summary']
+                col_s1, col_s2, col_s3, col_s4 = st.columns(4)
+                with col_s1:
+                    st.metric("🆕 Nouveaux", s['new_count'])
+                with col_s2:
+                    st.metric("✏️ Modifiés", s['modified_count'])
+                with col_s3:
+                    st.metric("✅ Inchangés", s['unchanged_count'])
+                with col_s4:
+                    st.metric("🗑️ Supprimés", s['deleted_count'])
+                
+                if s['total_to_analyze'] == 0:
+                    st.success("🎉 Aucun changement détecté ! Tous les documents sont à jour.")
+                else:
+                    st.info(f"📊 **{s['total_to_analyze']}** document(s) à analyser ({s['savings_pct']}% économisé)")
+                    
+                    if s['new_files']:
+                        with st.expander(f"🆕 {len(s['new_files'])} nouveau(x)"):
+                            for f in s['new_files']:
+                                st.write(f"• {f}")
+                    if s['modified_files']:
+                        with st.expander(f"✏️ {len(s['modified_files'])} modifié(s)"):
+                            for f in s['modified_files']:
+                                st.write(f"• {f}")
+                    if s['deleted_files']:
+                        with st.expander(f"🗑️ {len(s['deleted_files'])} supprimé(s)"):
+                            for f in s['deleted_files']:
+                                st.write(f"• {f}")
+        
+        # Bouton lancer l'analyse
+        btn_label = "⚡ Lancer l'analyse incrémentale" if is_incremental else "🚀 Lancer l'analyse complète"
+        
+        if st.button(btn_label, type="primary", use_container_width=True):
             
             with st.spinner("Analyse en cours... Cela peut prendre quelques minutes."):
                 try:
-                    # Import des modules
-                    import sys
-                    sys.path.insert(0, str(Path.cwd()))
-                    
                     from src.scanner import DocumentScanner
                     from src.analyzer import ContentAnalyzer
                     from src.concept_mapper import ConceptMapper
@@ -1053,18 +1215,35 @@ Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
                     total_docs = sum(len(docs) for docs in results.values())
                     st.success(f"✅ {total_docs} documents scannés")
                     
-                    # Étape 2: Analyse IA
-                    st.info("🤖 Analyse IA en cours...")
+                    cours_docs = scanner.get_documents_by_category('cours')
+                    
+                    # Étape 1b: Comparaison incrémentale
+                    incr_analyzer = IncrementalAnalyzer()
+                    
+                    if is_incremental and incr_analyzer.has_previous_analysis():
+                        comparison = incr_analyzer.compare_with_previous(cours_docs)
+                        summary = incr_analyzer.get_comparison_summary(comparison)
+                        docs_to_analyze = comparison['new'] + comparison['modified']
+                        deleted_paths = comparison['deleted']
+                        
+                        st.info(f"⚡ Mode incrémental : **{summary['total_to_analyze']}** documents à analyser "
+                                f"({summary['savings_pct']}% économisé)")
+                    else:
+                        docs_to_analyze = cours_docs
+                        deleted_paths = []
+                        if is_incremental:
+                            st.info("ℹ️ Première analyse — tous les documents seront analysés.")
+                    
+                    # Étape 2: Analyse IA (seulement les docs nécessaires)
+                    st.info(f"🤖 Analyse IA de {len(docs_to_analyze)} document(s)...")
                     analyzer = ContentAnalyzer(config)
                     
-                    # Vérifier que la clé API est bien chargée
                     api_key = config.get('api', {}).get('gemini_api_key', '')
                     if api_key:
                         st.success(f"🔑 Clé API détectée ({api_key[:10]}...)")
                     else:
                         st.error("❌ Aucune clé API trouvée ! L'analyse ne fonctionnera pas.")
                     
-                    # Charger les directives d'examen pour guider l'analyse
                     directives_docs = results.get('directives', [])
                     if directives_docs:
                         st.info(f"📋 Chargement de {len(directives_docs)} directive(s) d'examen...")
@@ -1074,71 +1253,95 @@ Les fichiers PDF de cours (1.6 GB) ne sont pas disponibles sur Streamlit Cloud.
                     else:
                         st.warning("⚠️ Aucune directive d'examen trouvée - analyse sans contexte d'examen")
                     
-                    all_concepts = []
+                    all_new_concepts = []
                     
-                    cours_docs = scanner.get_documents_by_category('cours')
-                    
-                    # Afficher les modules trouvés
-                    modules_found = {}
-                    for doc in cours_docs:
-                        if doc.module:
-                            if doc.module not in modules_found:
-                                modules_found[doc.module] = []
-                            modules_found[doc.module].append(doc.filename)
-                    
-                    if modules_found:
-                        st.info(f"📚 {len(modules_found)} modules détectés: {', '.join(sorted(modules_found.keys()))}")
-                    
-                    # Barre de progression avec %
-                    progress_bar = st.progress(0)
-                    status_text = st.empty()
-                    error_count = 0
-                    
-                    for i, doc in enumerate(cours_docs):
-                        percent = int(((i + 1) / len(cours_docs)) * 100)
-                        status_text.text(f"⏳ Analyse en cours... {i+1}/{len(cours_docs)} documents ({percent}%)")
+                    if docs_to_analyze:
+                        modules_found = {}
+                        for doc in docs_to_analyze:
+                            if doc.module:
+                                modules_found.setdefault(doc.module, []).append(doc.filename)
                         
-                        try:
-                            concepts = analyzer.analyze_course_document(
-                                doc.content, 
-                                doc.filename, 
-                                doc.module
-                            )
-                            all_concepts.extend(concepts)
-                        except Exception as e:
-                            error_count += 1
-                            st.warning(f"⚠️ Erreur d'analyse pour {doc.filename}: {str(e)[:100]}")
-                            # Continuer avec le prochain document
-                            continue
+                        if modules_found:
+                            st.info(f"📚 {len(modules_found)} modules à analyser: {', '.join(sorted(modules_found.keys()))}")
                         
-                        progress_bar.progress((i + 1) / len(cours_docs))
+                        progress_bar = st.progress(0)
+                        status_text = st.empty()
+                        error_count = 0
+                        
+                        for i, doc in enumerate(docs_to_analyze):
+                            percent = int(((i + 1) / len(docs_to_analyze)) * 100)
+                            status_text.text(f"⏳ Analyse en cours... {i+1}/{len(docs_to_analyze)} documents ({percent}%)")
+                            
+                            try:
+                                concepts = analyzer.analyze_course_document(
+                                    doc.content, 
+                                    doc.filename, 
+                                    doc.module
+                                )
+                                all_new_concepts.extend(concepts)
+                            except Exception as e:
+                                error_count += 1
+                                st.warning(f"⚠️ Erreur d'analyse pour {doc.filename}: {str(e)[:100]}")
+                                continue
+                            
+                            progress_bar.progress((i + 1) / len(docs_to_analyze))
+                        
+                        status_text.empty()
+                        progress_bar.empty()
+                        
+                        if error_count > 0:
+                            st.warning(f"⚠️ {error_count} document(s) n'ont pas pu être analysés")
+                        
+                        st.success(f"✅ {len(all_new_concepts)} nouveaux concepts identifiés")
+                    else:
+                        st.success("✅ Aucun document à analyser — tout est à jour")
                     
-                    # Clear progress et afficher succès
-                    status_text.empty()
-                    progress_bar.empty()
+                    # Étape 3: Fusion / Cartographie
+                    existing_map = load_concept_map()
                     
-                    if error_count > 0:
-                        st.warning(f"⚠️ {error_count} document(s) n'ont pas pu être analysés (PDFs corrompus)")
+                    if is_incremental and incr_analyzer.has_previous_analysis() and existing_map:
+                        st.info("🔀 Fusion des concepts (incrémental)...")
+                        merged = incr_analyzer.merge_concepts(
+                            existing_map, all_new_concepts, docs_to_analyze, deleted_paths
+                        )
+                        if merged:
+                            # Sauvegarder directement le concept_map fusionné
+                            with open("exports/concept_map.json", 'w', encoding='utf-8') as f:
+                                json.dump(merged, f, indent=2, ensure_ascii=False)
+                            st.success(f"✅ Carte conceptuelle mise à jour ({len(merged['nodes'])} concepts)")
+                        else:
+                            # Pas de données existantes — reconstruire
+                            mapper = ConceptMapper(config)
+                            mapper.build_from_concepts(all_new_concepts)
+                            mapper.export_to_json("exports/concept_map.json")
+                            st.success(f"✅ Carte conceptuelle reconstruite")
+                    else:
+                        st.info("🗺️ Création de la cartographie...")
+                        # Analyse complète : rassembler tous les concepts
+                        all_concepts_complete = all_new_concepts
+                        mapper = ConceptMapper(config)
+                        mapper.build_from_concepts(all_concepts_complete)
+                        mapper.export_to_json("exports/concept_map.json")
                     
-                    st.success(f"✅ {len(all_concepts)} concepts identifiés")
+                    # Sauvegarder l'état incrémental
+                    incr_analyzer.save_state()
                     
-                    # Étape 3: Cartographie
-                    st.info("🗺️ Création de la cartographie...")
-                    mapper = ConceptMapper(config)
-                    mapper.build_from_concepts(all_concepts)
-                    mapper.export_to_json("exports/concept_map.json")
-                    
-                    # Etape 4: Generation automatique du planning
-                    st.info("📆 Generation du planning de revision...")
+                    # Étape 4: Planning de révision
+                    st.info("📆 Génération du planning de révision...")
                     from src.revision_planner import auto_generate_planning
                     planning_result = auto_generate_planning(config)
                     
                     if planning_result['success']:
-                        st.success(f"Planning genere: {planning_result['total_sessions']} sessions, {planning_result['total_hours']}h de revision")
+                        st.success(f"Planning généré: {planning_result['total_sessions']} sessions, {planning_result['total_hours']}h de révision")
                     else:
                         st.warning(f"Erreur planning: {planning_result.get('error', 'Inconnu')}")
                     
-                    st.success("Analyse et planning termines!")
+                    # Nettoyer l'état de session du pré-scan
+                    for key in ['incr_comparison', 'incr_summary']:
+                        if key in st.session_state:
+                            del st.session_state[key]
+                    
+                    st.success("✅ Analyse et planning terminés!")
                     st.balloons()
                     
                 except Exception as e:
@@ -1174,92 +1377,333 @@ elif page == "🗺️ Concepts":
         
         st.divider()
         
-        # Filtres
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            importance_filter = st.multiselect(
-                "Filtrer par importance",
-                ['critical', 'high', 'medium', 'low'],
-                default=['critical', 'high']
+        tab_list, tab_graph = st.tabs(["📋 Liste des concepts", "🕸️ Graphe interactif"])
+        
+        with tab_list:
+            # Filtres
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                importance_filter = st.multiselect(
+                    "Filtrer par importance",
+                    ['critical', 'high', 'medium', 'low'],
+                    default=['critical', 'high']
+                )
+            with col2:
+                exam_only = st.checkbox("Uniquement liés à l'examen", value=False)
+            
+            with col3:
+                # Filtrer par module
+                all_modules = sorted(set(n.get('module') for n in nodes if n.get('module')))
+                selected_modules = st.multiselect(
+                    "Filtrer par module",
+                    all_modules,
+                    default=all_modules if all_modules else []
+                )
+            
+            # Liste des concepts
+            filtered_nodes = nodes
+            if importance_filter:
+                filtered_nodes = [n for n in filtered_nodes if n.get('importance') in importance_filter]
+            if exam_only:
+                filtered_nodes = [n for n in filtered_nodes if n.get('exam_relevant')]
+            if selected_modules:
+                filtered_nodes = [n for n in filtered_nodes if n.get('module') in selected_modules]
+            
+            # Grouper par module
+            concepts_by_module = {}
+            for node in filtered_nodes:
+                module = node.get('module', 'Sans module')
+                if module not in concepts_by_module:
+                    concepts_by_module[module] = []
+                concepts_by_module[module].append(node)
+            
+            for module, concepts in sorted(concepts_by_module.items()):
+                with st.expander(f"📚 {module} ({len(concepts)} concepts)", expanded=(len(concepts_by_module) <= 3)):
+                    for node in concepts:
+                        importance = node.get('importance', 'medium')
+                        icon = {'critical': '🔴', 'high': '🟠', 'medium': '🟡', 'low': '🟢'}.get(importance, '⚪')
+                        exam_icon = '📝' if node.get('exam_relevant') else ''
+                        
+                        with st.container():
+                            st.markdown(f"### {icon} {node.get('name', 'Concept')} {exam_icon}")
+                            st.markdown(f"**Catégorie:** {node.get('category', 'N/A')}")
+                            st.markdown(f"**Importance:** {importance}")
+                            
+                            # Références du document source
+                            source_doc = node.get('source_document', '')
+                            page_ref = node.get('page_references', '')
+                            if source_doc or page_ref:
+                                st.markdown("**📖 Où réviser:**")
+                                if source_doc:
+                                    st.caption(f"📄 Document: {source_doc}")
+                                if page_ref:
+                                    st.caption(f"📖 Références: {page_ref}")
+                            
+                            # Mots-clés
+                            keywords = node.get('keywords', [])
+                            if keywords:
+                                st.markdown(f"**🔑 Mots-clés:** {', '.join(keywords)}")
+                            
+                            prereqs = node.get('prerequisites', [])
+                            if prereqs:
+                                st.markdown(f"**Prérequis:** {', '.join(prereqs)}")
+                            
+                            deps = node.get('dependents', [])
+                            if deps:
+                                st.markdown(f"**Concepts dépendants:** {', '.join(deps)}")
+                            
+                            st.divider()
+            
+            # Ordre d'apprentissage
+            st.divider()
+            st.subheader("📚 Ordre d'apprentissage recommandé")
+            
+            learning_order = concept_map.get('learning_order', [])
+            if learning_order:
+                for i, concept in enumerate(learning_order[:20], 1):
+                    st.markdown(f"{i}. {concept}")
+                if len(learning_order) > 20:
+                    st.caption(f"... et {len(learning_order) - 20} autres concepts")
+        
+        # ===== ONGLET GRAPHE INTERACTIF =====
+        with tab_graph:
+            from src.concept_graph import build_graph, graph_to_plotly, get_graph_stats, MODULE_COLORS
+            
+            st.markdown("### 🕸️ Graphe des concepts et leurs liens")
+            st.markdown("*Les nœuds sont colorés par module, dimensionnés par importance. Les liens montrent les prérequis et dépendances.*")
+            
+            # Contrôles du graphe
+            gc1, gc2, gc3 = st.columns(3)
+            with gc1:
+                graph_modules = st.multiselect(
+                    "Modules à afficher",
+                    sorted(set(n.get('module') for n in nodes if n.get('module'))),
+                    default=sorted(set(n.get('module') for n in nodes if n.get('module'))),
+                    key="graph_modules"
+                )
+            with gc2:
+                graph_importance = st.multiselect(
+                    "Importance",
+                    ['critical', 'high', 'medium', 'low'],
+                    default=['critical', 'high'],
+                    key="graph_importance"
+                )
+            with gc3:
+                graph_layout = st.selectbox(
+                    "Disposition",
+                    ["spring", "shell", "circular", "kamada_kawai"],
+                    index=0,
+                    key="graph_layout",
+                    help="spring = force-directed, shell = par module, circular = cercle, kamada_kawai = distances optimisées"
+                )
+            
+            max_nodes = st.slider("Nombre max de concepts", 20, 300, 100, step=10, key="graph_max_nodes")
+            
+            # Construire et afficher le graphe
+            G = build_graph(
+                nodes,
+                modules_filter=graph_modules if graph_modules else None,
+                importance_filter=graph_importance if graph_importance else None,
+                max_nodes=max_nodes
             )
-        with col2:
-            exam_only = st.checkbox("Uniquement liés à l'examen", value=True)
+            
+            # Statistiques du graphe
+            gstats = get_graph_stats(G)
+            
+            gs1, gs2, gs3, gs4 = st.columns(4)
+            with gs1:
+                st.metric("🔵 Nœuds", gstats['nodes'])
+            with gs2:
+                st.metric("🔗 Liens", gstats['edges'])
+            with gs3:
+                st.metric("🏝️ Composantes", gstats['components'])
+            with gs4:
+                st.metric("📐 Densité", f"{gstats['density']:.3f}")
+            
+            # Rendu Plotly
+            fig = graph_to_plotly(G, layout=graph_layout, height=700)
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Légende des couleurs par module
+            with st.expander("🎨 Légende des couleurs (modules)"):
+                legend_cols = st.columns(4)
+                for idx, mod in enumerate(sorted(graph_modules)):
+                    color = MODULE_COLORS.get(mod, '#999')
+                    count = gstats['modules'].get(mod, 0)
+                    with legend_cols[idx % 4]:
+                        st.markdown(f"<span style='color:{color}; font-size:20px;'>●</span> **{mod}** ({count})", unsafe_allow_html=True)
+            
+            # Hubs (nœuds les plus connectés)
+            if gstats['hub_nodes']:
+                with st.expander("🌟 Concepts les plus connectés (hubs)"):
+                    for hub in gstats['hub_nodes']:
+                        st.markdown(f"- **{hub['name']}** ({hub['module']}) — {hub['connections']} connexions")
+
+
+elif page == "🎯 Couverture Examen":
+    st.header("🎯 Matrice de Couverture — Directives d'Examen")
+    st.markdown("**Compare tes cours et concepts analysés avec les exigences officielles des directives d'examen.**")
+    
+    # Charger les données
+    from src.directives_coverage import get_module_coverage, get_coverage_summary, EXAM_REQUIREMENTS
+    
+    concept_map = load_concept_map()
+    config = load_config()
+    coverage = get_module_coverage(concept_map, config)
+    summary = get_coverage_summary(coverage)
+    
+    # ---- RÉSUMÉ GLOBAL ----
+    st.subheader("📊 Résumé global")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        rate_pct = summary['coverage_rate'] * 100
+        color = "🟢" if rate_pct >= 70 else ("🟡" if rate_pct >= 40 else "🔴")
+        st.metric(f"{color} Couverture globale", f"{rate_pct:.0f}%")
+    with col2:
+        st.metric("Compétences couvertes", f"{summary['covered_competences']}/{summary['total_competences']}")
+    with col3:
+        st.metric("⚠️ Lacunes", summary['total_gaps'])
+    with col4:
+        st.metric("🚨 Modules manquants", summary['modules_manquant'])
+    
+    st.divider()
+    
+    # ---- BARRE DE PROGRESSION PAR STATUT ----
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown(f"✅ **Complet** : {summary['modules_complet']}")
+    with col2:
+        st.markdown(f"🟡 **Partiel** : {summary['modules_partiel']}")
+    with col3:
+        st.markdown(f"🟠 **Insuffisant** : {summary['modules_insuffisant']}")
+    with col4:
+        st.markdown(f"🔴 **Manquant** : {summary['modules_manquant']}")
+    
+    st.progress(summary['coverage_rate'])
+    
+    st.divider()
+    
+    # ---- ALERTES CRITIQUES ----
+    if summary['critical_gaps']:
+        st.subheader("🚨 ALERTES — Modules critiques sans couverture")
+        st.error(f"**{len(summary['critical_gaps'])} modules évalués à l'examen n'ont pas ou peu de couverture !**")
         
-        with col3:
-            # Filtrer par module
-            all_modules = sorted(set(n.get('module') for n in nodes if n.get('module')))
-            selected_modules = st.multiselect(
-                "Filtrer par module",
-                all_modules,
-                default=all_modules if all_modules else []
-            )
+        for gap in summary['critical_gaps']:
+            with st.expander(f"🔴 {gap['module']} — {gap['name']} ({gap['poids_examen']})", expanded=True):
+                st.markdown("**Compétences NON couvertes :**")
+                for g in gap['gaps']:
+                    st.markdown(f"- ❌ {g}")
+                st.warning(f"⚠️ Ce module sera évalué à l'examen ({gap['poids_examen']}). Il faut obtenir les cours correspondants.")
+    
+    st.divider()
+    
+    # ---- MATRICE DÉTAILLÉE ----
+    st.subheader("📋 Matrice détaillée par module")
+    
+    # Filtres
+    col1, col2 = st.columns(2)
+    with col1:
+        filter_type = st.selectbox(
+            "Afficher",
+            ["Tous les modules", "Modules de base (AA)", "Modules spécialisés (AE)", "Modules avec lacunes", "Modules manquants uniquement"],
+            index=0,
+            key="coverage_filter"
+        )
+    with col2:
+        sort_by = st.selectbox(
+            "Trier par",
+            ["Code module", "Score de couverture (croissant)", "Score de couverture (décroissant)", "Nombre de lacunes"],
+            index=1,
+            key="coverage_sort"
+        )
+    
+    # Appliquer les filtres
+    filtered = dict(coverage)
+    if filter_type == "Modules de base (AA)":
+        filtered = {k: v for k, v in filtered.items() if k.startswith("AA")}
+    elif filter_type == "Modules spécialisés (AE)":
+        filtered = {k: v for k, v in filtered.items() if k.startswith("AE")}
+    elif filter_type == "Modules avec lacunes":
+        filtered = {k: v for k, v in filtered.items() if v['status'] != 'complet'}
+    elif filter_type == "Modules manquants uniquement":
+        filtered = {k: v for k, v in filtered.items() if v['status'] == 'manquant'}
+    
+    # Appliquer le tri
+    if sort_by == "Score de couverture (croissant)":
+        items = sorted(filtered.items(), key=lambda x: x[1]['coverage_score'])
+    elif sort_by == "Score de couverture (décroissant)":
+        items = sorted(filtered.items(), key=lambda x: x[1]['coverage_score'], reverse=True)
+    elif sort_by == "Nombre de lacunes":
+        items = sorted(filtered.items(), key=lambda x: len(x[1]['gaps']), reverse=True)
+    else:
+        items = sorted(filtered.items())
+    
+    # Afficher chaque module
+    for module_code, cov in items:
+        score = cov['coverage_score']
+        status_icon = {
+            'complet': '✅',
+            'partiel': '🟡',
+            'insuffisant': '🟠',
+            'manquant': '🔴',
+        }.get(cov['status'], '⚪')
         
-        # Liste des concepts
-        st.subheader("📋 Liste des concepts")
+        content_icon = "📚" if cov['has_content'] else "📭"
         
-        filtered_nodes = nodes
-        if importance_filter:
-            filtered_nodes = [n for n in filtered_nodes if n.get('importance') in importance_filter]
-        if exam_only:
-            filtered_nodes = [n for n in filtered_nodes if n.get('exam_relevant')]
-        if selected_modules:
-            filtered_nodes = [n for n in filtered_nodes if n.get('module') in selected_modules]
+        header = f"{status_icon} {module_code} — {cov['name']} | {content_icon} {cov['num_concepts']} concepts | Couverture: {score*100:.0f}%"
         
-        # Grouper par module
-        concepts_by_module = {}
-        for node in filtered_nodes:
-            module = node.get('module', 'Sans module')
-            if module not in concepts_by_module:
-                concepts_by_module[module] = []
-            concepts_by_module[module].append(node)
-        
-        for module, concepts in sorted(concepts_by_module.items()):
-            with st.expander(f"📚 {module} ({len(concepts)} concepts)", expanded=(len(concepts_by_module) <= 3)):
-                for node in concepts:
-                    importance = node.get('importance', 'medium')
-                    icon = {'critical': '🔴', 'high': '🟠', 'medium': '🟡', 'low': '🟢'}.get(importance, '⚪')
-                    exam_icon = '📝' if node.get('exam_relevant') else ''
-                    
-                    with st.container():
-                        st.markdown(f"### {icon} {node.get('name', 'Concept')} {exam_icon}")
-                        st.markdown(f"**Catégorie:** {node.get('category', 'N/A')}")
-                        st.markdown(f"**Importance:** {importance}")
-                        
-                        # Références du document source
-                        source_doc = node.get('source_document', '')
-                        page_ref = node.get('page_references', '')
-                        if source_doc or page_ref:
-                            st.markdown("**📖 Où réviser:**")
-                            if source_doc:
-                                st.caption(f"📄 Document: {source_doc}")
-                            if page_ref:
-                                st.caption(f"📖 Références: {page_ref}")
-                        
-                        # Mots-clés
-                        keywords = node.get('keywords', [])
-                        if keywords:
-                            st.markdown(f"**🔑 Mots-clés:** {', '.join(keywords)}")
-                        
-                        prereqs = node.get('prerequisites', [])
-                        if prereqs:
-                            st.markdown(f"**Prérequis:** {', '.join(prereqs)}")
-                        
-                        deps = node.get('dependents', [])
-                        if deps:
-                            st.markdown(f"**Concepts dépendants:** {', '.join(deps)}")
-                        
-                        st.divider()
-        
-        # Ordre d'apprentissage
-        st.divider()
-        st.subheader("📚 Ordre d'apprentissage recommandé")
-        
-        learning_order = concept_map.get('learning_order', [])
-        if learning_order:
-            for i, concept in enumerate(learning_order[:20], 1):
-                st.markdown(f"{i}. {concept}")
-            if len(learning_order) > 20:
-                st.caption(f"... et {len(learning_order) - 20} autres concepts")
+        with st.expander(header, expanded=(cov['status'] in ('manquant', 'insuffisant'))):
+            # Barre de progression du module
+            st.progress(score)
+            
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.markdown(f"**Cours importés :** {'✅ Oui' if cov['has_content'] else '❌ Non'}")
+            with col2:
+                st.markdown(f"**Concepts analysés :** {cov['num_concepts']}")
+            with col3:
+                st.markdown(f"**Poids examen :** {cov['poids_examen']}")
+            
+            st.divider()
+            
+            # Liste des compétences avec statut
+            st.markdown("**Compétences évaluées à l'examen :**")
+            for comp in cov['competences']:
+                # Vérifier si cette compétence est couverte
+                is_covered = comp not in cov['gaps']
+                if is_covered:
+                    # Trouver le concept qui la couvre
+                    matching = [m for m in cov['matched_concepts'] if m['competence'] == comp]
+                    concept_name = matching[0]['concept'] if matching else "—"
+                    st.markdown(f"- ✅ {comp}")
+                    st.caption(f"   ↳ Couvert par : *{concept_name}*")
+                else:
+                    st.markdown(f"- ❌ **{comp}**")
+                    st.caption(f"   ↳ ⚠️ NON COUVERT — À réviser / cours à obtenir")
+    
+    st.divider()
+    
+    # ---- TABLEAU RÉCAPITULATIF ----
+    st.subheader("📊 Tableau récapitulatif")
+    
+    table_data = []
+    for code in sorted(coverage.keys()):
+        cov = coverage[code]
+        status_emoji = {'complet': '✅', 'partiel': '🟡', 'insuffisant': '🟠', 'manquant': '🔴'}.get(cov['status'], '⚪')
+        table_data.append({
+            "Module": code,
+            "Nom": cov['name'],
+            "Statut": status_emoji,
+            "Cours": "✅" if cov['has_content'] else "❌",
+            "Concepts": cov['num_concepts'],
+            "Couverture": f"{cov['coverage_score']*100:.0f}%",
+            "Lacunes": len(cov['gaps']),
+            "Examen": cov['poids_examen'],
+        })
+    
+    df_coverage = pd.DataFrame(table_data)
+    st.dataframe(df_coverage, use_container_width=True, hide_index=True)
 
 
 elif page == "📆 Planning Révisions":
@@ -1612,7 +2056,7 @@ elif page == "📆 Planning Révisions":
                 )
 
 
-elif page == "� Ma Progression":
+elif page == "📊 Ma Progression":
     st.header("📊 Suivi de Ma Progression")
     
     # Charger le tracker de progression
@@ -1728,12 +2172,19 @@ elif page == "� Ma Progression":
             # Filtrer par niveau d'importance
             importance_filter = st.selectbox(
                 "Filtrer par importance",
-                ["Tous", "5 - Critique", "4 - Très Important", "3 - Important", "2 - Moyen", "1 - Faible"]
+                ["Tous", "🔴 Critique", "🟠 Très Important", "🟡 Important", "🟢 Faible"]
             )
             
+            importance_map = {
+                "🔴 Critique": "critical",
+                "🟠 Très Important": "high",
+                "🟡 Important": "medium",
+                "🟢 Faible": "low",
+            }
+            
             if importance_filter != "Tous":
-                importance_level = int(importance_filter[0])
-                nodes = [n for n in nodes if n.get('importance', 3) == importance_level]
+                target = importance_map.get(importance_filter, 'medium')
+                nodes = [n for n in nodes if n.get('importance', 'medium') == target]
             
             # Grouper par catégorie
             concept_categories = {}
@@ -1773,7 +2224,8 @@ elif page == "� Ma Progression":
                                 'low': '🟢'
                             }.get(importance, '🟡')
                             st.markdown(f"{status_icon} **{concept.get('name', 'Concept')}** {importance_emoji}")
-                            st.caption(concept.get('description', '')[:150] + "...")
+                            desc = concept.get('description') or ''
+                            st.caption(desc[:150] + ('...' if len(desc) > 150 else ''))
     
     with tab3:
         st.markdown("### 📊 Historique et Tendances")
@@ -1788,20 +2240,76 @@ elif page == "� Ma Progression":
         else:
             st.info("Aucune activité récente")
         
+        # --- CONCEPTS FAIBLES (QUIZ ADAPTATIF) ---
+        st.divider()
+        st.subheader("🎯 Concepts Faibles — Détectés par vos Quiz")
+        st.markdown("*Les concepts que vous ratez souvent sont suivis ici. Ils seront priorisés dans les prochains quiz adaptatifs.*")
+        
+        from src.weak_concepts_tracker import WeakConceptsTracker
+        weak_tracker_prog = WeakConceptsTracker()
+        weak_stats_prog = weak_tracker_prog.get_stats()
+        
+        if weak_stats_prog['total_tracked'] == 0:
+            st.info("Aucun concept suivi pour l'instant. Faites des quiz pour alimenter le tracker !")
+        else:
+            col_w1, col_w2, col_w3, col_w4 = st.columns(4)
+            with col_w1:
+                st.metric("Concepts suivis", weak_stats_prog['total_tracked'])
+            with col_w2:
+                st.metric("🔴 Faibles", weak_stats_prog['weak_count'])
+            with col_w3:
+                st.metric("🟢 Acquis", weak_stats_prog['strong_count'])
+            with col_w4:
+                st.metric("Maîtrise moy.", f"{weak_stats_prog['average_mastery']:.0f}%")
+            
+            # Liste des concepts faibles
+            weak_list = weak_tracker_prog.get_weak_concepts(min_errors=1, max_mastery=60)
+            
+            if weak_list:
+                st.markdown("#### 🔴 Concepts à renforcer (triés par priorité)")
+                for i, wc in enumerate(weak_list[:15], 1):
+                    mastery = wc['mastery_score']
+                    m_color = '🔴' if mastery < 30 else ('🟠' if mastery < 50 else '🟡')
+                    module_tag = f"[{wc['module']}]" if wc.get('module') else ''
+                    st.markdown(
+                        f"{i}. {m_color} **{wc['concept_name']}** {module_tag} — "
+                        f"Maîtrise: {mastery}% | Erreurs: {wc['error_count']} | "
+                        f"Succès: {wc['success_count']}/{wc['total_attempts']}"
+                    )
+            else:
+                st.success("✅ Aucun concept réellement faible détecté. Bien joué !")
+            
+            # Modules faibles
+            weak_modules_data = weak_tracker_prog.get_weak_modules()
+            if weak_modules_data:
+                st.markdown("#### 📊 Taux d'erreur par module")
+                for mod, data in list(weak_modules_data.items())[:10]:
+                    if data['total'] > 0:
+                        err_rate = data['error_rate']
+                        bar_color = '🔴' if err_rate > 50 else ('🟠' if err_rate > 30 else '🟢')
+                        st.markdown(f"{bar_color} **{mod}** — {err_rate:.0f}% d'erreurs ({data['errors']}/{data['total']})")
+                        if data['weak_concepts']:
+                            st.caption(f"   Concepts faibles : {', '.join(data['weak_concepts'][:5])}")
+        
         # Bouton pour réinitialiser
         st.divider()
         st.warning("⚠️ Zone Dangereuse")
-        if st.button("🔄 Réinitialiser Toute la Progression", type="secondary"):
-            if st.button("⚠️ Confirmer la réinitialisation", type="primary"):
-                tracker.reset_progress()
-                st.success("✅ Progression réinitialisée")
-                st.rerun()
+        col_reset1, col_reset2 = st.columns(2)
+        with col_reset1:
+            confirm_reset = st.checkbox("Je confirme vouloir réinitialiser", key="confirm_reset_prog")
+        with col_reset2:
+            if confirm_reset:
+                if st.button("🔄 Réinitialiser Toute la Progression", type="secondary"):
+                    tracker.reset_progress()
+                    weak_tracker_prog.reset()
+                    st.success("✅ Progression réinitialisée")
+                    st.rerun()
 
 
 elif page == "🧠 Quiz":
     st.header("🧠 Quiz d'Auto-Évaluation")
     
-    from src.quiz_generator import QuizGenerator
+    from src.quiz_generator import QuizGenerator, QUESTION_TYPES, evaluate_answer
     import time
     
     # Charger les concepts
@@ -1838,7 +2346,7 @@ elif page == "🧠 Quiz":
     st.divider()
     
     # Onglets
-    tab1, tab2 = st.tabs(["🆕 Nouveau Quiz", "📜 Historique"])
+    tab1, tab2, tab3 = st.tabs(["🆕 Nouveau Quiz", "🎓 Examen Blanc", "📜 Historique"])
     
     with tab1:
         st.markdown("### Configurer votre Quiz")
@@ -1846,6 +2354,11 @@ elif page == "🧠 Quiz":
         # Extraire les modules disponibles
         concepts = concept_map['nodes']
         modules = sorted(list(set(c.get('module', 'Non classé') for c in concepts if c.get('module'))))
+        
+        # Charger le tracker de concepts faibles
+        from src.weak_concepts_tracker import WeakConceptsTracker
+        weak_tracker = WeakConceptsTracker()
+        weak_stats = weak_tracker.get_stats()
         
         col_a, col_b, col_c = st.columns(3)
         
@@ -1866,16 +2379,48 @@ elif page == "🧠 Quiz":
                 value="moyen"
             )
         
+        # --- MODE ADAPTATIF ---
+        adaptive_mode = st.toggle(
+            "🎯 Mode Adaptatif — Prioriser mes concepts faibles",
+            value=True if weak_stats['weak_count'] > 0 else False,
+            help="Active le quiz adaptatif : 60% des questions portent sur vos concepts les plus faibles (basé sur vos erreurs précédentes)"
+        )
+        
+        if adaptive_mode and weak_stats['weak_count'] > 0:
+            st.info(f"🎯 Mode adaptatif activé — **{weak_stats['weak_count']} concepts faibles** seront priorisés")
+        elif adaptive_mode and weak_stats['weak_count'] == 0:
+            st.caption("ℹ️ Aucun concept faible détecté pour l'instant. Faites quelques quiz d'abord !")
+        
+        # --- TYPES DE QUESTIONS ---
+        all_type_labels = {v['label']: k for k, v in QUESTION_TYPES.items()}
+        selected_labels = st.multiselect(
+            "🎲 Types de questions",
+            options=list(all_type_labels.keys()),
+            default=list(all_type_labels.keys()),
+            help="Choisissez les types de questions à inclure dans le quiz"
+        )
+        selected_types = [all_type_labels[l] for l in selected_labels] if selected_labels else None
+        
+        if selected_types:
+            type_icons = " ".join([QUESTION_TYPES[t]["icon"] for t in selected_types])
+            st.caption(f"Types actifs : {type_icons}")
+        
         st.divider()
         
         if st.button("🚀 Générer et Démarrer le Quiz", type="primary", use_container_width=True):
             with st.spinner("🤖 Génération du quiz par l'IA..."):
                 module_filter = None if selected_module == "Tous modules" else selected_module
+                
+                # Récupérer les concepts faibles si mode adaptatif
+                weak_ids = weak_tracker.get_weak_concept_ids(limit=20) if adaptive_mode else None
+                
                 quiz = quiz_gen.generate_quiz(
                     concepts=concepts,
                     module=module_filter,
                     num_questions=num_questions,
-                    difficulty=difficulty
+                    difficulty=difficulty,
+                    weak_concept_ids=weak_ids,
+                    question_types=selected_types
                 )
                 
                 if 'error' in quiz:
@@ -1895,21 +2440,64 @@ elif page == "🧠 Quiz":
             st.markdown(f"### 📝 Quiz: {quiz['module']}")
             st.caption(f"Difficulté: {quiz['difficulty']} | {quiz['num_questions']} questions")
             
-            # Afficher les questions
+            # Afficher les questions (multi-type)
             for i, question in enumerate(quiz['questions'], 1):
-                st.markdown(f"#### Question {i}/{quiz['num_questions']}")
+                q_type = question.get('type', 'qcm')
+                type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
+                
+                st.markdown(f"#### {type_icon} Question {i}/{quiz['num_questions']}")
+                
+                # Scénario pour mise en situation
+                if q_type == 'mise_en_situation' and question.get('scenario'):
+                    st.info(f"📋 **Situation :** {question['scenario']}")
+                
                 st.markdown(f"**{question['question']}**")
                 
-                # Options de réponse
-                answer = st.radio(
-                    f"Choisissez votre réponse:",
-                    question['options'],
-                    key=f"q_{i}",
-                    index=None
-                )
+                # Rendu selon le type de question
+                if q_type in ('qcm', 'mise_en_situation'):
+                    answer = st.radio(
+                        "Choisissez votre réponse :",
+                        question['options'],
+                        key=f"q_{i}",
+                        index=None
+                    )
+                    if answer:
+                        st.session_state['quiz_answers'][i] = question['options'].index(answer)
                 
-                if answer:
-                    st.session_state['quiz_answers'][i] = question['options'].index(answer)
+                elif q_type == 'vrai_faux':
+                    answer = st.radio(
+                        "Vrai ou Faux ?",
+                        ["Vrai", "Faux"],
+                        key=f"q_{i}",
+                        index=None,
+                        horizontal=True
+                    )
+                    if answer:
+                        st.session_state['quiz_answers'][i] = (answer == "Vrai")
+                
+                elif q_type == 'texte_trous':
+                    answer = st.text_input(
+                        "Complétez le mot manquant :",
+                        key=f"q_{i}",
+                        placeholder="Votre réponse..."
+                    )
+                    if answer.strip():
+                        st.session_state['quiz_answers'][i] = answer.strip()
+                    elif i in st.session_state.get('quiz_answers', {}):
+                        del st.session_state['quiz_answers'][i]
+                
+                elif q_type == 'calcul':
+                    unit = question.get('unit', '')
+                    lbl = f"Votre réponse ({unit}) :" if unit else "Votre réponse (numérique) :"
+                    answer = st.text_input(
+                        lbl,
+                        key=f"q_{i}",
+                        placeholder="ex: 42.5"
+                    )
+                    if answer.strip():
+                        st.session_state['quiz_answers'][i] = answer.strip()
+                    elif i in st.session_state.get('quiz_answers', {}):
+                        del st.session_state['quiz_answers'][i]
                 
                 st.markdown("---")
             
@@ -1932,9 +2520,8 @@ elif page == "🧠 Quiz":
             results = []
             
             for i, question in enumerate(quiz['questions'], 1):
-                user_answer = answers.get(i, -1)
-                correct_answer = question['correct_answer']
-                is_correct = user_answer == correct_answer
+                user_answer = answers.get(i)
+                is_correct = evaluate_answer(question, user_answer)
                 
                 if is_correct:
                     correct += 1
@@ -1942,9 +2529,10 @@ elif page == "🧠 Quiz":
                 results.append({
                     'question_num': i,
                     'user_answer': user_answer,
-                    'correct_answer': correct_answer,
+                    'correct_answer': question.get('correct_answer'),
                     'is_correct': is_correct,
-                    'concept_id': question.get('concept_id')
+                    'concept_id': question.get('concept_id'),
+                    'concept_name': question.get('concept_name', '')
                 })
             
             score = correct
@@ -1962,6 +2550,19 @@ elif page == "🧠 Quiz":
                 time_spent=time_spent,
                 answers=results
             )
+            
+            # --- ALIMENTER LE TRACKER DE CONCEPTS FAIBLES ---
+            from src.weak_concepts_tracker import WeakConceptsTracker
+            weak_tracker_save = WeakConceptsTracker()
+            weak_tracker_save.record_quiz_results([
+                {
+                    'concept_id': q.get('concept_id', ''),
+                    'concept_name': q.get('concept_name', ''),
+                    'is_correct': q['is_correct'],
+                    'module': quiz.get('module', ''),
+                }
+                for q in results
+            ])
             
             # Afficher le résultat
             st.markdown("---")
@@ -1982,16 +2583,47 @@ elif page == "🧠 Quiz":
             for i, question in enumerate(quiz['questions'], 1):
                 result = results[i-1]
                 is_correct = result['is_correct']
+                q_type = question.get('type', 'qcm')
+                type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
                 
                 with st.expander(
-                    f"{'✅' if is_correct else '❌'} Question {i} - {'Correct' if is_correct else 'Incorrect'}",
+                    f"{'✅' if is_correct else '❌'} {type_icon} Question {i} - {'Correct' if is_correct else 'Incorrect'}",
                     expanded=not is_correct
                 ):
+                    if q_type == 'mise_en_situation' and question.get('scenario'):
+                        st.info(f"📋 {question['scenario']}")
                     st.markdown(f"**{question['question']}**")
-                    st.markdown(f"**Votre réponse:** {question['options'][result['user_answer']]}")
-                    st.markdown(f"**Bonne réponse:** {question['options'][question['correct_answer']]}")
-                    st.markdown("**Explication:**")
-                    st.info(question['explanation'])
+                    
+                    # Affichage adapté au type
+                    if q_type in ('qcm', 'mise_en_situation'):
+                        user_idx = result['user_answer']
+                        if isinstance(user_idx, int) and 0 <= user_idx < len(question.get('options', [])):
+                            st.markdown(f"**Votre réponse :** {question['options'][user_idx]}")
+                        else:
+                            st.markdown("**Votre réponse :** _(non répondu)_")
+                        st.markdown(f"**Bonne réponse :** {question['options'][question['correct_answer']]}")
+                    
+                    elif q_type == 'vrai_faux':
+                        user_vf = "Vrai" if result['user_answer'] else "Faux"
+                        correct_vf = "Vrai" if question['correct_answer'] else "Faux"
+                        st.markdown(f"**Votre réponse :** {user_vf}")
+                        st.markdown(f"**Bonne réponse :** {correct_vf}")
+                    
+                    elif q_type == 'texte_trous':
+                        st.markdown(f"**Votre réponse :** {result['user_answer']}")
+                        st.markdown(f"**Bonne réponse :** {question['correct_answer']}")
+                        if question.get('acceptable_answers'):
+                            st.caption(f"Réponses acceptées : {', '.join(question['acceptable_answers'])}")
+                    
+                    elif q_type == 'calcul':
+                        unit = question.get('unit', '')
+                        st.markdown(f"**Votre réponse :** {result['user_answer']} {unit}")
+                        st.markdown(f"**Bonne réponse :** {question['correct_answer']} {unit}")
+                        tol = question.get('tolerance', 0.02)
+                        st.caption(f"Tolérance : ±{tol*100:.0f}%")
+                    
+                    st.markdown("**Explication :**")
+                    st.info(question.get('explanation', 'Pas d\'explication disponible.'))
             
             # Bouton pour recommencer
             if st.button("🔄 Nouveau Quiz", use_container_width=True):
@@ -2001,6 +2633,335 @@ elif page == "🧠 Quiz":
                 st.rerun()
     
     with tab2:
+        st.markdown("### 🎓 Mode Examen Blanc")
+        st.markdown("""
+        **Simulez les conditions réelles de l'examen du Brevet Fédéral :**
+        - ⏱️ **2 heures** chronométrées
+        - 📝 **40 questions** réparties sur tous les modules (AA + AE)
+        - 📊 **Score par module** pour identifier vos faiblesses
+        - 🎯 Questions alignées sur les **directives d'examen**
+        """)
+        
+        from src.exam_simulator import ExamGenerator, EXAM_STRUCTURE
+        from src.directives_coverage import get_module_coverage
+        
+        exam_gen = ExamGenerator(api_key=api_key, model=model)
+        
+        # Stats des examens blancs
+        exam_stats = exam_gen.get_stats()
+        if exam_stats['total_exams'] > 0:
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Examens passés", exam_stats['total_exams'])
+            with col2:
+                st.metric("Score moyen", f"{exam_stats['average_score']:.0f}%")
+            with col3:
+                st.metric("Meilleur score", f"{exam_stats['best_score']:.0f}%")
+            with col4:
+                st.metric("Taux de réussite", f"{exam_stats['pass_rate']:.0f}%")
+            st.divider()
+        
+        # Bouton lancer l'examen
+        if not st.session_state.get('exam_in_progress', False):
+            st.markdown("#### 📋 Structure de l'examen")
+            
+            # Afficher la répartition
+            col_aa, col_ae = st.columns(2)
+            with col_aa:
+                st.markdown("**Modules de base (AA)**")
+                for code, info in EXAM_STRUCTURE['repartition'].items():
+                    if code.startswith('AA'):
+                        st.caption(f"• {code} {info['label']} — {info['questions']} Q")
+            with col_ae:
+                st.markdown("**Modules spécialisés (AE)**")
+                for code, info in EXAM_STRUCTURE['repartition'].items():
+                    if code.startswith('AE'):
+                        st.caption(f"• {code} {info['label']} — {info['questions']} Q")
+            
+            st.divider()
+            
+            if st.button("🚀 Démarrer l'Examen Blanc", type="primary", use_container_width=True):
+                with st.spinner("🤖 Génération de l'examen blanc (40 questions, cela peut prendre 1-2 minutes)..."):
+                    # Charger la couverture des directives pour enrichir les questions
+                    cov_config = load_config()
+                    cov_data = get_module_coverage(concept_map, cov_config)
+                    
+                    exam = exam_gen.generate_exam(
+                        concepts=concepts,
+                        directives_coverage=cov_data
+                    )
+                    
+                    st.session_state['current_exam'] = exam
+                    st.session_state['exam_answers'] = {}
+                    st.session_state['exam_start_time'] = time.time()
+                    st.session_state['exam_in_progress'] = True
+                    st.session_state['exam_submitted'] = False
+                    st.rerun()
+        
+        # --- EXAMEN EN COURS ---
+        if st.session_state.get('exam_in_progress', False) and not st.session_state.get('exam_submitted', False):
+            exam = st.session_state['current_exam']
+            elapsed = int(time.time() - st.session_state.get('exam_start_time', time.time()))
+            remaining = max(0, exam['duree_minutes'] * 60 - elapsed)
+            
+            # Header avec timer
+            col_t1, col_t2, col_t3 = st.columns([2, 1, 1])
+            with col_t1:
+                st.markdown(f"### 📝 Examen Blanc en cours")
+            with col_t2:
+                mins = remaining // 60
+                secs = remaining % 60
+                timer_color = "🟢" if remaining > 1800 else ("🟡" if remaining > 600 else "🔴")
+                st.metric(f"{timer_color} Temps restant", f"{mins}:{secs:02d}")
+            with col_t3:
+                answered = len(st.session_state.get('exam_answers', {}))
+                st.metric("Répondu", f"{answered}/{exam['total_questions']}")
+            
+            st.progress(answered / exam['total_questions'])
+            st.divider()
+            
+            # Afficher les questions (compatible multi-type)
+            for i, question in enumerate(exam['questions'], 1):
+                module_tag = question.get('module', '')
+                module_label = question.get('module_label', '')
+                q_type = question.get('type', 'qcm')
+                type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
+                
+                st.markdown(f"#### {type_icon} Question {i}/{exam['total_questions']}  `{module_tag} — {module_label}`")
+                
+                if q_type == 'mise_en_situation' and question.get('scenario'):
+                    st.info(f"📋 **Situation :** {question['scenario']}")
+                
+                st.markdown(f"**{question['question']}**")
+                
+                if q_type in ('qcm', 'mise_en_situation'):
+                    answer = st.radio(
+                        f"Réponse :",
+                        question['options'],
+                        key=f"exam_q_{i}",
+                        index=None
+                    )
+                    if answer:
+                        st.session_state['exam_answers'][i] = question['options'].index(answer)
+                
+                elif q_type == 'vrai_faux':
+                    answer = st.radio("Vrai ou Faux ?", ["Vrai", "Faux"], key=f"exam_q_{i}", index=None, horizontal=True)
+                    if answer:
+                        st.session_state['exam_answers'][i] = (answer == "Vrai")
+                
+                elif q_type == 'texte_trous':
+                    answer = st.text_input("Complétez :", key=f"exam_q_{i}", placeholder="Votre réponse...")
+                    if answer.strip():
+                        st.session_state['exam_answers'][i] = answer.strip()
+                    elif i in st.session_state.get('exam_answers', {}):
+                        del st.session_state['exam_answers'][i]
+                
+                elif q_type == 'calcul':
+                    unit = question.get('unit', '')
+                    answer = st.text_input(f"Réponse ({unit}) :" if unit else "Réponse :", key=f"exam_q_{i}", placeholder="ex: 42.5")
+                    if answer.strip():
+                        st.session_state['exam_answers'][i] = answer.strip()
+                    elif i in st.session_state.get('exam_answers', {}):
+                        del st.session_state['exam_answers'][i]
+                
+                st.markdown("---")
+            
+            # Boutons soumettre / abandonner
+            col_s1, col_s2 = st.columns([3, 1])
+            with col_s1:
+                answered = len(st.session_state.get('exam_answers', {}))
+                if answered == exam['total_questions']:
+                    if st.button("✅ Soumettre l'Examen", type="primary", use_container_width=True):
+                        st.session_state['exam_submitted'] = True
+                        st.rerun()
+                else:
+                    remaining_q = exam['total_questions'] - answered
+                    st.info(f"⏳ {remaining_q} question(s) sans réponse")
+            with col_s2:
+                if st.button("🛑 Abandonner", type="secondary"):
+                    for key in ['current_exam', 'exam_answers', 'exam_start_time', 'exam_in_progress', 'exam_submitted']:
+                        st.session_state.pop(key, None)
+                    st.rerun()
+        
+        # --- RÉSULTATS DE L'EXAMEN ---
+        if st.session_state.get('exam_submitted', False):
+            exam = st.session_state['current_exam']
+            answers = st.session_state['exam_answers']
+            time_spent = int(time.time() - st.session_state.get('exam_start_time', time.time()))
+            
+            # Évaluer
+            results = exam_gen.evaluate_exam(exam, answers)
+            exam_gen.save_exam_result(results, time_spent)
+            
+            # --- ALIMENTER LE TRACKER DE CONCEPTS FAIBLES (examen blanc) ---
+            from src.weak_concepts_tracker import WeakConceptsTracker
+            weak_tracker_exam = WeakConceptsTracker()
+            weak_tracker_exam.record_quiz_results([
+                {
+                    'concept_id': qr.get('concept_name', ''),
+                    'concept_name': qr.get('concept_name', ''),
+                    'is_correct': qr['is_correct'],
+                    'module': qr.get('module', ''),
+                }
+                for qr in results['question_results']
+            ])
+            
+            # --- Affichage des résultats ---
+            st.markdown("---")
+            pct = results['global_percentage']
+            passed = results['passed']
+            
+            if passed:
+                st.success(f"## 🎉 EXAMEN RÉUSSI — {pct:.0f}%")
+                st.balloons()
+            else:
+                st.error(f"## ❌ EXAMEN ÉCHOUÉ — {pct:.0f}%")
+            
+            # Métriques globales
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Score", f"{results['total_correct']}/{results['total_questions']}")
+            with col2:
+                color = "🟢" if pct >= 70 else ("🟡" if pct >= 50 else "🔴")
+                st.metric("Pourcentage", f"{color} {pct:.0f}%")
+            with col3:
+                st.metric("Temps", f"{time_spent // 60} min")
+            with col4:
+                st.metric("Résultat", "✅ Réussi" if passed else "❌ Échoué")
+            
+            st.divider()
+            
+            # --- SCORE PAR MODULE ---
+            st.subheader("📊 Score par Module")
+            st.markdown("*Identifiez vos forces et faiblesses par domaine*")
+            
+            import plotly.express as px
+            
+            module_data = []
+            for mod in sorted(results['module_scores'].keys()):
+                s = results['module_scores'][mod]
+                module_data.append({
+                    "Module": f"{mod}",
+                    "Label": s['label'],
+                    "Score (%)": s['percentage'],
+                    "Détail": f"{s['correct']}/{s['total']}",
+                    "Statut": s['status'],
+                })
+            
+            df_modules = pd.DataFrame(module_data)
+            
+            fig = px.bar(
+                df_modules,
+                x="Module",
+                y="Score (%)",
+                color="Score (%)",
+                color_continuous_scale=["#e53935", "#fb8c00", "#43a047"],
+                range_color=[0, 100],
+                hover_data=["Label", "Détail"],
+                title="Résultats par module"
+            )
+            fig.add_hline(y=50, line_dash="dash", line_color="red", annotation_text="Seuil de réussite (50%)")
+            fig.update_layout(height=400)
+            st.plotly_chart(fig, use_container_width=True)
+            
+            st.dataframe(df_modules, use_container_width=True, hide_index=True)
+            
+            # Modules faibles
+            if results['weak_modules']:
+                st.divider()
+                st.subheader("🚨 Modules à renforcer")
+                for mod in results['weak_modules']:
+                    s = results['module_scores'][mod]
+                    st.error(f"**{mod} — {s['label']}** : {s['percentage']:.0f}% ({s['correct']}/{s['total']})")
+            
+            # Modules forts
+            if results['strong_modules']:
+                st.subheader("💪 Modules maîtrisés")
+                for mod in results['strong_modules'][:5]:
+                    s = results['module_scores'][mod]
+                    st.success(f"**{mod} — {s['label']}** : {s['percentage']:.0f}% ({s['correct']}/{s['total']})")
+            
+            st.divider()
+            
+            # Analyse détaillée
+            st.subheader("📋 Détail des réponses")
+            
+            for q_result in results['question_results']:
+                q_num = q_result['question_num']
+                question = exam['questions'][q_num - 1]
+                is_correct = q_result['is_correct']
+                q_type = question.get('type', 'qcm')
+                type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
+                
+                with st.expander(
+                    f"{'✅' if is_correct else '❌'} {type_icon} Q{q_num} [{q_result['module']}] — {q_result['concept_name'][:50]}",
+                    expanded=not is_correct
+                ):
+                    if q_type == 'mise_en_situation' and question.get('scenario'):
+                        st.info(f"📋 {question['scenario']}")
+                    st.markdown(f"**{question['question']}**")
+                    
+                    if q_type in ('qcm', 'mise_en_situation'):
+                        user_idx = q_result['user_answer']
+                        correct_idx = q_result['correct_answer']
+                        if isinstance(user_idx, int) and 0 <= user_idx < len(question.get('options', [])):
+                            st.markdown(f"**Votre réponse :** {question['options'][user_idx]}")
+                        else:
+                            st.markdown("**Votre réponse :** _(non répondu)_")
+                        st.markdown(f"**Bonne réponse :** {question['options'][correct_idx]}")
+                    elif q_type == 'vrai_faux':
+                        st.markdown(f"**Votre réponse :** {'Vrai' if q_result['user_answer'] else 'Faux'}")
+                        st.markdown(f"**Bonne réponse :** {'Vrai' if question['correct_answer'] else 'Faux'}")
+                    elif q_type == 'texte_trous':
+                        st.markdown(f"**Votre réponse :** {q_result['user_answer']}")
+                        st.markdown(f"**Bonne réponse :** {question['correct_answer']}")
+                        if question.get('acceptable_answers'):
+                            st.caption(f"Accepté : {', '.join(question['acceptable_answers'])}")
+                    elif q_type == 'calcul':
+                        unit = question.get('unit', '')
+                        st.markdown(f"**Votre réponse :** {q_result['user_answer']} {unit}")
+                        st.markdown(f"**Bonne réponse :** {question['correct_answer']} {unit}")
+                    
+                    if question.get('explanation'):
+                        st.info(f"**Explication :** {question['explanation']}")
+            
+            # Bouton recommencer
+            st.divider()
+            if st.button("🔄 Nouvel Examen Blanc", use_container_width=True):
+                for key in ['current_exam', 'exam_answers', 'exam_start_time', 'exam_in_progress', 'exam_submitted']:
+                    st.session_state.pop(key, None)
+                st.rerun()
+        
+        # --- HISTORIQUE EXAMENS BLANCS ---
+        st.divider()
+        st.subheader("📜 Historique des Examens Blancs")
+        
+        exam_history = exam_gen.get_history(limit=10)
+        if not exam_history:
+            st.info("Aucun examen blanc complété pour l'instant.")
+        else:
+            for h in exam_history:
+                pct = h['global_percentage']
+                color = "🟢" if pct >= 70 else ("🟡" if pct >= 50 else "🔴")
+                passed_icon = "✅" if h['passed'] else "❌"
+                
+                with st.expander(
+                    f"{passed_icon} {color} {pct:.0f}% — {h['total_correct']}/{h['total_questions']} — {h['completed_at'][:10]}",
+                    expanded=False
+                ):
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.metric("Score", f"{h['total_correct']}/{h['total_questions']}")
+                    with col2:
+                        st.metric("Pourcentage", f"{pct:.0f}%")
+                    with col3:
+                        t = h.get('time_spent', 0)
+                        st.metric("Temps", f"{t // 60} min")
+                    
+                    if h.get('weak_modules'):
+                        st.markdown("**Modules faibles :** " + ", ".join(h['weak_modules']))
+    
+    with tab3:
         st.markdown("### 📜 Historique des Quiz")
         
         history = quiz_gen.get_history(limit=20)
@@ -2026,7 +2987,203 @@ elif page == "🧠 Quiz":
                         st.metric("Temps", f"{time_spent // 60}:{time_spent % 60:02d}")
 
 
-elif page == "�📖 Ressources":
+elif page == "📇 Flashcards":
+    st.header("📇 Flashcards — Répétition Espacée (SM-2)")
+    st.markdown("*Mémorisez durablement grâce à l'algorithme SuperMemo 2 : les cartes difficiles reviennent plus souvent.*")
+    
+    from src.flashcards import FlashcardManager
+    
+    config = load_config()
+    api_key = config.get('api', {}).get('gemini_api_key') or os.getenv('GOOGLE_API_KEY')
+    model = config.get('api', {}).get('model', 'gemini-3-pro-preview')
+    fc_mgr = FlashcardManager(api_key=api_key, model=model)
+    
+    concept_map = load_concept_map()
+    concepts = concept_map.get('nodes', []) if concept_map else []
+    modules = sorted(set(c.get('module') for c in concepts if c.get('module')))
+    
+    fc_stats = fc_mgr.get_stats()
+    
+    # --- Métriques ---
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.metric("📇 Total cartes", fc_stats['total_cards'])
+    with col2:
+        st.metric("📅 À réviser", fc_stats['due_today'])
+    with col3:
+        st.metric("🆕 Nouvelles", fc_stats['new_cards'])
+    with col4:
+        st.metric("✅ Maîtrisées", fc_stats['mastered'])
+    with col5:
+        st.metric("🔥 Streak", f"{fc_stats['review_streak']} j")
+    
+    st.divider()
+    
+    tab_review, tab_generate, tab_browse = st.tabs(["🔄 Réviser", "➕ Générer", "📋 Toutes les cartes"])
+    
+    # ===== ONGLET RÉVISER =====
+    with tab_review:
+        fc_filter_mod = st.selectbox("Filtrer par module", ["Tous"] + fc_mgr.get_module_list(), key="fc_rev_mod")
+        mod_filter = None if fc_filter_mod == "Tous" else fc_filter_mod
+        
+        due_cards = fc_mgr.get_due_cards(module=mod_filter, limit=30)
+        
+        if not due_cards:
+            st.success("🎉 Aucune carte à réviser pour le moment ! Revenez plus tard ou générez de nouvelles cartes.")
+        else:
+            st.info(f"📅 **{len(due_cards)} carte(s)** à réviser")
+            
+            # Index courant dans la session
+            if 'fc_index' not in st.session_state:
+                st.session_state['fc_index'] = 0
+            if st.session_state['fc_index'] >= len(due_cards):
+                st.session_state['fc_index'] = 0
+            
+            card = due_cards[st.session_state['fc_index']]
+            
+            st.progress((st.session_state['fc_index'] + 1) / len(due_cards))
+            st.caption(f"Carte {st.session_state['fc_index'] + 1} / {len(due_cards)} — Module: {card.get('module', '?')}")
+            
+            # --- FACE AVANT ---
+            st.markdown("### ❓ Question")
+            st.markdown(f"**{card['front']}**")
+            
+            if card.get('hint'):
+                with st.expander("💡 Voir l'indice"):
+                    st.caption(card['hint'])
+            
+            # --- RÉVÉLER ---
+            if st.button("👁️ Retourner la carte", key="fc_flip", use_container_width=True):
+                st.session_state['fc_show_back'] = True
+            
+            if st.session_state.get('fc_show_back', False):
+                st.markdown("### ✅ Réponse")
+                st.success(card['back'])
+                
+                st.markdown("---")
+                st.markdown("**Comment avez-vous répondu ?** *(Note SM-2 : de 0 = oublié à 5 = parfait)*")
+                
+                col_q = st.columns(6)
+                labels = ["0 — Oublié", "1 — Vague", "2 — Partiel", "3 — Difficile", "4 — Hésitation", "5 — Parfait"]
+                colors = ["🔴", "🔴", "🟠", "🟡", "🟢", "🟢"]
+                
+                for qi in range(6):
+                    with col_q[qi]:
+                        if st.button(f"{colors[qi]} {qi}", key=f"fc_q_{qi}", use_container_width=True, help=labels[qi]):
+                            fc_mgr.review_card(card['id'], quality=qi)
+                            st.session_state['fc_show_back'] = False
+                            st.session_state['fc_index'] += 1
+                            st.rerun()
+                
+                st.caption(" | ".join(labels))
+            
+            # Méta de la carte
+            with st.expander("ℹ️ Détails de la carte"):
+                mc1, mc2, mc3 = st.columns(3)
+                with mc1:
+                    st.caption(f"Intervalle : {card.get('interval', 1)} jour(s)")
+                with mc2:
+                    st.caption(f"Facilité : {card.get('easiness', 2.5):.2f}")
+                with mc3:
+                    st.caption(f"Révisions : {card.get('review_count', 0)}")
+    
+    # ===== ONGLET GÉNÉRER =====
+    with tab_generate:
+        if not concepts:
+            st.warning("⚠️ Analysez d'abord vos documents pour générer des flashcards.")
+        else:
+            st.markdown("### ➕ Générer des flashcards depuis vos concepts")
+            
+            gc1, gc2 = st.columns(2)
+            with gc1:
+                gen_module = st.selectbox("Module", ["Tous modules"] + modules, key="fc_gen_mod")
+            with gc2:
+                gen_num = st.slider("Nombre de concepts à couvrir", 5, 30, 10, key="fc_gen_num")
+            
+            # Compter les concepts sans flashcard
+            existing_ids = {c.get('concept_id') for c in fc_mgr.cards}
+            mod_filter_gen = None if gen_module == "Tous modules" else gen_module
+            available = [c for c in concepts if c.get('id') not in existing_ids]
+            if mod_filter_gen:
+                available = [c for c in available if c.get('module') == mod_filter_gen]
+            
+            st.caption(f"📊 {len(available)} concepts sans flashcard (sur {len(concepts)} total)")
+            
+            if st.button("🚀 Générer les Flashcards", type="primary", use_container_width=True):
+                if not available:
+                    st.warning("Tous les concepts ont déjà des flashcards !")
+                else:
+                    with st.spinner(f"🤖 Génération de flashcards pour {min(gen_num, len(available))} concepts..."):
+                        created = fc_mgr.generate_from_concepts(
+                            concepts=concepts,
+                            module=mod_filter_gen,
+                            num_cards=gen_num
+                        )
+                        st.success(f"✅ {created} nouvelles flashcards créées !")
+                        st.rerun()
+    
+    # ===== ONGLET TOUTES LES CARTES =====
+    with tab_browse:
+        if not fc_mgr.cards:
+            st.info("Aucune flashcard. Utilisez l'onglet \"Générer\" pour en créer.")
+        else:
+            st.markdown(f"### 📋 {len(fc_mgr.cards)} flashcards")
+            
+            browse_mod = st.selectbox("Filtrer par module", ["Tous"] + fc_mgr.get_module_list(), key="fc_browse_mod")
+            
+            filtered = fc_mgr.cards[:]
+            if browse_mod != "Tous":
+                filtered = [c for c in filtered if c.get('module') == browse_mod]
+            
+            # Tri
+            sort_by = st.radio("Trier par", ["Date création", "Prochaine révision", "Facilité (difficiles d'abord)"], horizontal=True, key="fc_sort")
+            if sort_by == "Prochaine révision":
+                filtered.sort(key=lambda c: c.get('next_review', ''))
+            elif sort_by == "Facilité (difficiles d'abord)":
+                filtered.sort(key=lambda c: c.get('easiness', 2.5))
+            else:
+                filtered.sort(key=lambda c: c.get('created_at', ''), reverse=True)
+            
+            for card in filtered:
+                interval = card.get('interval', 1)
+                ef = card.get('easiness', 2.5)
+                status = "✅" if interval >= 21 else ("📗" if interval >= 7 else "📕")
+                
+                with st.expander(f"{status} [{card.get('module', '?')}] {card['front'][:80]}"):
+                    st.markdown(f"**Question :** {card['front']}")
+                    st.markdown(f"**Réponse :** {card['back']}")
+                    if card.get('hint'):
+                        st.caption(f"Indice : {card['hint']}")
+                    
+                    bc1, bc2, bc3, bc4 = st.columns(4)
+                    with bc1:
+                        st.caption(f"Intervalle : {interval}j")
+                    with bc2:
+                        st.caption(f"Facilité : {ef:.2f}")
+                    with bc3:
+                        st.caption(f"Révisions : {card.get('review_count', 0)}")
+                    with bc4:
+                        nr = card.get('next_review', '')[:10]
+                        st.caption(f"Prochaine : {nr}")
+            
+            st.divider()
+            
+            # Stats par module
+            if fc_stats.get('modules'):
+                st.markdown("### 📊 Répartition par module")
+                import pandas as pd
+                mod_data = []
+                for mod, ms in sorted(fc_stats['modules'].items()):
+                    mod_data.append({
+                        "Module": mod,
+                        "Total": ms['total'],
+                        "À réviser": ms['due'],
+                        "Maîtrisées": ms['mastered'],
+                    })
+                st.dataframe(pd.DataFrame(mod_data), use_container_width=True, hide_index=True)
+
+
+elif page == "📖 Ressources":
     st.header("📖 Ressources et Guides")
     
     tab1, tab2, tab3, tab4 = st.tabs(["📘 Guide Complet", "🏫 CIFER Info", "🎴 Flashcards", "📐 Formules"])
@@ -2184,7 +3341,7 @@ elif page == "⚙️ Paramètres":
             
             api_key = st.text_input(
                 "Clé API Google Gemini",
-                value=config['api'].get('gemini_api_key', ''),
+                value=config.get('api', {}).get('gemini_api_key', ''),
                 type="password"
             )
             
@@ -2195,8 +3352,8 @@ elif page == "⚙️ Paramètres":
             )
             
             if st.button("💾 Sauvegarder API", type="primary"):
-                config['api']['gemini_api_key'] = api_key
-                config['api']['model'] = model
+                config.setdefault('api', {})['gemini_api_key'] = api_key
+                config.setdefault('api', {})['model'] = model
                 
                 with open("config/config.yaml", 'w', encoding='utf-8') as f:
                     yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
@@ -2210,7 +3367,7 @@ elif page == "⚙️ Paramètres":
             
             exam_date = st.date_input(
                 "Date de l'examen",
-                value=datetime.strptime(config['user'].get('exam_date', '2029-03-01'), '%Y-%m-%d')
+                value=datetime.strptime(config.get('user', {}).get('exam_date', '2027-03-20'), '%Y-%m-%d')
             )
             
             st.divider()
@@ -2220,13 +3377,13 @@ elif page == "⚙️ Paramètres":
                 "Heures de révision par jour",
                 min_value=0.5,
                 max_value=8.0,
-                value=float(config['planning'].get('default_hours_per_day', 2)),
+                value=float(config.get('planning', {}).get('default_hours_per_day', 2)),
                 step=0.5
             )
             
             if st.button("💾 Sauvegarder Planning", type="primary"):
-                config['user']['exam_date'] = exam_date.strftime('%Y-%m-%d')
-                config['planning']['default_hours_per_day'] = hours_per_day
+                config.setdefault('user', {})['exam_date'] = exam_date.strftime('%Y-%m-%d')
+                config.setdefault('planning', {})['default_hours_per_day'] = hours_per_day
                 
                 with open("config/config.yaml", 'w', encoding='utf-8') as f:
                     yaml.dump(config, f, allow_unicode=True, default_flow_style=False)
