@@ -1025,8 +1025,101 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
 
     # --- Fallback de qualité professionnelle ---
 
-    # Banque de questions de secours par module — vraies questions techniques
+    # Banque de questions de secours par module — vraies questions techniques professionnelles
+    # Couvre TOUS les 15 modules du Brevet Fédéral
     FALLBACK_BANK = {
+        "AA02": {
+            "qcm": [
+                {
+                    "question": "Dans la méthode de la Lanterne Magique pour structurer une formation, quelles sont les 3 phases principales ?",
+                    "options": [
+                        "Entrée en matière — Développement — Conclusion",
+                        "Planification — Exécution — Évaluation",
+                        "Théorie — Pratique — Examen",
+                        "Introduction — Corps — Fin"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La méthode de la Lanterne Magique structure une action de formation en 3 phases : Entrée en matière (accroche, objectifs), Développement (contenu, exercices) et Conclusion (résumé, évaluation)."
+                },
+                {
+                    "question": "Lors de la planification d'une formation pour un apprenti, quel document est obligatoire selon l'OFPr ?",
+                    "options": [
+                        "Le programme de formation avec les objectifs évaluateurs",
+                        "Un simple planning hebdomadaire",
+                        "Le contrat de travail uniquement",
+                        "Le curriculum vitae du formateur"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "L'OFPr (Ordonnance sur la formation professionnelle) exige un programme de formation détaillé incluant les objectifs évaluateurs définis dans le plan de formation."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "L'analyse des 4 pôles (situationnelle) permet d'adapter une action de formation au contexte, au public, aux objectifs et aux conditions cadres.",
+                    "correct_answer": True,
+                    "explanation": "L'analyse des 4 pôles est un outil pédagogique qui examine le contexte situationnel sous 4 angles pour optimiser la formation."
+                },
+            ],
+        },
+        "AA03": {
+            "qcm": [
+                {
+                    "question": "Lors de la préparation d'un chantier de réseau, quel document doit être établi en priorité pour lister les ressources nécessaires ?",
+                    "options": [
+                        "La liste de matériel et d'outillage avec les quantités et références",
+                        "Le rapport de fin de travaux",
+                        "La facture prévisionnelle pour le client",
+                        "Le plan de carrière des collaborateurs"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La préparation de travaux exige une liste détaillée du matériel, de l'outillage et des EPI nécessaires, avec quantités et références, pour éviter les retards et interruptions de chantier."
+                },
+                {
+                    "question": "Quel outil est utilisé pour planifier le déroulement temporel des travaux sur un chantier de réseau ?",
+                    "options": [
+                        "Le diagramme de Gantt",
+                        "Le tableau de bord financier",
+                        "L'organigramme de l'entreprise",
+                        "Le carnet de commandes"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Le diagramme de Gantt permet de visualiser la planification temporelle des tâches, leurs dépendances et le chemin critique du projet."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "Lors de la lecture d'un schéma unifilaire, un trait unique représente l'ensemble des conducteurs d'un circuit (phases + neutre + PE).",
+                    "correct_answer": True,
+                    "explanation": "Dans un schéma unifilaire, un seul trait symbolise l'ensemble des conducteurs d'un circuit, contrairement au schéma multifilaire qui représente chaque conducteur séparément."
+                },
+            ],
+        },
+        "AA04": {
+            "qcm": [
+                {
+                    "question": "Dans la gestion d'un mandat de réseau électrique, quelle est la séquence correcte des étapes ?",
+                    "options": [
+                        "Offre → Commande → Planification → Exécution → Contrôle → Facturation",
+                        "Facturation → Exécution → Planification → Offre",
+                        "Commande → Exécution → Offre → Facturation",
+                        "Planification → Offre → Exécution → Commande"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Un mandat suit un processus structuré : établissement de l'offre, réception de la commande, planification des travaux, exécution, contrôle qualité et facturation."
+                },
+                {
+                    "question": "Quel document formalise les conditions commerciales et techniques d'une intervention de réseau avant le début des travaux ?",
+                    "options": [
+                        "Le devis/offre détaillé avec le descriptif technique et les conditions",
+                        "Le rapport journalier de chantier",
+                        "Le plan de maintenance préventive",
+                        "Le procès-verbal de réception"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Le devis/offre détaillé définit le périmètre technique, les quantités, les prix et les conditions. Il constitue la base contractuelle du mandat."
+                },
+            ],
+        },
         "AA05": {
             "qcm": [
                 {
@@ -1046,12 +1139,23 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                     "correct_answer": 0,
                     "explanation": "Les 5 règles de sécurité doivent être appliquées dans cet ordre strict selon l'ESTI : 1) Déclencher, 2) Sécuriser contre le réenclenchement, 3) Vérifier l'absence de tension, 4) Mettre à la terre et en court-circuit, 5) Protéger contre les parties voisines sous tension."
                 },
+                {
+                    "question": "Quel est le courant de déclenchement typique d'un dispositif différentiel résiduel (DDR) de type A pour la protection des personnes ?",
+                    "options": ["30 mA", "300 mA", "100 mA", "500 mA"],
+                    "correct_answer": 0,
+                    "explanation": "Le DDR de 30 mA (type A) est la protection standard contre les contacts indirects pour la protection des personnes. Le 300 mA est utilisé pour la protection incendie."
+                },
             ],
             "vrai_faux": [
                 {
                     "question": "Le port du casque de protection est obligatoire sur tout chantier de réseau électrique, même pour les travaux en tranchée.",
                     "correct_answer": True,
                     "explanation": "Le casque est un EPI obligatoire sur tout chantier de réseau selon les prescriptions SUVA, y compris en tranchée où il protège contre les chutes d'objets."
+                },
+                {
+                    "question": "En cas d'électrisation d'un collègue, la première action est de le saisir pour le dégager de la source de tension.",
+                    "correct_answer": False,
+                    "explanation": "FAUX — La première action est de COUPER l'alimentation électrique si possible. Toucher directement la victime sans couper la tension exposerait le sauveteur au même danger. Utiliser un objet isolant si nécessaire."
                 },
             ],
             "mise_en_situation": [
@@ -1069,6 +1173,65 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                 },
             ],
         },
+        "AA07": {
+            "qcm": [
+                {
+                    "question": "Quelle est la différence principale entre la maintenance préventive et la maintenance corrective ?",
+                    "options": [
+                        "La préventive est planifiée avant la panne, la corrective intervient après une défaillance",
+                        "La préventive coûte plus cher que la corrective",
+                        "La corrective est toujours préférable car elle évite les interventions inutiles",
+                        "La préventive ne concerne que les équipements neufs"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La maintenance préventive (systématique ou conditionnelle) est programmée pour prévenir les pannes. La maintenance corrective intervient après une défaillance constatée pour rétablir la fonction."
+                },
+                {
+                    "question": "Dans un système de GMAO, que signifie le sigle GMAO ?",
+                    "options": [
+                        "Gestion de la Maintenance Assistée par Ordinateur",
+                        "Gestion des Moyens et Appareils Opérationnels",
+                        "Guide de Maintenance et d'Aide Opérationnelle",
+                        "Gestion du Matériel et des Achats Organisés"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La GMAO (Gestion de la Maintenance Assistée par Ordinateur) est un logiciel dédié à la planification, au suivi et à l'optimisation des opérations de maintenance."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "La maintenance prédictive utilise des capteurs et analyses de données pour anticiper les pannes avant qu'elles ne surviennent.",
+                    "correct_answer": True,
+                    "explanation": "La maintenance prédictive (ou conditionnelle avancée) s'appuie sur la surveillance de paramètres (vibrations, température, courants) et l'analyse de tendances pour prédire les défaillances."
+                },
+            ],
+        },
+        "AA08": {
+            "qcm": [
+                {
+                    "question": "Avant d'effectuer la maintenance d'un transformateur de distribution MT/BT, quelle procédure obligatoire doit être réalisée ?",
+                    "options": [
+                        "La consignation complète (5 règles de sécurité) côté MT et côté BT",
+                        "Uniquement la coupure du disjoncteur BT",
+                        "L'information verbale du responsable d'exploitation",
+                        "La mesure de la température de l'huile"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Toute maintenance sur un transformateur nécessite une consignation complète des DEUX côtés (MT et BT) selon les 5 règles de sécurité, avec formulaire de consignation signé."
+                },
+                {
+                    "question": "Quelle mesure permet de vérifier l'état d'isolement des enroulements d'un transformateur ?",
+                    "options": [
+                        "La mesure de résistance d'isolement au mégohmmètre (500V ou 1000V DC)",
+                        "La mesure de tension en charge avec un multimètre",
+                        "La mesure du courant de court-circuit",
+                        "La mesure de la fréquence du réseau"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "L'essai d'isolement au mégohmmètre applique une tension continue (500V ou 1000V) entre les enroulements et la carcasse pour vérifier la qualité de l'isolation. Les valeurs sont comparées aux normes IEC."
+                },
+            ],
+        },
         "AA09": {
             "qcm": [
                 {
@@ -1076,6 +1239,17 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                     "options": ["14.7 kW", "17.3 kW", "10.0 kW", "20.0 kW"],
                     "correct_answer": 0,
                     "explanation": "P = √3 × U × I × cos φ = √3 × 400 × 25 × 0.85 = 14'722 W ≈ 14.7 kW"
+                },
+                {
+                    "question": "Quelle est la relation correcte entre puissance apparente (S), puissance active (P) et puissance réactive (Q) ?",
+                    "options": [
+                        "S² = P² + Q² (triangle des puissances)",
+                        "S = P + Q",
+                        "S = P × Q",
+                        "S² = P² - Q²"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Le triangle des puissances établit la relation S² = P² + Q², où S est en VA, P en W et Q en var. Le facteur de puissance cos φ = P/S."
                 },
             ],
             "calcul": [
@@ -1085,6 +1259,70 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                     "tolerance": 0.05,
                     "unit": "V",
                     "explanation": "R = ρ × L / S = 0.0175 × 50 / 2.5 = 0.35 Ω (un conducteur)\nChute de tension AR = 2 × R × I = 2 × 0.35 × 16 = 11.2 V"
+                },
+                {
+                    "question": "Trois résistances de 100 Ω, 220 Ω et 470 Ω sont connectées en parallèle. Calculer la résistance équivalente en ohms (arrondi à 1 décimale).",
+                    "correct_answer": 59.1,
+                    "tolerance": 0.03,
+                    "unit": "Ω",
+                    "explanation": "1/Req = 1/100 + 1/220 + 1/470 = 0.01 + 0.004545 + 0.002128 = 0.016673\nReq = 1/0.016673 = 59.98 ≈ 59.1 Ω"
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "Dans un circuit en série, le courant est identique en tout point mais la tension se répartit entre les composants.",
+                    "correct_answer": True,
+                    "explanation": "Loi de Kirchhoff : dans un circuit série, le courant est le même partout (I_total = I_1 = I_2) et la tension totale est la somme des tensions partielles (U = U_1 + U_2)."
+                },
+            ],
+        },
+        "AA10": {
+            "qcm": [
+                {
+                    "question": "Quel type d'effort mécanique s'exerce principalement sur un support de ligne aérienne en alignement droit ?",
+                    "options": [
+                        "La compression verticale due au poids des conducteurs et du support lui-même",
+                        "La traction horizontale uniquement",
+                        "Le cisaillement dans tous les cas",
+                        "Aucun effort notable en alignement droit"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "En alignement droit, les efforts horizontaux des conducteurs s'annulent. Le support supporte principalement la compression verticale (poids propre + conducteurs + surcharges glace/vent)."
+                },
+                {
+                    "question": "Pour calculer la force de traction dans un conducteur de ligne aérienne, quel paramètre climatique est déterminant ?",
+                    "options": [
+                        "La surcharge de givre/glace et la pression du vent combinées",
+                        "La température ambiante uniquement",
+                        "L'humidité relative de l'air",
+                        "La pression atmosphérique"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Selon la SIA 261 et EN 50341, la charge maximale sur les conducteurs résulte de la combinaison des surcharges de givre (augmentent le poids) et de la pression du vent (effort horizontal)."
+                },
+            ],
+        },
+        "AA11": {
+            "qcm": [
+                {
+                    "question": "Pour calculer la hauteur d'un poteau à l'aide de la trigonométrie, quelles mesures sont nécessaires depuis le sol ?",
+                    "options": [
+                        "La distance au pied du poteau et l'angle d'élévation vers le sommet",
+                        "La longueur de l'ombre et l'heure de la journée",
+                        "Le diamètre du poteau et sa masse",
+                        "La hauteur de l'observateur uniquement"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Hauteur = distance × tan(angle) + hauteur de l'instrument. C'est l'application de la trigonométrie (tangente) en topographie de réseau."
+                },
+            ],
+            "calcul": [
+                {
+                    "question": "Un câble souterrain suit un tracé avec deux segments : 85 m en ligne droite puis un virage à 90° suivi de 42 m. Quelle est la longueur totale de câble nécessaire (sans marge) ?",
+                    "correct_answer": 127.0,
+                    "tolerance": 0.01,
+                    "unit": "m",
+                    "explanation": "Longueur totale = segment 1 + segment 2 = 85 + 42 = 127 m. Le virage ne modifie pas la longueur nécessaire (le câble suit le tracé)."
                 },
             ],
         },
@@ -1101,6 +1339,12 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                     "correct_answer": 0,
                     "explanation": "La séquence correcte respecte les 5 règles de sécurité : 1) Déclencher (ouvrir disjoncteur), 2) Séparer (ouvrir sectionneur), 3) Vérifier absence de tension, 4) Mettre à la terre (sectionneur de terre). L'ordre est critique pour la sécurité."
                 },
+                {
+                    "question": "Quelle est la tension de contact maximale admissible en milieu sec selon la NIBT (Norme d'Installations Basse Tension) ?",
+                    "options": ["50 V", "25 V", "120 V", "230 V"],
+                    "correct_answer": 0,
+                    "explanation": "La NIBT fixe la tension de contact maximale admissible à 50 V en milieu sec (UL = 50 V AC). En milieu humide ou mouillé, cette valeur est réduite à 25 V."
+                },
             ],
             "mise_en_situation": [
                 {
@@ -1113,7 +1357,181 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                         "Demander au collègue de confirmer verbalement que tout est sécurisé"
                     ],
                     "correct_answer": 0,
-                    "explanation": "Le sectionneur de terre doit être enclenché (règle 4 : mise à terre et court-circuit) et l'absence de tension doit être vérifiée des DEUX côtés (MT et BT) avant tout travail. Une simple confirmation verbale ne remplace jamais une vérification personnelle."
+                    "explanation": "Le sectionneur de terre doit être enclenché (règle 4 : mise à terre et court-circuit) et l'absence de tension doit être vérifiée des DEUX côtés (MT et BT) avant tout travail."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "Un travail sous tension (TST) en moyenne tension peut être effectué par n'importe quel électricien titulaire d'un CFC.",
+                    "correct_answer": False,
+                    "explanation": "FAUX — Les travaux sous tension requièrent une habilitation spécifique TST, une formation complémentaire reconnue et des EPI spéciaux. Un CFC seul ne suffit pas."
+                },
+            ],
+        },
+        "AE03": {
+            "qcm": [
+                {
+                    "question": "Quelle grandeur photométrique caractérise la quantité de lumière perçue par l'œil humain sur une surface donnée ?",
+                    "options": [
+                        "L'éclairement, mesuré en lux (lx)",
+                        "Le flux lumineux, mesuré en lumen (lm)",
+                        "L'intensité lumineuse, mesurée en candela (cd)",
+                        "La luminance, mesurée en cd/m²"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "L'éclairement (E, en lux) mesure le flux lumineux reçu par unité de surface : E = Φ/A. C'est la grandeur la plus utilisée pour les normes d'éclairage public (EN 13201)."
+                },
+                {
+                    "question": "Selon la norme EN 13201, quel paramètre définit la classe d'éclairage d'une route ?",
+                    "options": [
+                        "La catégorie de trafic (motorisé, piéton, cycliste) et la vitesse autorisée",
+                        "L'altitude géographique de la route",
+                        "La largeur de la chaussée uniquement",
+                        "La marque des luminaires installés"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La norme EN 13201 classe les voies selon le type de trafic et la vitesse, définissant les classes M (routes motorisées), C (zones de conflit) et P (piétons/cyclistes) avec des niveaux d'éclairement correspondants."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "Les LED ont une durée de vie typique de 50'000 à 100'000 heures, bien supérieure aux lampes sodium haute pression (environ 20'000 heures).",
+                    "correct_answer": True,
+                    "explanation": "Les LED modernes atteignent 50'000-100'000h contre ~20'000h pour le sodium HP. De plus, les LED offrent un meilleur rendement lumineux (lm/W) et un IRC supérieur."
+                },
+            ],
+        },
+        "AE04": {
+            "qcm": [
+                {
+                    "question": "Quel système d'information géographique est utilisé pour la documentation numérique des réseaux électriques en Suisse ?",
+                    "options": [
+                        "Un SIG/GIS avec couches de données géoréférencées (câbles, postes, appareils)",
+                        "Un simple tableur Excel avec les adresses",
+                        "Un classeur papier avec des plans photocopiés",
+                        "Un logiciel de comptabilité avec module cartographique"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La documentation moderne des réseaux utilise un SIG (Système d'Information Géographique) avec des couches géoréférencées pour chaque type d'ouvrage, conforme aux exigences de l'OLEI."
+                },
+                {
+                    "question": "Selon l'OLEI, quelle obligation incombe à l'exploitant de réseau concernant la documentation ?",
+                    "options": [
+                        "Tenir à jour les plans et schémas de toutes les installations et les rendre accessibles pour les tiers autorisés",
+                        "Archiver les documents uniquement après la mise hors service des installations",
+                        "Publier tous les plans sur internet",
+                        "Conserver les documents pendant 2 ans seulement"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "L'OLEI impose aux exploitants de maintenir une documentation à jour et accessible de toutes les installations électriques, incluant plans, schémas, rapports de contrôle et modifications."
+                },
+            ],
+        },
+        "AE07": {
+            "qcm": [
+                {
+                    "question": "Quel appareil est utilisé pour mesurer la résistance de boucle de défaut dans une installation BT ?",
+                    "options": [
+                        "Un mesureur de boucle de défaut (loop tester) qui injecte un courant d'essai",
+                        "Un multimètre standard en mode résistance",
+                        "Un mégohmmètre à 500V DC",
+                        "Un oscilloscope numérique"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Le mesureur de boucle de défaut (ex: Zs-mètre) injecte un courant d'essai et mesure l'impédance de la boucle L-PE. La valeur Zs permet de vérifier que le courant de défaut sera suffisant pour faire déclencher la protection."
+                },
+                {
+                    "question": "Lors d'une mesure de résistance d'isolement selon la NIBT, quelle tension d'essai est appliquée pour un circuit 230V/400V ?",
+                    "options": [
+                        "500 V DC avec un seuil minimum de 1 MΩ",
+                        "230 V AC avec un seuil minimum de 100 kΩ",
+                        "1000 V DC avec un seuil minimum de 100 Ω",
+                        "50 V DC avec un seuil minimum de 10 MΩ"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Pour les circuits BT (230/400V), l'essai d'isolement selon NIBT se fait à 500V DC. La résistance d'isolement minimale est de 1 MΩ entre chaque conducteur actif et la terre."
+                },
+            ],
+            "calcul": [
+                {
+                    "question": "La mesure de boucle de défaut donne Zs = 1.15 Ω. Le circuit est protégé par un disjoncteur C16A (courant de déclenchement magnétique = 160A). Le temps de coupure maximal admissible est de 0.4s. Le courant de défaut est-il suffisant ? Calculer Ik en ampères (tension = 230V).",
+                    "correct_answer": 200.0,
+                    "tolerance": 0.05,
+                    "unit": "A",
+                    "explanation": "Ik = U/Zs = 230/1.15 = 200 A. Le courant de défaut (200A) est supérieur au seuil magnétique (160A) → le disjoncteur déclenchera bien dans les 0.4s requis."
+                },
+            ],
+        },
+        "AE10": {
+            "qcm": [
+                {
+                    "question": "Quelle méthode est utilisée pour localiser un défaut d'isolement sur un câble souterrain MT ?",
+                    "options": [
+                        "La méthode de réflectométrie (TDR) combinée avec la méthode acoustique de frappe",
+                        "L'inspection visuelle du tracé complet du câble",
+                        "La mesure de tension aux deux extrémités simultanément",
+                        "Le remplacement systématique du câble sans localisation"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La localisation de défaut cable MT utilise d'abord la pré-localisation par réflectométrie (TDR) pour estimer la distance du défaut, puis la localisation précise par méthode acoustique (générateur d'impulsions + récepteur au sol)."
+                },
+                {
+                    "question": "Lors de la maintenance d'un réseau BT, quel est le critère NIBT pour considérer qu'un câble souterrain doit être remplacé ?",
+                    "options": [
+                        "Résistance d'isolement inférieure aux valeurs minimales NIBT et/ou dommages mécaniques visibles",
+                        "Câble installé depuis plus de 10 ans automatiquement",
+                        "Courant de charge supérieur à 50% de la capacité nominale",
+                        "Changement de couleur de la gaine extérieure"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Le remplacement se base sur des critères objectifs : résistance d'isolement insuffisante, dommages mécaniques constatés, historique de défauts répétés, ou non-conformité avec les normes actuelles."
+                },
+            ],
+            "mise_en_situation": [
+                {
+                    "scenario": "Vous recevez une alerte indiquant un défaut de terre sur un départ MT 16 kV. Le disjoncteur a déclenché automatiquement. Le réenclencheur automatique a tenté 2 fois sans succès.",
+                    "question": "Quelle est la procédure de diagnostic à suivre ?",
+                    "options": [
+                        "Mesurer la résistance d'isolement de chaque tronçon par sectionnement progressif pour localiser le défaut",
+                        "Réenclencher immédiatement le disjoncteur une 3ème fois",
+                        "Attendre 24h que le défaut se résorbe de lui-même",
+                        "Commuter la charge sur un autre départ sans diagnostic"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Après échec des réenclenchements automatiques, le défaut est permanent. Il faut procéder au sectionnement progressif et à la mesure d'isolement de chaque tronçon pour localiser et isoler la section défectueuse."
+                },
+            ],
+        },
+        "AE13": {
+            "qcm": [
+                {
+                    "question": "Quel type d'isolateur est principalement utilisé sur les lignes aériennes moyenne tension (16 kV) en Suisse ?",
+                    "options": [
+                        "L'isolateur à capot et tige en verre ou porcelaine, ou isolateur composite en silicone",
+                        "L'isolateur en bois traité",
+                        "L'isolateur en plastique ABS standard",
+                        "Aucun isolateur n'est nécessaire en 16 kV"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Les lignes MT 16 kV utilisent des isolateurs en verre trempé, porcelaine ou composites (silicone). Les composites gagnent du terrain grâce à leur légèreté et résistance au vandalisme."
+                },
+                {
+                    "question": "Quelle est la portée typique entre deux supports de ligne aérienne BT en zone urbaine ?",
+                    "options": [
+                        "30 à 50 mètres selon le type de conducteur et les conditions",
+                        "100 à 200 mètres",
+                        "5 à 10 mètres",
+                        "Plus de 500 mètres"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "En zone urbaine, les portées BT sont typiquement de 30-50m, limitées par la flèche admissible, la hauteur libre au-dessus du sol (min. 6m au-dessus des routes) et les efforts mécaniques."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "Un conducteur de ligne aérienne en alliage d'aluminium-acier (ACSR) est utilisé car l'âme en acier assure la résistance mécanique tandis que les brins d'aluminium assurent la conductivité électrique.",
+                    "correct_answer": True,
+                    "explanation": "Le câble ACSR combine les propriétés : l'acier au centre apporte la résistance à la traction, l'aluminium en périphérie offre une bonne conductivité avec un poids réduit par rapport au cuivre."
                 },
             ],
         },
@@ -1123,14 +1541,17 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
         """
         Génère une question de secours de qualité professionnelle.
         
-        V2 : Utilise une banque de questions techniques réelles par module,
-        et des templates intelligents basés sur les compétences d'examen.
+        Stratégie V3 :
+        1. Banque par module/type (questions techniques réelles)
+        2. Banque cross-module (si module sans questions)
+        3. Questions techniques construites à partir des compétences d'examen
+        JAMAIS de question triviale du type "Que représente le concept X ?"
         """
         name = concept.get('name', 'inconnu')
         module = concept.get('module', '')
         keywords = concept.get('keywords', [])
         
-        # 1. Essayer la banque de questions par module
+        # 1. Essayer la banque de questions pour ce module et ce type
         module_bank = self.FALLBACK_BANK.get(module, {})
         type_bank = module_bank.get(q_type, [])
         if type_bank:
@@ -1138,66 +1559,99 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
             question['fallback'] = True
             return self._add_metadata(question, concept, question_num)
         
-        # 2. Générer basé sur les compétences d'examen du module
+        # 2. Essayer un autre type de question dans ce module
+        for alt_type in ['qcm', 'vrai_faux', 'mise_en_situation', 'calcul']:
+            alt_bank = module_bank.get(alt_type, [])
+            if alt_bank:
+                question = random.choice(alt_bank).copy()
+                question['type'] = alt_type
+                question['fallback'] = True
+                return self._add_metadata(question, concept, question_num)
+        
+        # 3. Essayer un module voisin (AA ou AE)
+        prefix = module[:2] if module else 'AA'
+        for other_mod, other_bank in self.FALLBACK_BANK.items():
+            if other_mod.startswith(prefix) and other_mod != module:
+                for try_type in [q_type, 'qcm', 'vrai_faux']:
+                    if try_type in other_bank and other_bank[try_type]:
+                        question = random.choice(other_bank[try_type]).copy()
+                        question['fallback'] = True
+                        return self._add_metadata(question, concept, question_num)
+        
+        # 4. Construire une question technique à partir des compétences et keywords
         exam_comps = EXAM_COMPETENCES.get(module, [])
+        mod_label = self._get_module_label(module)
         
         if q_type == "vrai_faux":
             if exam_comps:
                 comp = random.choice(exam_comps)
+                # Construire une vraie affirmation technique (pas juste "ce concept existe")
                 return self._add_metadata({
-                    "question": f"Dans le cadre du module {module} ({self._get_module_label(module)}), le professionnel doit être capable de : {comp}",
+                    "question": f"Pour le Brevet Fédéral, la compétence suivante est requise dans le module {module} ({mod_label}) : « {comp} ».",
                     "correct_answer": True,
-                    "explanation": f"Cette compétence fait partie des exigences des directives d'examen du Brevet Fédéral pour le module {module}. Elle est évaluée lors de l'examen professionnel.",
+                    "explanation": f"Cette compétence est explicitement listée dans les directives d'examen pour le module {module}. Elle est évaluée à l'examen professionnel.",
                     "fallback": True,
+                    "hint": f"Pensez aux compétences attendues d'un spécialiste de réseau pour le domaine {mod_label}."
                 }, concept, question_num)
-            return self._add_metadata({
-                "question": f"Le concept '{name}' fait partie des matières évaluées à l'examen du Brevet Fédéral Spécialiste de Réseau.",
-                "correct_answer": True,
-                "explanation": f"'{name}' est un concept du module {module} ({self._get_module_label(module)}) qui fait partie du programme d'examen.",
-                "fallback": True,
-            }, concept, question_num)
+            # Avec keywords — affirmation technique
+            if keywords:
+                kw = random.choice(keywords)
+                return self._add_metadata({
+                    "question": f"Le terme technique « {kw} » fait partie du vocabulaire professionnel essentiel du module {module} ({mod_label}).",
+                    "correct_answer": True,
+                    "explanation": f"« {kw} » est un concept clé du module {module} ({mod_label}), directement lié au sujet « {name} ».",
+                    "fallback": True,
+                    "hint": f"Ce terme est associé au domaine de {mod_label}."
+                }, concept, question_num)
 
         elif q_type == "texte_trous":
-            if keywords and len(keywords) >= 1:
+            if keywords and len(keywords) >= 2:
                 keyword = random.choice(keywords)
+                other_kw = [k for k in keywords if k != keyword]
+                hint_kw = other_kw[0] if other_kw else mod_label
                 return self._add_metadata({
-                    "question": f"Dans le domaine de '{name}' ({self._get_module_label(module)}), le terme technique _____ est un élément clé à maîtriser pour l'examen.",
+                    "question": f"Dans le domaine « {name} » (module {module} — {mod_label}), le terme technique _____ est étroitement lié aux concepts de {hint_kw}.",
                     "correct_answer": keyword,
-                    "acceptable_answers": [keyword, keyword.lower(), keyword.upper()],
-                    "explanation": f"Le terme '{keyword}' est un mot-clé fondamental du concept '{name}' dans le module {module}.",
+                    "acceptable_answers": [keyword, keyword.lower(), keyword.upper(), keyword.replace('-', ' ')],
+                    "explanation": f"« {keyword} » est un terme technique fondamental du concept « {name} » dans le module {module}. Il est lié à : {', '.join(keywords)}.",
                     "fallback": True,
+                    "hint": f"C'est un terme du domaine {mod_label}, lié à {hint_kw}."
                 }, concept, question_num)
-            return self._add_metadata({
-                "question": f"Le module qui traite de '{name}' s'appelle _____ dans le programme du Brevet Fédéral.",
-                "correct_answer": self._get_module_label(module),
-                "acceptable_answers": [self._get_module_label(module), module],
-                "explanation": f"'{name}' fait partie du module {module} — {self._get_module_label(module)}.",
-                "fallback": True,
-            }, concept, question_num)
 
         elif q_type == "calcul":
-            # Questions de calcul universelles basiques mais pertinentes
+            # Questions de calcul universelles — toujours pertinentes pour un spécialiste réseau
             calcul_fallbacks = [
                 {
                     "question": "Un circuit monophasé 230V alimente une charge résistive de 46 Ω. Calculer le courant en ampères.",
                     "correct_answer": 5.0,
                     "tolerance": 0.01,
                     "unit": "A",
-                    "explanation": "Loi d'Ohm : I = U/R = 230/46 = 5.0 A"
+                    "explanation": "Loi d'Ohm : I = U/R = 230/46 = 5.0 A",
+                    "hint": "Appliquez la loi d'Ohm : I = U/R"
                 },
                 {
                     "question": "Calculer la puissance apparente S d'un moteur triphasé alimenté en 400V avec un courant de ligne de 10A.",
                     "correct_answer": 6928.0,
                     "tolerance": 0.02,
                     "unit": "VA",
-                    "explanation": "S = √3 × U × I = 1.732 × 400 × 10 = 6'928 VA ≈ 6.93 kVA"
+                    "explanation": "S = √3 × U × I = 1.732 × 400 × 10 = 6'928 VA ≈ 6.93 kVA",
+                    "hint": "En triphasé : S = √3 × U × I"
                 },
                 {
                     "question": "Deux résistances de 100 Ω et 150 Ω sont montées en parallèle. Calculer la résistance équivalente en ohms.",
                     "correct_answer": 60.0,
                     "tolerance": 0.02,
                     "unit": "Ω",
-                    "explanation": "1/Req = 1/R1 + 1/R2 = 1/100 + 1/150 = 3/300 + 2/300 = 5/300\nReq = 300/5 = 60 Ω"
+                    "explanation": "1/Req = 1/R1 + 1/R2 = 1/100 + 1/150 = 3/300 + 2/300 = 5/300\nReq = 300/5 = 60 Ω",
+                    "hint": "Formule parallèle : 1/Req = 1/R1 + 1/R2"
+                },
+                {
+                    "question": "Un câble de 25m (cuivre, ρ=0.0175 Ω·mm²/m, section 4mm²) alimente une charge de 20A en monophasé. Calculer la chute de tension aller-retour en volts.",
+                    "correct_answer": 4.375,
+                    "tolerance": 0.03,
+                    "unit": "V",
+                    "explanation": "R = ρ×L/S = 0.0175×25/4 = 0.109375 Ω\nΔU = 2×R×I = 2×0.109375×20 = 4.375 V",
+                    "hint": "ΔU = 2 × R × I, avec R = ρ × L / S"
                 },
             ]
             question = random.choice(calcul_fallbacks).copy()
@@ -1208,47 +1662,76 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
             if exam_comps:
                 comp = random.choice(exam_comps)
                 return self._add_metadata({
-                    "scenario": f"Vous êtes chef d'équipe sur un chantier de réseau électrique. Votre supérieur vous demande d'organiser une intervention impliquant le domaine '{name}' ({self._get_module_label(module)}).",
-                    "question": f"Quelle est la démarche prioritaire pour garantir une intervention conforme aux normes ?",
+                    "scenario": f"Vous êtes chef d'équipe sur un chantier de réseau électrique. Une intervention nécessite des compétences en « {name} » ({mod_label}). Votre équipe de 3 personnes doit intervenir dans des conditions normales.",
+                    "question": f"Quelle est la démarche prioritaire avant de commencer l'intervention ?",
                     "options": [
-                        f"Consulter les normes en vigueur, planifier l'intervention et briefer l'équipe sur les procédures de {name}",
+                        f"Évaluer les risques, consulter les normes applicables, briefer l'équipe et vérifier les EPI",
                         "Commencer les travaux directement car l'équipe est expérimentée",
-                        "Déléguer entièrement la responsabilité à un collaborateur",
-                        "Reporter l'intervention en attendant des instructions supplémentaires"
+                        "Déléguer entièrement la responsabilité au plus ancien",
+                        "Reporter l'intervention en attendant des renforts"
                     ],
                     "correct_answer": 0,
-                    "explanation": f"Toute intervention doit commencer par la consultation des normes applicables, une planification rigoureuse et un briefing d'équipe. C'est une compétence clé du module {module} : '{comp}'.",
+                    "explanation": f"Toute intervention de réseau exige une évaluation des risques, la consultation des normes (ESTI, SUVA, NIBT), un briefing d'équipe et la vérification des EPI. Compétence visée : « {comp} ».",
                     "fallback": True,
+                    "hint": "Pensez à ce qui doit TOUJOURS être fait avant de commencer un travail sur réseau."
                 }, concept, question_num)
 
-        # QCM par défaut — basé sur les compétences d'examen
-        if exam_comps:
-            comp = random.choice(exam_comps)
+        # QCM par défaut — basé sur les compétences réelles avec distracteurs plausibles
+        if exam_comps and len(exam_comps) >= 2:
+            correct_comp = random.choice(exam_comps)
+            # Distracteurs : compétences d'AUTRES modules (plausibles mais fausses pour CE module)
+            other_comps = []
+            for other_mod, other_comp_list in EXAM_COMPETENCES.items():
+                if other_mod != module:
+                    other_comps.extend(other_comp_list)
+            random.shuffle(other_comps)
+            distractors = other_comps[:3] if len(other_comps) >= 3 else [
+                "Dimensionner les installations photovoltaïques",
+                "Programmer des automates industriels complexes",
+                "Concevoir des circuits imprimés multicouches"
+            ]
+            
+            options = [correct_comp] + distractors[:3]
+            random.shuffle(options)
+            correct_idx = options.index(correct_comp)
+            
             return self._add_metadata({
-                "question": f"Dans le cadre du module {module} ({self._get_module_label(module)}), quelle compétence est requise pour le Brevet Fédéral ?",
-                "options": [
-                    comp,
-                    "Savoir utiliser un logiciel de comptabilité",
-                    "Connaître les techniques de vente et marketing",
-                    "Maîtriser la programmation informatique avancée"
-                ],
-                "correct_answer": 0,
-                "explanation": f"La compétence '{comp}' fait partie des exigences des directives d'examen du Brevet Fédéral pour le module {module} — {self._get_module_label(module)}.",
+                "question": f"Parmi les compétences suivantes, laquelle est spécifiquement requise dans le module {module} ({mod_label}) du Brevet Fédéral ?",
+                "options": options,
+                "correct_answer": correct_idx,
+                "explanation": f"La compétence « {correct_comp} » est listée dans les directives d'examen pour le module {module}. Les autres compétences appartiennent à d'autres modules.",
                 "fallback": True,
+                "hint": f"Réfléchissez à ce qu'un spécialiste en {mod_label} doit maîtriser."
             }, concept, question_num)
         
-        # Dernier recours — question générique mais propre
+        # Dernier recours absolu — question technique sur les keywords
+        if keywords:
+            correct_kw = keywords[0]
+            wrong_keywords = [
+                "Photovoltaïque bifacial", "Domotique KNX avancée",
+                "Fibre optique monomode", "Automate Siemens S7"
+            ]
+            options = [correct_kw] + wrong_keywords[:3]
+            random.shuffle(options)
+            correct_idx = options.index(correct_kw)
+            
+            return self._add_metadata({
+                "question": f"Quel terme technique est directement associé au domaine « {name} » dans le module {module} ({mod_label}) ?",
+                "options": options,
+                "correct_answer": correct_idx,
+                "explanation": f"Le terme « {correct_kw} » est un mot-clé technique du concept « {name} ». Les mots-clés associés sont : {', '.join(keywords)}.",
+                "fallback": True,
+                "hint": f"Pensez au vocabulaire spécifique du domaine {mod_label}."
+            }, concept, question_num)
+        
+        # Ultra dernier recours — ne devrait jamais arriver
         return self._add_metadata({
-            "question": f"Dans le module {module} ({self._get_module_label(module)}), quel aspect du concept '{name}' est le plus important pour l'examen ?",
-            "options": [
-                f"La maîtrise pratique et théorique de {name} selon les normes suisses",
-                "Uniquement la connaissance théorique sans application pratique",
-                "Ce concept n'est pas évalué à l'examen",
-                "Seule l'expérience personnelle compte, pas les normes"
-            ],
+            "question": f"Quel module du Brevet Fédéral Spécialiste de Réseau couvre le domaine « {mod_label} » ?",
+            "options": [module, "AA00", "AE00", "ZZ99"],
             "correct_answer": 0,
-            "explanation": f"Pour le Brevet Fédéral, '{name}' (module {module}) requiert à la fois la maîtrise théorique ET pratique, en conformité avec les normes suisses (ESTI, NIBT, SUVA).",
+            "explanation": f"Le module {module} couvre « {mod_label} » dans le programme du Brevet Fédéral.",
             "fallback": True,
+            "hint": f"Le code du module commence par {module[:2]}."
         }, concept, question_num)
     
     def save_quiz_result(self, quiz_id: str, score: int, total: int, 
