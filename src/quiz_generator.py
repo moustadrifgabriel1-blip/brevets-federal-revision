@@ -1,27 +1,197 @@
 """
 Générateur de quiz basé sur l'IA pour le Brevet Fédéral
 Génère des questions variées : QCM, Vrai/Faux, Texte à trous, Calcul, Mise en situation
+
+VERSION 3.0 — Premium :
+- Génération BATCH : 1 seul appel IA pour toutes les questions (plus rapide, cohérent)
+- Banque de questions persistante : les bonnes questions sont sauvegardées et réutilisées
+- Système d'INDICES (hints) : chaque question a un indice caché
+- Niveau de CONFIANCE : l'utilisateur indique s'il devine, hésite ou est sûr
+- Analytics premium : progression, score par type, tendances
+- Prompts enrichis avec compétences d'examen, mots-clés, références cours
+- Sélection pondérée par importance (critical > high > medium > low)
+- Fallbacks de qualité professionnelle (jamais de question triviale)
+- Validation des réponses IA (cohérence, déduplication)
 """
 import json
 import random
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
+from collections import defaultdict
 import google.generativeai as genai
 import os
 
 
 # Types de questions supportés avec distribution pondérée
 QUESTION_TYPES = {
-    "qcm": {"label": "QCM (4 choix)", "weight": 35, "icon": "📋"},
-    "vrai_faux": {"label": "Vrai / Faux", "weight": 20, "icon": "✅"},
+    "qcm": {"label": "QCM (4 choix)", "weight": 30, "icon": "📋"},
+    "vrai_faux": {"label": "Vrai / Faux", "weight": 15, "icon": "✅"},
     "texte_trous": {"label": "Texte à trous", "weight": 15, "icon": "✏️"},
     "calcul": {"label": "Calcul", "weight": 15, "icon": "🔢"},
-    "mise_en_situation": {"label": "Mise en situation", "weight": 15, "icon": "🏗️"},
+    "mise_en_situation": {"label": "Mise en situation", "weight": 25, "icon": "🏗️"},
 }
 
 # Modules où les questions de calcul sont pertinentes
 CALCUL_MODULES = {"AA09", "AA10", "AA11", "AE05", "AE07"}
+
+# Pondération pour la sélection de concepts par importance
+IMPORTANCE_WEIGHTS = {
+    "critical": 4.0,
+    "high": 3.0,
+    "medium": 2.0,
+    "low": 1.0,
+}
+
+# Compétences d'examen par module (injectées dans les prompts)
+EXAM_COMPETENCES = {
+    "AA01": [
+        "Diriger une équipe de collaborateurs sur le terrain",
+        "Planifier et répartir les tâches de travail",
+        "Communiquer de manière efficace et constructive",
+        "Gérer les conflits au sein de l'équipe",
+        "Évaluer les performances des collaborateurs",
+    ],
+    "AA02": [
+        "Planifier et organiser la formation des apprentis",
+        "Transmettre les compétences professionnelles",
+        "Évaluer les progrès de formation",
+        "Appliquer les méthodes pédagogiques adaptées",
+        "Connaître le cadre légal de la formation professionnelle",
+    ],
+    "AA03": [
+        "Lire et interpréter les plans et schémas techniques",
+        "Établir des listes de matériel et outillage",
+        "Planifier le déroulement des travaux (logistique, délais)",
+        "Évaluer les risques liés aux travaux",
+        "Rédiger des rapports et de la documentation technique",
+    ],
+    "AA04": [
+        "Gérer un mandat du début à la fin (offre → facturation)",
+        "Respecter les délais et budgets",
+        "Coordonner les intervenants sur un chantier",
+        "Appliquer les normes et prescriptions en vigueur",
+    ],
+    "AA05": [
+        "Appliquer les règles de sécurité au travail (MSST, SUVA)",
+        "Identifier et évaluer les dangers sur un chantier",
+        "Utiliser correctement les EPI (équipements de protection)",
+        "Mettre en place des mesures de protection collective",
+        "Réagir correctement en cas d'accident",
+        "Connaître les premiers secours (BLS-AED)",
+    ],
+    "AA06": [
+        "Contrôler la qualité des travaux exécutés",
+        "Vérifier la conformité aux plans et normes",
+        "Documenter les contrôles et résultats",
+        "Organiser les réceptions de chantier",
+    ],
+    "AA07": [
+        "Comprendre les stratégies de maintenance (préventive, corrective, prédictive)",
+        "Planifier les interventions de maintenance",
+        "Utiliser les systèmes de gestion de maintenance (GMAO)",
+        "Calculer les coûts de maintenance",
+    ],
+    "AA08": [
+        "Effectuer la maintenance des équipements de réseau",
+        "Diagnostiquer les pannes et dysfonctionnements",
+        "Appliquer les procédures de consignation/déconsignation",
+        "Utiliser les appareils de mesure et de test",
+    ],
+    "AA09": [
+        "Appliquer les lois fondamentales (Ohm, Kirchhoff)",
+        "Calculer en courant continu et alternatif (mono/triphasé)",
+        "Calculer les puissances (P, Q, S, cos φ)",
+        "Dimensionner les conducteurs et protections",
+        "Comprendre les schémas de liaison à la terre (TN, TT, IT)",
+    ],
+    "AA10": [
+        "Appliquer les principes de mécanique statique",
+        "Calculer les forces, moments et charges",
+        "Comprendre les matériaux (acier, alu, bois, béton)",
+        "Dimensionner les supports et ancrages de lignes",
+    ],
+    "AA11": [
+        "Maîtriser les calculs de base (algèbre, fractions, pourcentages)",
+        "Appliquer la trigonométrie aux calculs de réseau",
+        "Utiliser les formules de géométrie (surfaces, volumes)",
+        "Résoudre des équations liées aux réseaux électriques",
+    ],
+    "AE01": [
+        "Réaliser une étude de projet de réseau de distribution",
+        "Dimensionner un réseau (câbles, postes de transformation)",
+        "Calculer les chutes de tension et courants de court-circuit",
+        "Établir un devis et une planification de projet",
+    ],
+    "AE02": [
+        "Appliquer les 5 règles de sécurité",
+        "Connaître les distances de sécurité selon les niveaux de tension",
+        "Effectuer les consignations et déconsignations",
+        "Appliquer les prescriptions ESTI/Suva pour travaux sur IE",
+        "Établir des périmètres de sécurité",
+    ],
+    "AE03": [
+        "Planifier une installation d'éclairage public",
+        "Appliquer les normes EN 13201 et SLG 202",
+        "Choisir les luminaires et sources (LED)",
+        "Calculer l'éclairement et l'uniformité",
+    ],
+    "AE04": [
+        "Lire et créer des schémas unifilaires de réseau",
+        "Utiliser les systèmes d'information géographique (SIG/GIS)",
+        "Documenter les réseaux selon les normes en vigueur",
+        "Comprendre la symbologie normalisée",
+    ],
+    "AE05": [
+        "Dimensionner les installations de mise à terre",
+        "Calculer la résistance de terre",
+        "Connaître les types de prises de terre (piquet, ruban, fondation)",
+        "Mesurer la résistance de terre et la résistivité du sol",
+    ],
+    "AE06": [
+        "Comprendre le fonctionnement des réseaux de distribution (MT/BT)",
+        "Effectuer des manœuvres de réseau (ouverture/fermeture)",
+        "Gérer les perturbations et pannes de réseau",
+        "Comprendre les schémas d'exploitation (boucle, radial, maillé)",
+    ],
+    "AE07": [
+        "Effectuer des mesures électriques sur les réseaux",
+        "Utiliser les appareils de mesure (multimètre, pince, mégohmmètre)",
+        "Mesurer l'isolement, la continuité, la boucle de défaut",
+        "Interpréter les résultats de mesure",
+    ],
+    "AE09": [
+        "Comprendre les systèmes de protection des réseaux",
+        "Dimensionner les fusibles et disjoncteurs",
+        "Comprendre la sélectivité des protections",
+        "Calculer les courants de court-circuit",
+        "Coordonner les protections MT/BT",
+    ],
+    "AE10": [
+        "Planifier la maintenance des réseaux de distribution",
+        "Effectuer les contrôles périodiques des installations",
+        "Diagnostiquer les défauts sur les câbles et lignes",
+        "Utiliser les techniques de localisation de défauts",
+    ],
+    "AE11": [
+        "Réaliser un projet complet de réseau de A à Z",
+        "Rédiger un dossier technique de projet",
+        "Présenter et défendre son projet oralement",
+        "Appliquer la gestion de projet (planning, budget, risques)",
+    ],
+    "AE12": [
+        "Choisir et dimensionner les câbles souterrains",
+        "Connaître les techniques de pose (tranchée, forage dirigé)",
+        "Réaliser et contrôler les jonctions et terminaisons",
+        "Appliquer les normes de pose et de croisement",
+    ],
+    "AE13": [
+        "Dimensionner les lignes aériennes (conducteurs, supports)",
+        "Calculer les portées et flèches",
+        "Connaître les types de supports (bois, béton, acier)",
+        "Effectuer la maintenance des lignes aériennes",
+    ],
+}
 
 
 def evaluate_answer(question: Dict, user_answer) -> bool:
@@ -57,35 +227,272 @@ def evaluate_answer(question: Dict, user_answer) -> bool:
 
 
 class QuizGenerator:
-    """Génère des quiz interactifs basés sur les concepts du Brevet Fédéral"""
+    """Génère des quiz interactifs basés sur les concepts du Brevet Fédéral — V3 Premium"""
     
     def __init__(self, api_key: Optional[str] = None, model: str = "gemini-3-pro-preview"):
         self.api_key = api_key or os.getenv('GOOGLE_API_KEY')
         self.model_name = model
         self.history_file = Path("data/quiz_history.json")
+        self.question_bank_file = Path("data/question_bank.json")
         self.model = None
         
         if self.api_key:
             genai.configure(api_key=self.api_key)
             self.model = genai.GenerativeModel(self.model_name)
     
+    # --- BANQUE DE QUESTIONS PERSISTANTE ---
+    
+    def _load_question_bank(self) -> Dict:
+        """Charge la banque de questions sauvegardées."""
+        if self.question_bank_file.exists():
+            try:
+                with open(self.question_bank_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError):
+                return {"questions": [], "stats": {"total_generated": 0, "total_reused": 0}}
+        return {"questions": [], "stats": {"total_generated": 0, "total_reused": 0}}
+    
+    def _save_question_bank(self, bank: Dict):
+        """Sauvegarde la banque de questions."""
+        self.question_bank_file.parent.mkdir(parents=True, exist_ok=True)
+        # Garder max 500 questions
+        if len(bank.get('questions', [])) > 500:
+            # Garder les mieux notées et les plus récentes
+            bank['questions'] = sorted(
+                bank['questions'],
+                key=lambda q: (q.get('quality_score', 0), q.get('created_at', '')),
+                reverse=True
+            )[:500]
+        with open(self.question_bank_file, 'w', encoding='utf-8') as f:
+            json.dump(bank, f, indent=2, ensure_ascii=False)
+    
+    def _find_banked_questions(self, concept_ids: List[str], q_types: List[str] = None, 
+                                max_questions: int = 5) -> List[Dict]:
+        """Cherche des questions déjà générées dans la banque."""
+        bank = self._load_question_bank()
+        matching = []
+        concept_set = set(concept_ids)
+        
+        for q in bank.get('questions', []):
+            if q.get('concept_id') in concept_set:
+                if q_types and q.get('type') not in q_types:
+                    continue
+                if q.get('quality_score', 0) >= 3:  # Seulement les bonnes questions
+                    matching.append(q)
+        
+        random.shuffle(matching)
+        return matching[:max_questions]
+    
+    def _bank_questions(self, questions: List[Dict]):
+        """Ajoute des questions de qualité à la banque."""
+        bank = self._load_question_bank()
+        existing_ids = {(q.get('concept_id'), q.get('question', '')[:50]) for q in bank.get('questions', [])}
+        
+        for q in questions:
+            key = (q.get('concept_id'), q.get('question', '')[:50])
+            if key not in existing_ids and not q.get('fallback'):
+                banked = q.copy()
+                banked['quality_score'] = 5  # Score initial
+                banked['times_used'] = 0
+                banked['times_correct'] = 0
+                banked['created_at'] = datetime.now().isoformat()
+                bank['questions'].append(banked)
+                bank['stats']['total_generated'] = bank['stats'].get('total_generated', 0) + 1
+                existing_ids.add(key)
+        
+        self._save_question_bank(bank)
+    
+    def update_question_quality(self, concept_id: str, question_text: str, was_correct: bool):
+        """Met à jour la qualité d'une question dans la banque (après réponse utilisateur)."""
+        bank = self._load_question_bank()
+        for q in bank.get('questions', []):
+            if q.get('concept_id') == concept_id and q.get('question', '')[:50] == question_text[:50]:
+                q['times_used'] = q.get('times_used', 0) + 1
+                if was_correct:
+                    q['times_correct'] = q.get('times_correct', 0) + 1
+                # Ajuster la qualité : une question trop facile (100% correct) ou trop dure (0%) perd des points
+                if q['times_used'] >= 3:
+                    success_rate = q['times_correct'] / q['times_used']
+                    if 0.3 <= success_rate <= 0.8:
+                        q['quality_score'] = min(10, q.get('quality_score', 5) + 0.5)
+                    else:
+                        q['quality_score'] = max(1, q.get('quality_score', 5) - 0.5)
+                break
+        self._save_question_bank(bank)
+    
+    def get_bank_stats(self) -> Dict:
+        """Statistiques de la banque de questions."""
+        bank = self._load_question_bank()
+        questions = bank.get('questions', [])
+        if not questions:
+            return {"total": 0, "by_module": {}, "by_type": {}, "avg_quality": 0}
+        
+        by_module = defaultdict(int)
+        by_type = defaultdict(int)
+        for q in questions:
+            by_module[q.get('module', 'N/A')] += 1
+            by_type[q.get('type', 'qcm')] += 1
+        
+        return {
+            "total": len(questions),
+            "by_module": dict(by_module),
+            "by_type": dict(by_type),
+            "avg_quality": sum(q.get('quality_score', 5) for q in questions) / len(questions),
+        }
+    
+    def _build_concept_context(self, concept: Dict, module: str = None) -> str:
+        """Construit un contexte riche pour le prompt à partir de TOUTES les données du concept."""
+        name = concept.get('name', 'N/A')
+        keywords = concept.get('keywords', [])
+        page_ref = concept.get('page_references', '')
+        source_doc = concept.get('source_document', '')
+        category = concept.get('category', '')
+        importance = concept.get('importance', 'medium')
+        prerequisites = concept.get('prerequisites', [])
+        mod = module or concept.get('module', '')
+        
+        # Récupérer les compétences d'examen du module
+        exam_comps = EXAM_COMPETENCES.get(mod, [])
+        # Trouver la compétence la plus pertinente pour ce concept
+        relevant_comps = self._match_competences_to_concept(name, keywords, exam_comps)
+        
+        context_parts = [f"**Concept :** {name}"]
+        
+        if keywords:
+            context_parts.append(f"**Mots-clés techniques :** {', '.join(keywords)}")
+        
+        if category:
+            context_parts.append(f"**Catégorie :** {category}")
+        
+        if page_ref:
+            context_parts.append(f"**Référence cours :** {page_ref}")
+        
+        if source_doc:
+            context_parts.append(f"**Document source :** {source_doc}")
+            
+        if prerequisites:
+            context_parts.append(f"**Prérequis :** {', '.join(prerequisites)}")
+        
+        if importance:
+            imp_label = {"critical": "Critique (à maîtriser absolument)", "high": "Élevée", "medium": "Moyenne", "low": "Basse"}.get(importance, importance)
+            context_parts.append(f"**Importance pour l'examen :** {imp_label}")
+        
+        if relevant_comps:
+            context_parts.append(f"**Compétences d'examen visées :**")
+            for comp in relevant_comps[:3]:
+                context_parts.append(f"  - {comp}")
+        
+        if mod:
+            mod_label = self._get_module_label(mod)
+            context_parts.append(f"**Module :** {mod} — {mod_label}")
+        
+        return '\n'.join(context_parts)
+    
+    def _match_competences_to_concept(self, name: str, keywords: List[str], competences: List[str]) -> List[str]:
+        """Trouve les compétences d'examen les plus pertinentes pour un concept donné."""
+        if not competences:
+            return []
+        
+        name_lower = name.lower()
+        keywords_lower = {k.lower() for k in keywords} if keywords else set()
+        all_terms = keywords_lower | set(name_lower.split())
+        # Supprimer les mots communs
+        stop_words = {'de', 'du', 'des', 'le', 'la', 'les', 'un', 'une', 'et', 'en', 'au', 'aux', 'sur', 'par', 'pour', 'dans', 'avec'}
+        all_terms -= stop_words
+        
+        scored = []
+        for comp in competences:
+            comp_lower = comp.lower()
+            score = sum(1 for term in all_terms if term in comp_lower)
+            if score > 0:
+                scored.append((score, comp))
+        
+        scored.sort(key=lambda x: x[0], reverse=True)
+        return [comp for _, comp in scored[:3]] if scored else competences[:2]
+    
+    def _get_module_label(self, module: str) -> str:
+        """Retourne le label lisible d'un module."""
+        labels = {
+            "AA01": "Conduite de collaborateurs", "AA02": "Formation",
+            "AA03": "Préparation du travail", "AA04": "Exécution de mandats",
+            "AA05": "Santé et sécurité au travail", "AA06": "Suivi des travaux",
+            "AA07": "Bases de la maintenance", "AA08": "Maintenance des équipements",
+            "AA09": "Électrotechnique", "AA10": "Mécanique", "AA11": "Mathématique",
+            "AE01": "Étude de projet", "AE02": "Sécurité sur et à prox. d'IE",
+            "AE03": "Éclairage public", "AE04": "Documentation de réseaux",
+            "AE05": "Installations mise à terre", "AE06": "Exploitation de réseaux",
+            "AE07": "Technique de mesure", "AE09": "Technique de protection",
+            "AE10": "Maintenance des réseaux", "AE11": "Travail de projet",
+            "AE12": "Lignes souterraines", "AE13": "Lignes aériennes",
+        }
+        return labels.get(module, module)
+    
+    def _select_concepts_weighted(self, concepts: List[Dict], num: int, 
+                                   weak_concept_ids: List[str] = None) -> List[Dict]:
+        """
+        Sélectionne les concepts avec pondération intelligente :
+        - Importance (critical > high > medium > low)
+        - Concepts faibles priorisés en mode adaptatif
+        - Anti-doublon via historique
+        """
+        if not concepts:
+            return []
+        
+        # Séparer concepts faibles / autres si mode adaptatif
+        if weak_concept_ids:
+            weak_set = set(weak_concept_ids)
+            weak_concepts = [c for c in concepts if c.get('id') in weak_set or c.get('name') in weak_set]
+            other_concepts = [c for c in concepts if c.get('id') not in weak_set and c.get('name') not in weak_set]
+            
+            # 60% concepts faibles, 40% autres
+            num_weak = min(len(weak_concepts), int(num * 0.6))
+            num_other = min(len(other_concepts), num - num_weak)
+            
+            # Sélection pondérée pour chaque groupe
+            selected_weak = self._weighted_sample(weak_concepts, num_weak)
+            selected_other = self._weighted_sample(other_concepts, num_other)
+            selected = selected_weak + selected_other
+        else:
+            selected = self._weighted_sample(concepts, min(num, len(concepts)))
+        
+        random.shuffle(selected)
+        return selected
+    
+    def _weighted_sample(self, concepts: List[Dict], num: int) -> List[Dict]:
+        """Échantillonnage pondéré par importance — les concepts critiques sont choisis plus souvent."""
+        if not concepts or num <= 0:
+            return []
+        num = min(num, len(concepts))
+        
+        weights = [IMPORTANCE_WEIGHTS.get(c.get('importance', 'medium'), 2.0) for c in concepts]
+        
+        selected = []
+        remaining = list(range(len(concepts)))
+        remaining_weights = list(weights)
+        
+        for _ in range(num):
+            if not remaining:
+                break
+            chosen = random.choices(remaining, weights=remaining_weights, k=1)[0]
+            idx = remaining.index(chosen)
+            selected.append(concepts[chosen])
+            remaining.pop(idx)
+            remaining_weights.pop(idx)
+        
+        return selected
+    
     def generate_quiz(self, concepts: List[Dict], module: str = None, 
                      num_questions: int = 10, difficulty: str = "moyen",
                      weak_concept_ids: List[str] = None,
                      question_types: List[str] = None) -> Dict:
         """
-        Génère un quiz à partir des concepts
+        Génère un quiz — VERSION 3.0 PREMIUM
         
-        Args:
-            concepts: Liste des concepts à tester
-            module: Module spécifique (ex: "AA01") ou None pour mélangé
-            num_questions: Nombre de questions à générer
-            difficulty: Niveau de difficulté (facile, moyen, difficile)
-            weak_concept_ids: IDs des concepts faibles à prioriser (quiz adaptatif)
-            question_types: Types de questions à inclure (liste parmi QUESTION_TYPES.keys())
-        
-        Returns:
-            Dict avec les questions et métadonnées
+        Nouveautés V3 :
+        - Génération BATCH (1 appel AI pour toutes les questions)
+        - Réutilisation de questions de la banque
+        - Chaque question inclut un indice (hint)
+        - Diversité des types forcée
         """
         # Filtrer par module si spécifié
         filtered_concepts = concepts
@@ -95,34 +502,40 @@ class QuizGenerator:
         if not filtered_concepts:
             return {"error": "Aucun concept trouvé pour ce module"}
         
-        # --- QUIZ ADAPTATIF : prioriser les concepts faibles ---
-        if weak_concept_ids:
-            weak_set = set(weak_concept_ids)
-            weak_concepts = [c for c in filtered_concepts if c.get('id') in weak_set or c.get('name') in weak_set]
-            other_concepts = [c for c in filtered_concepts if c.get('id') not in weak_set and c.get('name') not in weak_set]
-            
-            # Prendre ~60% des questions sur les concepts faibles
-            num_weak = min(len(weak_concepts), int(num_questions * 0.6))
-            num_other = min(len(other_concepts), num_questions - num_weak)
-            
-            selected_weak = random.sample(weak_concepts, num_weak) if weak_concepts else []
-            selected_other = random.sample(other_concepts, num_other) if other_concepts else []
-            selected = selected_weak + selected_other
-            random.shuffle(selected)
-        else:
-            # Sélection aléatoire classique
-            selected = random.sample(filtered_concepts, min(num_questions, len(filtered_concepts)))
+        # Sélection pondérée intelligente
+        selected = self._select_concepts_weighted(
+            filtered_concepts, num_questions, weak_concept_ids
+        )
         
-        # Générer les questions avec l'IA (types variés)
+        # Essayer la GÉNÉRATION BATCH (1 seul appel AI)
         questions = []
-        for i, concept in enumerate(selected, 1):
-            question = self._generate_question(
-                concept, difficulty, i,
+        if self.model:
+            batch_questions = self._generate_batch(
+                selected, difficulty,
                 question_types=question_types,
                 module=module
             )
-            if question:
-                questions.append(question)
+            if batch_questions:
+                questions = batch_questions
+        
+        # Si le batch a échoué ou est incomplet, compléter question par question
+        if len(questions) < len(selected):
+            remaining_concepts = selected[len(questions):]
+            for i, concept in enumerate(remaining_concepts, len(questions) + 1):
+                question = self._generate_question(
+                    concept, difficulty, i,
+                    question_types=question_types,
+                    module=module or concept.get('module')
+                )
+                if question:
+                    questions.append(question)
+        
+        # Renuméroter
+        for i, q in enumerate(questions, 1):
+            q['question_num'] = i
+        
+        # Sauvegarder les bonnes questions dans la banque
+        self._bank_questions(questions)
         
         quiz = {
             "id": f"quiz_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
@@ -134,6 +547,178 @@ class QuizGenerator:
         }
         
         return quiz
+    
+    def _generate_batch(self, concepts: List[Dict], difficulty: str,
+                        question_types: List[str] = None,
+                        module: str = None) -> List[Dict]:
+        """
+        Génère TOUTES les questions en un seul appel IA — plus rapide et cohérent.
+        Chaque question inclut un indice (hint).
+        """
+        if not self.model or not concepts:
+            return []
+        
+        available_types = list(question_types) if question_types else list(QUESTION_TYPES.keys())
+        
+        # Préparer les types assignés avec diversité forcée
+        assigned_types = self._assign_diverse_types(concepts, available_types, module)
+        
+        # Construire le contexte de chaque concept
+        concept_blocks = []
+        for i, (concept, q_type) in enumerate(zip(concepts, assigned_types), 1):
+            ctx = self._build_concept_context(concept, module or concept.get('module'))
+            type_label = QUESTION_TYPES.get(q_type, {}).get('label', q_type)
+            concept_blocks.append(f"""--- QUESTION {i} ---
+Type : {type_label}
+{ctx}
+""")
+        
+        all_concepts_text = '\n'.join(concept_blocks)
+        
+        # Format attendu par type
+        format_examples = {
+            "qcm": '{"type":"qcm","question":"...","options":["A","B","C","D"],"correct_answer":0,"explanation":"...","hint":"Un indice pour aider"}',
+            "vrai_faux": '{"type":"vrai_faux","question":"Affirmation...","correct_answer":true,"explanation":"...","hint":"Un indice"}',
+            "texte_trous": '{"type":"texte_trous","question":"Phrase avec _____","correct_answer":"mot","acceptable_answers":["mot","variante"],"explanation":"...","hint":"Un indice"}',
+            "calcul": '{"type":"calcul","question":"Énoncé avec données","correct_answer":42.5,"tolerance":0.02,"unit":"Ω","explanation":"Calcul étape par étape","hint":"Formule à utiliser : ..."}',
+            "mise_en_situation": '{"type":"mise_en_situation","scenario":"Situation...","question":"...","options":["A","B","C","D"],"correct_answer":0,"explanation":"...","hint":"Pensez à la norme..."}',
+        }
+        
+        used_formats = {t: format_examples[t] for t in set(assigned_types) if t in format_examples}
+        formats_text = '\n'.join([f"  {t}: {fmt}" for t, fmt in used_formats.items()])
+        
+        prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau (orientation Énergie) en Suisse.
+
+Génère EXACTEMENT {len(concepts)} questions d'examen professionnel variées et de haute qualité.
+
+**Niveau de difficulté : {difficulty}**
+
+VOICI LES {len(concepts)} CONCEPTS À ÉVALUER (avec le type de question demandé pour chacun) :
+
+{all_concepts_text}
+
+CONSIGNES PREMIUM :
+1. Chaque question doit être TECHNIQUE, CONCRÈTE et de niveau EXAMEN PROFESSIONNEL
+2. JAMAIS de question vague du type "Que représente le concept X ?"
+3. Les QCM doivent avoir 4 distracteurs PLAUSIBLES (erreurs courantes de candidats)
+4. Les mises en situation doivent décrire un scénario de TERRAIN réaliste
+5. Les calculs doivent inclure TOUTES les données nécessaires et des valeurs RÉALISTES
+6. Chaque question DOIT inclure un champ "hint" : un INDICE subtil qui aide sans donner la réponse
+7. Les explications doivent CITER les normes applicables (ESTI, NIBT, SUVA, EN)
+8. Pas de doublons entre les questions !
+9. Pour les QCM : correct_answer = INDEX (0-3)
+10. Pour les vrai/faux : correct_answer = true ou false (booléen)
+11. Pour les calculs : correct_answer = nombre (pas de texte)
+
+FORMATS JSON par type :
+{formats_text}
+
+Réponds UNIQUEMENT avec un tableau JSON contenant exactement {len(concepts)} objets :
+[
+  question1,
+  question2,
+  ...
+]
+
+IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en français."""
+
+        try:
+            response = self.model.generate_content(prompt)
+            text = response.text.strip()
+            
+            # Nettoyer markdown
+            if text.startswith("```json"):
+                text = text.replace("```json", "").replace("```", "").strip()
+            elif text.startswith("```"):
+                text = text.replace("```", "").strip()
+            
+            questions_data = json.loads(text)
+            
+            if not isinstance(questions_data, list):
+                return []
+            
+            # Valider et enrichir chaque question
+            valid_questions = []
+            for i, (q_data, concept) in enumerate(zip(questions_data, concepts)):
+                q_type = q_data.get('type', assigned_types[i] if i < len(assigned_types) else 'qcm')
+                q_data['type'] = q_type
+                
+                # Valider
+                if q_type in ('qcm', 'mise_en_situation'):
+                    if not self._validate_qcm(q_data):
+                        q_data = self._generate_fallback(concept, i + 1, q_type)
+                        q_data['type'] = q_type
+                
+                if q_type == 'vrai_faux':
+                    q_data['correct_answer'] = bool(q_data.get('correct_answer', True))
+                
+                if q_type == 'calcul':
+                    try:
+                        q_data['correct_answer'] = float(q_data.get('correct_answer', 0))
+                    except (ValueError, TypeError):
+                        q_data = self._generate_fallback(concept, i + 1, 'calcul')
+                        q_data['type'] = 'calcul'
+                    q_data.setdefault('tolerance', 0.02)
+                    q_data.setdefault('unit', '')
+                
+                if q_type == 'texte_trous':
+                    if q_data.get('correct_answer') not in q_data.get('acceptable_answers', []):
+                        q_data.setdefault('acceptable_answers', []).append(str(q_data.get('correct_answer', '')))
+                
+                # Ajouter hint par défaut si manquant
+                if not q_data.get('hint'):
+                    q_data['hint'] = self._generate_default_hint(concept, q_type)
+                
+                # Ajouter métadonnées
+                self._add_metadata(q_data, concept, i + 1)
+                valid_questions.append(q_data)
+            
+            return valid_questions
+            
+        except Exception as e:
+            print(f"Erreur génération batch: {e}")
+            return []
+    
+    def _assign_diverse_types(self, concepts: List[Dict], available_types: List[str], 
+                               module: str = None) -> List[str]:
+        """Assigne des types de questions diversifiés — garantit un mix varié."""
+        # Filtrer calcul pour modules non techniques
+        types_for_module = available_types.copy()
+        mod = module or (concepts[0].get('module') if concepts else '')
+        if mod and mod not in CALCUL_MODULES:
+            types_for_module = [t for t in types_for_module if t != 'calcul']
+        if not types_for_module:
+            types_for_module = ['qcm']
+        
+        n = len(concepts)
+        assigned = []
+        
+        # D'abord, assurer qu'on a au moins 1 de chaque type disponible (si assez de questions)
+        if n >= len(types_for_module):
+            assigned = list(types_for_module)
+        
+        # Remplir le reste avec pondération
+        while len(assigned) < n:
+            weights = [QUESTION_TYPES[t]["weight"] for t in types_for_module]
+            chosen = random.choices(types_for_module, weights=weights, k=1)[0]
+            assigned.append(chosen)
+        
+        random.shuffle(assigned)
+        return assigned[:n]
+    
+    def _generate_default_hint(self, concept: Dict, q_type: str) -> str:
+        """Génère un indice par défaut basé sur les métadonnées du concept."""
+        keywords = concept.get('keywords', [])
+        module = concept.get('module', '')
+        name = concept.get('name', '')
+        
+        if keywords:
+            return f"Pensez aux termes : {', '.join(keywords[:3])}"
+        elif module:
+            comps = EXAM_COMPETENCES.get(module, [])
+            if comps:
+                return f"Compétence visée : {comps[0][:80]}"
+        return f"Ce concept fait partie du module {self._get_module_label(module)}"
     
     def _generate_question(self, concept: Dict, difficulty: str, question_num: int,
                            question_types: List[str] = None, module: str = None) -> Optional[Dict]:
@@ -174,64 +759,103 @@ class QuizGenerator:
             text = text.replace("```json", "").replace("```", "").strip()
         elif text.startswith("```"):
             text = text.replace("```", "").strip()
-        return json.loads(text)
+        data = json.loads(text)
+        return data
+
+    def _validate_qcm(self, data: Dict) -> bool:
+        """Valide la cohérence d'une question QCM."""
+        if not data.get('question') or not data.get('options'):
+            return False
+        if not isinstance(data.get('correct_answer'), int):
+            return False
+        if data['correct_answer'] < 0 or data['correct_answer'] >= len(data['options']):
+            return False
+        # Vérifier que les options ne sont pas toutes identiques
+        if len(set(data['options'])) < len(data['options']):
+            return False
+        return True
 
     def _add_metadata(self, data: Dict, concept: Dict, question_num: int) -> Dict:
         """Ajoute les métadonnées du concept."""
         data["concept_id"] = concept.get('id')
         data["concept_name"] = concept.get('name')
+        data["module"] = concept.get('module', '')
         data["question_num"] = question_num
+        data["source_document"] = concept.get('source_document', '')
+        data["page_references"] = concept.get('page_references', '')
         return data
 
     # --- Générateurs par type ---
 
     def _generate_qcm(self, concept: Dict, difficulty: str, question_num: int) -> Optional[Dict]:
-        """Génère une question QCM classique (4 choix)."""
+        """Génère une question QCM — prompt enrichi avec contexte complet."""
         try:
-            prompt = f"""Génère une question à choix multiples (QCM) pour le Brevet Fédéral.
+            context = self._build_concept_context(concept)
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau (orientation Énergie) en Suisse.
 
-**Concept :** {concept.get('name', 'N/A')}
-**Description :** {concept.get('description', 'N/A')}
-**Difficulté :** {difficulty}
+Génère UNE question à choix multiples (QCM) de niveau examen professionnel.
 
-Réponds en JSON strict :
+{context}
+**Niveau de difficulté :** {difficulty}
+
+CONSIGNES :
+1. La question doit porter sur un aspect CONCRET et TECHNIQUE du concept
+2. Utilise les mots-clés techniques fournis dans ta question ou tes options
+3. Les 4 distracteurs doivent être PLAUSIBLES (erreurs courantes de candidats)
+4. Les options doivent être de longueur similaire
+5. L'explication doit citer la règle/norme/formule applicable
+6. Pas de question vague du type "Que représente le concept X ?"
+
+Réponds UNIQUEMENT en JSON strict :
 {{
-  "question": "Question claire et précise",
-  "options": ["Option A", "Option B", "Option C", "Option D"],
+  "question": "Question technique précise et contextualisée",
+  "options": ["Option A correcte", "Option B plausible mais fausse", "Option C plausible mais fausse", "Option D plausible mais fausse"],
   "correct_answer": 0,
-  "explanation": "Explication détaillée"
+  "explanation": "Explication détaillée avec référence aux normes/cours"
 }}
 
-IMPORTANT : correct_answer = INDEX (0-3). En français. Distracteurs plausibles."""
+IMPORTANT : correct_answer = INDEX (0-3) de la bonne réponse. Tout en français."""
 
             response = self.model.generate_content(prompt)
             data = self._parse_ai_response(response)
+            if not self._validate_qcm(data):
+                return self._generate_fallback(concept, question_num, "qcm")
             return self._add_metadata(data, concept, question_num)
         except Exception as e:
             print(f"Erreur QCM: {e}")
             return self._generate_fallback(concept, question_num, "qcm")
 
     def _generate_vrai_faux(self, concept: Dict, difficulty: str, question_num: int) -> Optional[Dict]:
-        """Génère une question Vrai/Faux."""
+        """Génère une question Vrai/Faux — affirmation technique précise."""
         try:
-            prompt = f"""Génère une affirmation VRAI ou FAUX pour le Brevet Fédéral.
+            context = self._build_concept_context(concept)
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
 
-**Concept :** {concept.get('name', 'N/A')}
-**Description :** {concept.get('description', 'N/A')}
-**Difficulté :** {difficulty}
+Génère UNE affirmation VRAI ou FAUX de niveau examen professionnel.
 
-Réponds en JSON strict :
+{context}
+**Niveau de difficulté :** {difficulty}
+
+CONSIGNES :
+1. L'affirmation doit porter sur un FAIT TECHNIQUE PRÉCIS (valeur, norme, règle, procédure)
+2. Si l'affirmation est FAUSSE, elle doit contenir une erreur subtile mais identifiable
+3. Exemples de bonnes affirmations :
+   - "La tension de contact maximale admissible en milieu sec est de 50V selon la NIBT"
+   - "En régime TN-C, le conducteur PEN peut avoir une section inférieure à 10mm²" (FAUX)
+4. Évite les affirmations vagues ou évidentes
+5. L'explication doit préciser la valeur/règle correcte
+
+Réponds UNIQUEMENT en JSON strict :
 {{
-  "question": "Affirmation complète à évaluer comme vraie ou fausse",
+  "question": "Affirmation technique précise à évaluer comme vraie ou fausse",
   "correct_answer": true,
-  "explanation": "Explication détaillée de pourquoi c'est vrai/faux"
+  "explanation": "Explication détaillée avec la règle/valeur/norme correcte"
 }}
 
-IMPORTANT : correct_answer est un booléen (true ou false). L'affirmation doit être technique et précise. En français."""
+IMPORTANT : correct_answer est un booléen (true ou false). En français."""
 
             response = self.model.generate_content(prompt)
             data = self._parse_ai_response(response)
-            # S'assurer que correct_answer est bien un bool
             data['correct_answer'] = bool(data['correct_answer'])
             return self._add_metadata(data, concept, question_num)
         except Exception as e:
@@ -239,31 +863,41 @@ IMPORTANT : correct_answer est un booléen (true ou false). L'affirmation doit �
             return self._generate_fallback(concept, question_num, "vrai_faux")
 
     def _generate_texte_trous(self, concept: Dict, difficulty: str, question_num: int) -> Optional[Dict]:
-        """Génère une question à texte à trous."""
+        """Génère une question à texte à trous — terme technique clé."""
         try:
-            prompt = f"""Génère une question à TEXTE À TROUS pour le Brevet Fédéral.
+            context = self._build_concept_context(concept)
+            keywords = concept.get('keywords', [])
+            keywords_hint = f"\nMots-clés techniques à cibler pour le trou : {', '.join(keywords)}" if keywords else ""
+            
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
 
-**Concept :** {concept.get('name', 'N/A')}
-**Description :** {concept.get('description', 'N/A')}
-**Difficulté :** {difficulty}
+Génère UNE question à TEXTE À TROUS de niveau examen professionnel.
 
-Réponds en JSON strict :
+{context}
+{keywords_hint}
+**Niveau de difficulté :** {difficulty}
+
+CONSIGNES :
+1. La phrase doit être une définition ou une règle technique IMPORTANTE
+2. Le mot à trouver doit être un TERME TECHNIQUE CLÉ (pas un mot courant)
+3. La phrase seule (avec le trou) doit donner assez de contexte pour deviner
+4. Exemples :
+   - "L'appareil qui mesure la résistance d'isolement s'appelle un _____." → mégohmmètre
+   - "La règle de sécurité n°1 est : _____ et vérifier l'absence de tension." → déclencher/consigner
+5. Le mot à trouver doit faire partie des mots-clés du concept si possible
+
+Réponds UNIQUEMENT en JSON strict :
 {{
-  "question": "Phrase avec un _____ à compléter (un seul trou)",
-  "correct_answer": "mot ou expression correcte",
-  "acceptable_answers": ["réponse1", "réponse2", "variante3"],
-  "explanation": "Explication détaillée"
+  "question": "Phrase technique avec un _____ à compléter",
+  "correct_answer": "terme technique correct",
+  "acceptable_answers": ["réponse1", "variante2", "variante3"],
+  "explanation": "Explication de ce terme et son importance"
 }}
 
-IMPORTANT :
-- Le trou est marqué par _____ dans la question
-- correct_answer = la réponse principale (un mot ou courte expression)
-- acceptable_answers = liste de toutes les réponses acceptables (synonymes, variantes)
-- Le mot à trouver doit être un terme technique important. En français."""
+IMPORTANT : Le trou = _____. Le mot doit être technique et important. En français."""
 
             response = self.model.generate_content(prompt)
             data = self._parse_ai_response(response)
-            # S'assurer que acceptable_answers contient aussi correct_answer
             if data.get('correct_answer') not in data.get('acceptable_answers', []):
                 data.setdefault('acceptable_answers', []).append(data['correct_answer'])
             return self._add_metadata(data, concept, question_num)
@@ -272,33 +906,51 @@ IMPORTANT :
             return self._generate_fallback(concept, question_num, "texte_trous")
 
     def _generate_calcul(self, concept: Dict, difficulty: str, question_num: int) -> Optional[Dict]:
-        """Génère une question de calcul (modules techniques : électro, méca, math)."""
+        """Génère une question de calcul — problème concret avec données."""
         try:
-            prompt = f"""Génère une question de CALCUL pour le Brevet Fédéral (électrotechnique/mécanique/mathématique).
+            context = self._build_concept_context(concept)
+            module = concept.get('module', '')
+            
+            # Adapter le type de calcul au module
+            calcul_hints = {
+                "AA09": "Calculs de loi d'Ohm, Kirchhoff, puissances (P=UI, S=UI, Q=√(S²-P²)), cos φ, résistances série/parallèle, courant triphasé",
+                "AA10": "Calculs de forces, moments, charges mécaniques sur supports/ancrages, résistance des matériaux",
+                "AA11": "Calculs algébriques, trigonométrie, géométrie appliquée aux réseaux",
+                "AE05": "Calculs de résistance de terre, résistivité du sol, dimensionnement mise à terre",
+                "AE07": "Calculs de mesure d'isolement, boucle de défaut, interprétation de résultats",
+            }
+            hint = calcul_hints.get(module, "Calculs techniques appliqués aux réseaux électriques")
+            
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
 
-**Concept :** {concept.get('name', 'N/A')}
-**Description :** {concept.get('description', 'N/A')}
-**Difficulté :** {difficulty}
+Génère UNE question de CALCUL de niveau examen professionnel.
 
-Réponds en JSON strict :
+{context}
+**Niveau de difficulté :** {difficulty}
+**Type de calcul attendu :** {hint}
+
+CONSIGNES :
+1. L'énoncé doit donner TOUTES les données numériques nécessaires
+2. Le calcul doit correspondre à une situation RÉELLE de travail sur réseau
+3. Les valeurs doivent être RÉALISTES (pas de valeurs absurdes)
+4. L'explication doit montrer CHAQUE ÉTAPE de calcul
+5. Exemples de bonnes questions :
+   - "Un câble de 120m alimente une charge de 45A en monophasé 230V. Section 6mm² (ρ=0.0175 Ω·mm²/m). Calculer la chute de tension."
+   - "Trois résistances de 100Ω, 220Ω et 470Ω sont en parallèle. Calculer la résistance équivalente."
+
+Réponds UNIQUEMENT en JSON strict :
 {{
-  "question": "Énoncé du problème avec toutes les données numériques",
+  "question": "Énoncé complet avec toutes les données numériques",
   "correct_answer": 42.5,
   "tolerance": 0.02,
   "unit": "Ω",
-  "explanation": "Développement complet du calcul étape par étape"
+  "explanation": "Calcul détaillé étape par étape avec formules"
 }}
 
-IMPORTANT :
-- correct_answer = valeur numérique (nombre, pas de texte)
-- tolerance = marge d'erreur relative acceptée (0.02 = 2%)
-- unit = unité de mesure (V, A, Ω, W, m, kg, N, etc.)
-- La question doit inclure toutes les données nécessaires au calcul
-- L'explication doit montrer CHAQUE ÉTAPE du calcul. En français."""
+IMPORTANT : correct_answer = valeur numérique. tolerance = marge relative (0.02 = 2%). En français."""
 
             response = self.model.generate_content(prompt)
             data = self._parse_ai_response(response)
-            # S'assurer que correct_answer est numérique
             data['correct_answer'] = float(data['correct_answer'])
             data.setdefault('tolerance', 0.02)
             data.setdefault('unit', '')
@@ -308,97 +960,301 @@ IMPORTANT :
             return self._generate_fallback(concept, question_num, "calcul")
 
     def _generate_mise_en_situation(self, concept: Dict, difficulty: str, question_num: int) -> Optional[Dict]:
-        """Génère une question de mise en situation professionnelle (QCM avec scénario)."""
+        """Génère une question de mise en situation — scénario professionnel réaliste."""
         try:
-            prompt = f"""Génère une question de MISE EN SITUATION pour le Brevet Fédéral Spécialiste de Réseau.
+            context = self._build_concept_context(concept)
+            module = concept.get('module', '')
+            
+            # Adapter le scénario au module
+            scenario_hints = {
+                "AA01": "Scénario de gestion d'équipe sur un chantier",
+                "AA02": "Scénario de formation d'un apprenti",
+                "AA03": "Scénario de préparation de chantier",
+                "AA04": "Scénario de gestion de mandat client",
+                "AA05": "Scénario d'accident ou de danger sur chantier",
+                "AA06": "Scénario de contrôle qualité après travaux",
+                "AA07": "Scénario de planification de maintenance",
+                "AA08": "Scénario de diagnostic de panne",
+                "AA09": "Scénario de dimensionnement électrique",
+                "AE02": "Scénario de travail à proximité d'installations électriques sous tension",
+                "AE06": "Scénario de manœuvre réseau ou de panne",
+                "AE09": "Scénario de coordination des protections",
+                "AE10": "Scénario de maintenance réseau et localisation de défaut",
+                "AE12": "Scénario de pose de câble souterrain",
+                "AE13": "Scénario de maintenance de ligne aérienne",
+            }
+            hint = scenario_hints.get(module, "Scénario professionnel réaliste sur un chantier de réseau électrique")
+            
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
 
-**Concept :** {concept.get('name', 'N/A')}
-**Description :** {concept.get('description', 'N/A')}
-**Difficulté :** {difficulty}
+Génère UNE question de MISE EN SITUATION de niveau examen professionnel.
 
-Réponds en JSON strict :
+{context}
+**Niveau de difficulté :** {difficulty}
+**Type de situation :** {hint}
+
+CONSIGNES :
+1. Le scénario doit décrire une situation de terrain CONCRÈTE et RÉALISTE (2-3 phrases)
+2. Le scénario doit inclure des détails spécifiques (type d'installation, conditions, etc.)
+3. Les 4 options doivent être des ACTIONS concrètes que le professionnel pourrait entreprendre
+4. La mauvaise réponse la plus tentante doit être une erreur courante commise par les candidats
+5. L'explication doit référencer la norme ou bonne pratique applicable
+6. Exemples de bons scénarios :
+   - "Vous arrivez sur un chantier où un poste de transformation 16kV/400V doit être contrôlé. Le disjoncteur MT est ouvert mais le sectionneur de terre n'est pas enclenché..."
+   - "Un apprenti s'apprête à intervenir sur un coffret de distribution BT sans avoir vérifié l'absence de tension..."
+
+Réponds UNIQUEMENT en JSON strict :
 {{
-  "scenario": "Description détaillée d'une situation professionnelle réelle (2-3 phrases)",
-  "question": "Question concrète liée au scénario",
-  "options": ["Action A", "Action B", "Action C", "Action D"],
+  "scenario": "Description détaillée d'une situation professionnelle réelle (2-3 phrases avec détails techniques)",
+  "question": "Question concrète sur la meilleure action à entreprendre",
+  "options": ["Action A (correcte)", "Action B (erreur courante)", "Action C (dangereuse)", "Action D (insuffisante)"],
   "correct_answer": 0,
-  "explanation": "Explication détaillée avec référence aux normes/bonnes pratiques"
+  "explanation": "Explication avec référence aux normes/procédures (ESTI, SUVA, NIBT, etc.)"
 }}
 
-IMPORTANT :
-- Le scénario décrit une situation de terrain (chantier, maintenance, incident...)
-- correct_answer = INDEX (0-3) de la bonne réponse
-- Les options sont des ACTIONS concrètes que le professionnel pourrait entreprendre
-- En français."""
+IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En français."""
 
             response = self.model.generate_content(prompt)
             data = self._parse_ai_response(response)
+            if not self._validate_qcm(data):
+                return self._generate_fallback(concept, question_num, "mise_en_situation")
             return self._add_metadata(data, concept, question_num)
         except Exception as e:
             print(f"Erreur mise en situation: {e}")
             return self._generate_fallback(concept, question_num, "mise_en_situation")
 
-    # --- Fallback ---
+    # --- Fallback de qualité professionnelle ---
+
+    # Banque de questions de secours par module — vraies questions techniques
+    FALLBACK_BANK = {
+        "AA05": {
+            "qcm": [
+                {
+                    "question": "Selon les prescriptions SUVA, quelle est la distance minimale de sécurité à respecter pour des travaux à proximité d'une ligne aérienne 16 kV ?",
+                    "options": ["3 mètres", "1 mètre", "5 mètres", "0.5 mètre"],
+                    "correct_answer": 0,
+                    "explanation": "Selon les prescriptions SUVA et ESTI, la distance de sécurité pour les lignes 16 kV est de 3 mètres. Cette distance augmente avec le niveau de tension."
+                },
+                {
+                    "question": "Quel est l'ordre correct des 5 règles de sécurité pour travailler sur une installation électrique ?",
+                    "options": [
+                        "Déclencher - Sécuriser contre le réenclenchement - Vérifier l'absence de tension - Mettre à la terre et en court-circuit - Protéger contre les parties voisines sous tension",
+                        "Vérifier l'absence de tension - Déclencher - Mettre à la terre - Sécuriser - Protéger",
+                        "Sécuriser - Déclencher - Protéger - Vérifier - Mettre à la terre",
+                        "Déclencher - Vérifier - Sécuriser - Protéger - Mettre à la terre"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Les 5 règles de sécurité doivent être appliquées dans cet ordre strict selon l'ESTI : 1) Déclencher, 2) Sécuriser contre le réenclenchement, 3) Vérifier l'absence de tension, 4) Mettre à la terre et en court-circuit, 5) Protéger contre les parties voisines sous tension."
+                },
+            ],
+            "vrai_faux": [
+                {
+                    "question": "Le port du casque de protection est obligatoire sur tout chantier de réseau électrique, même pour les travaux en tranchée.",
+                    "correct_answer": True,
+                    "explanation": "Le casque est un EPI obligatoire sur tout chantier de réseau selon les prescriptions SUVA, y compris en tranchée où il protège contre les chutes d'objets."
+                },
+            ],
+            "mise_en_situation": [
+                {
+                    "scenario": "Vous êtes responsable d'un chantier de pose de câble souterrain. Un de vos collaborateurs signale qu'il a touché un câble non identifié lors de l'excavation. Le câble semble intact mais non documenté sur les plans.",
+                    "question": "Quelle est la première action à entreprendre ?",
+                    "options": [
+                        "Arrêter immédiatement les travaux, sécuriser la zone et contacter l'exploitant du réseau pour identification",
+                        "Continuer les travaux avec précaution en contournant le câble",
+                        "Mesurer la tension sur le câble avec un multimètre pour identifier s'il est sous tension",
+                        "Couper le câble pour déterminer son type et son état"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Tout câble non identifié doit être considéré comme sous tension. Il faut arrêter les travaux, sécuriser la zone et contacter l'exploitant pour identification. Toucher ou mesurer un câble inconnu est dangereux."
+                },
+            ],
+        },
+        "AA09": {
+            "qcm": [
+                {
+                    "question": "Dans un circuit triphasé équilibré 400V/230V avec cos φ = 0.85 et un courant de ligne de 25A, quelle est la puissance active totale ?",
+                    "options": ["14.7 kW", "17.3 kW", "10.0 kW", "20.0 kW"],
+                    "correct_answer": 0,
+                    "explanation": "P = √3 × U × I × cos φ = √3 × 400 × 25 × 0.85 = 14'722 W ≈ 14.7 kW"
+                },
+            ],
+            "calcul": [
+                {
+                    "question": "Un câble de cuivre de 50m de longueur et de 2.5 mm² de section alimente une charge monophasée 230V tirant 16A. Résistivité du cuivre : ρ = 0.0175 Ω·mm²/m. Calculer la chute de tension en volts (aller-retour).",
+                    "correct_answer": 11.2,
+                    "tolerance": 0.05,
+                    "unit": "V",
+                    "explanation": "R = ρ × L / S = 0.0175 × 50 / 2.5 = 0.35 Ω (un conducteur)\nChute de tension AR = 2 × R × I = 2 × 0.35 × 16 = 11.2 V"
+                },
+            ],
+        },
+        "AE02": {
+            "qcm": [
+                {
+                    "question": "Lors d'une consignation d'une installation MT (16 kV), quelle est la séquence correcte ?",
+                    "options": [
+                        "Ouvrir le disjoncteur, ouvrir le sectionneur, vérifier l'absence de tension, enclencher le sectionneur de terre",
+                        "Ouvrir le sectionneur, ouvrir le disjoncteur, mettre à la terre, vérifier l'absence de tension",
+                        "Vérifier l'absence de tension, ouvrir le disjoncteur, ouvrir le sectionneur",
+                        "Ouvrir le disjoncteur, mettre à la terre, ouvrir le sectionneur"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "La séquence correcte respecte les 5 règles de sécurité : 1) Déclencher (ouvrir disjoncteur), 2) Séparer (ouvrir sectionneur), 3) Vérifier absence de tension, 4) Mettre à la terre (sectionneur de terre). L'ordre est critique pour la sécurité."
+                },
+            ],
+            "mise_en_situation": [
+                {
+                    "scenario": "Vous devez effectuer des travaux de maintenance sur un poste de transformation 16kV/400V. Le disjoncteur MT est ouvert et cadenassé. Un collègue vous informe qu'il a vérifié l'absence de tension côté MT, mais le sectionneur de terre n'est pas encore enclenché.",
+                    "question": "Que devez-vous faire avant de commencer les travaux ?",
+                    "options": [
+                        "Enclencher le sectionneur de terre MT et vérifier également l'absence de tension côté BT avant de commencer",
+                        "Les travaux peuvent commencer car le disjoncteur est ouvert et cadenassé",
+                        "Vérifier uniquement l'absence de tension côté BT et commencer les travaux",
+                        "Demander au collègue de confirmer verbalement que tout est sécurisé"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": "Le sectionneur de terre doit être enclenché (règle 4 : mise à terre et court-circuit) et l'absence de tension doit être vérifiée des DEUX côtés (MT et BT) avant tout travail. Une simple confirmation verbale ne remplace jamais une vérification personnelle."
+                },
+            ],
+        },
+    }
 
     def _generate_fallback(self, concept: Dict, question_num: int, q_type: str = "qcm") -> Dict:
-        """Génère une question de secours si l'IA échoue, adaptée au type demandé."""
+        """
+        Génère une question de secours de qualité professionnelle.
+        
+        V2 : Utilise une banque de questions techniques réelles par module,
+        et des templates intelligents basés sur les compétences d'examen.
+        """
         name = concept.get('name', 'inconnu')
-        desc = concept.get('description', 'Description du concept')[:100]
-
+        module = concept.get('module', '')
+        keywords = concept.get('keywords', [])
+        
+        # 1. Essayer la banque de questions par module
+        module_bank = self.FALLBACK_BANK.get(module, {})
+        type_bank = module_bank.get(q_type, [])
+        if type_bank:
+            question = random.choice(type_bank).copy()
+            question['fallback'] = True
+            return self._add_metadata(question, concept, question_num)
+        
+        # 2. Générer basé sur les compétences d'examen du module
+        exam_comps = EXAM_COMPETENCES.get(module, [])
+        
         if q_type == "vrai_faux":
+            if exam_comps:
+                comp = random.choice(exam_comps)
+                return self._add_metadata({
+                    "question": f"Dans le cadre du module {module} ({self._get_module_label(module)}), le professionnel doit être capable de : {comp}",
+                    "correct_answer": True,
+                    "explanation": f"Cette compétence fait partie des exigences des directives d'examen du Brevet Fédéral pour le module {module}. Elle est évaluée lors de l'examen professionnel.",
+                    "fallback": True,
+                }, concept, question_num)
             return self._add_metadata({
-                "question": f"Le concept '{name}' est fondamental pour le Brevet Fédéral.",
+                "question": f"Le concept '{name}' fait partie des matières évaluées à l'examen du Brevet Fédéral Spécialiste de Réseau.",
                 "correct_answer": True,
-                "explanation": f"'{name}' fait partie des compétences requises.",
+                "explanation": f"'{name}' est un concept du module {module} ({self._get_module_label(module)}) qui fait partie du programme d'examen.",
                 "fallback": True,
             }, concept, question_num)
 
         elif q_type == "texte_trous":
+            if keywords and len(keywords) >= 1:
+                keyword = random.choice(keywords)
+                return self._add_metadata({
+                    "question": f"Dans le domaine de '{name}' ({self._get_module_label(module)}), le terme technique _____ est un élément clé à maîtriser pour l'examen.",
+                    "correct_answer": keyword,
+                    "acceptable_answers": [keyword, keyword.lower(), keyword.upper()],
+                    "explanation": f"Le terme '{keyword}' est un mot-clé fondamental du concept '{name}' dans le module {module}.",
+                    "fallback": True,
+                }, concept, question_num)
             return self._add_metadata({
-                "question": f"Le concept _____ se définit comme : {desc}.",
-                "correct_answer": name,
-                "acceptable_answers": [name, name.lower()],
-                "explanation": f"La réponse est '{name}'.",
+                "question": f"Le module qui traite de '{name}' s'appelle _____ dans le programme du Brevet Fédéral.",
+                "correct_answer": self._get_module_label(module),
+                "acceptable_answers": [self._get_module_label(module), module],
+                "explanation": f"'{name}' fait partie du module {module} — {self._get_module_label(module)}.",
                 "fallback": True,
             }, concept, question_num)
 
         elif q_type == "calcul":
-            return self._add_metadata({
-                "question": f"Si R1 = 10 Ω et R2 = 20 Ω sont en série, quelle est la résistance totale ?",
-                "correct_answer": 30.0,
-                "tolerance": 0.01,
-                "unit": "Ω",
-                "explanation": "En série : Rtotal = R1 + R2 = 10 + 20 = 30 Ω",
-                "fallback": True,
-            }, concept, question_num)
+            # Questions de calcul universelles basiques mais pertinentes
+            calcul_fallbacks = [
+                {
+                    "question": "Un circuit monophasé 230V alimente une charge résistive de 46 Ω. Calculer le courant en ampères.",
+                    "correct_answer": 5.0,
+                    "tolerance": 0.01,
+                    "unit": "A",
+                    "explanation": "Loi d'Ohm : I = U/R = 230/46 = 5.0 A"
+                },
+                {
+                    "question": "Calculer la puissance apparente S d'un moteur triphasé alimenté en 400V avec un courant de ligne de 10A.",
+                    "correct_answer": 6928.0,
+                    "tolerance": 0.02,
+                    "unit": "VA",
+                    "explanation": "S = √3 × U × I = 1.732 × 400 × 10 = 6'928 VA ≈ 6.93 kVA"
+                },
+                {
+                    "question": "Deux résistances de 100 Ω et 150 Ω sont montées en parallèle. Calculer la résistance équivalente en ohms.",
+                    "correct_answer": 60.0,
+                    "tolerance": 0.02,
+                    "unit": "Ω",
+                    "explanation": "1/Req = 1/R1 + 1/R2 = 1/100 + 1/150 = 3/300 + 2/300 = 5/300\nReq = 300/5 = 60 Ω"
+                },
+            ]
+            question = random.choice(calcul_fallbacks).copy()
+            question['fallback'] = True
+            return self._add_metadata(question, concept, question_num)
 
         elif q_type == "mise_en_situation":
+            if exam_comps:
+                comp = random.choice(exam_comps)
+                return self._add_metadata({
+                    "scenario": f"Vous êtes chef d'équipe sur un chantier de réseau électrique. Votre supérieur vous demande d'organiser une intervention impliquant le domaine '{name}' ({self._get_module_label(module)}).",
+                    "question": f"Quelle est la démarche prioritaire pour garantir une intervention conforme aux normes ?",
+                    "options": [
+                        f"Consulter les normes en vigueur, planifier l'intervention et briefer l'équipe sur les procédures de {name}",
+                        "Commencer les travaux directement car l'équipe est expérimentée",
+                        "Déléguer entièrement la responsabilité à un collaborateur",
+                        "Reporter l'intervention en attendant des instructions supplémentaires"
+                    ],
+                    "correct_answer": 0,
+                    "explanation": f"Toute intervention doit commencer par la consultation des normes applicables, une planification rigoureuse et un briefing d'équipe. C'est une compétence clé du module {module} : '{comp}'.",
+                    "fallback": True,
+                }, concept, question_num)
+
+        # QCM par défaut — basé sur les compétences d'examen
+        if exam_comps:
+            comp = random.choice(exam_comps)
             return self._add_metadata({
-                "scenario": f"Vous êtes responsable d'un chantier impliquant '{name}'.",
-                "question": f"Quelle est la première action à entreprendre concernant '{name}' ?",
+                "question": f"Dans le cadre du module {module} ({self._get_module_label(module)}), quelle compétence est requise pour le Brevet Fédéral ?",
                 "options": [
-                    f"Vérifier les normes relatives à {name}",
-                    "Commencer les travaux immédiatement",
-                    "Déléguer sans vérification",
-                    "Reporter l'intervention",
+                    comp,
+                    "Savoir utiliser un logiciel de comptabilité",
+                    "Connaître les techniques de vente et marketing",
+                    "Maîtriser la programmation informatique avancée"
                 ],
                 "correct_answer": 0,
-                "explanation": f"La vérification des normes est toujours la première étape pour {name}.",
+                "explanation": f"La compétence '{comp}' fait partie des exigences des directives d'examen du Brevet Fédéral pour le module {module} — {self._get_module_label(module)}.",
                 "fallback": True,
             }, concept, question_num)
-
-        else:  # qcm par défaut
-            return self._add_metadata({
-                "question": f"Que représente le concept '{name}' ?",
-                "options": [desc, "Une autre définition non liée", "Un concept différent", "Aucune de ces réponses"],
-                "correct_answer": 0,
-                "explanation": f"La bonne réponse décrit correctement {name}.",
-                "fallback": True,
-            }, concept, question_num)
+        
+        # Dernier recours — question générique mais propre
+        return self._add_metadata({
+            "question": f"Dans le module {module} ({self._get_module_label(module)}), quel aspect du concept '{name}' est le plus important pour l'examen ?",
+            "options": [
+                f"La maîtrise pratique et théorique de {name} selon les normes suisses",
+                "Uniquement la connaissance théorique sans application pratique",
+                "Ce concept n'est pas évalué à l'examen",
+                "Seule l'expérience personnelle compte, pas les normes"
+            ],
+            "correct_answer": 0,
+            "explanation": f"Pour le Brevet Fédéral, '{name}' (module {module}) requiert à la fois la maîtrise théorique ET pratique, en conformité avec les normes suisses (ESTI, NIBT, SUVA).",
+            "fallback": True,
+        }, concept, question_num)
     
     def save_quiz_result(self, quiz_id: str, score: int, total: int, 
-                        time_spent: int, answers: List[Dict]):
-        """Sauvegarde le résultat d'un quiz dans l'historique"""
+                        time_spent: int, answers: List[Dict],
+                        confidence_data: Dict = None):
+        """Sauvegarde le résultat d'un quiz dans l'historique — V3 avec confiance"""
         history = self._load_history()
         
         result = {
@@ -407,9 +1263,20 @@ IMPORTANT :
             "total": total,
             "percentage": (score / total * 100) if total > 0 else 0,
             "time_spent": time_spent,
+            "time_per_question": (time_spent / total) if total > 0 else 0,
             "answers": answers,
+            "confidence_data": confidence_data or {},
             "completed_at": datetime.now().isoformat()
         }
+        
+        # Mettre à jour la qualité des questions dans la banque
+        for ans in answers:
+            if ans.get('concept_id') and ans.get('question_text'):
+                self.update_question_quality(
+                    ans['concept_id'],
+                    ans.get('question_text', ''),
+                    ans.get('is_correct', False)
+                )
         
         history.append(result)
         self._save_history(history)
@@ -417,8 +1284,11 @@ IMPORTANT :
     def _load_history(self) -> List[Dict]:
         """Charge l'historique des quiz"""
         if self.history_file.exists():
-            with open(self.history_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
+            try:
+                with open(self.history_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError):
+                return []
         return []
     
     def _save_history(self, history: List[Dict]):
@@ -430,10 +1300,10 @@ IMPORTANT :
     def get_history(self, limit: int = 10) -> List[Dict]:
         """Retourne l'historique des derniers quiz"""
         history = self._load_history()
-        return sorted(history, key=lambda x: x['completed_at'], reverse=True)[:limit]
+        return sorted(history, key=lambda x: x.get('completed_at', ''), reverse=True)[:limit]
     
     def get_stats(self) -> Dict:
-        """Calcule les statistiques globales des quiz"""
+        """Calcule les statistiques globales des quiz — V3 PREMIUM"""
         history = self._load_history()
         
         if not history:
@@ -442,13 +1312,85 @@ IMPORTANT :
                 "average_score": 0,
                 "best_score": 0,
                 "total_time": 0,
-                "total_questions": 0
+                "total_questions": 0,
+                "current_streak": 0,
+                "best_streak": 0,
+                "avg_time_per_question": 0,
+                "score_trend": "stable",
+                "last_5_scores": [],
+                "score_by_type": {},
+                "total_hints_used": 0,
             }
+        
+        # Calculs de base
+        avg = sum(q['percentage'] for q in history) / len(history)
+        best = max(q['percentage'] for q in history)
+        
+        # Streak (série de quiz >= 60%)
+        current_streak = 0
+        best_streak = 0
+        streak = 0
+        for h in sorted(history, key=lambda x: x.get('completed_at', '')):
+            if h['percentage'] >= 60:
+                streak += 1
+                best_streak = max(best_streak, streak)
+            else:
+                streak = 0
+        # Current streak (depuis la fin)
+        for h in sorted(history, key=lambda x: x.get('completed_at', ''), reverse=True):
+            if h['percentage'] >= 60:
+                current_streak += 1
+            else:
+                break
+        
+        # Tendance (derniers 5 vs précédents 5)
+        sorted_history = sorted(history, key=lambda x: x.get('completed_at', ''))
+        last_5 = [h['percentage'] for h in sorted_history[-5:]]
+        prev_5 = [h['percentage'] for h in sorted_history[-10:-5]] if len(sorted_history) > 5 else []
+        
+        if prev_5 and last_5:
+            trend_diff = sum(last_5) / len(last_5) - sum(prev_5) / len(prev_5)
+            score_trend = "up" if trend_diff > 5 else ("down" if trend_diff < -5 else "stable")
+        else:
+            score_trend = "stable"
+        
+        # Score par type de question
+        score_by_type = defaultdict(lambda: {"correct": 0, "total": 0})
+        for h in history:
+            for ans in h.get('answers', []):
+                # Tenter de déterminer le type si disponible
+                q_type = ans.get('type', 'qcm')
+                score_by_type[q_type]['total'] += 1
+                if ans.get('is_correct'):
+                    score_by_type[q_type]['correct'] += 1
+        
+        score_by_type_pct = {}
+        for t, data in score_by_type.items():
+            pct = (data['correct'] / data['total'] * 100) if data['total'] > 0 else 0
+            score_by_type_pct[t] = {"percentage": pct, "total": data['total']}
+        
+        # Temps moyen par question
+        total_time = sum(q.get('time_spent', 0) for q in history)
+        total_questions = sum(q['total'] for q in history)
+        avg_time = total_time / total_questions if total_questions > 0 else 0
+        
+        # Hints utilisés
+        total_hints = sum(
+            len(h.get('confidence_data', {}).get('hints_used', []))
+            for h in history
+        )
         
         return {
             "total_quizzes": len(history),
-            "average_score": sum(q['percentage'] for q in history) / len(history),
-            "best_score": max(q['percentage'] for q in history),
-            "total_time": sum(q.get('time_spent', 0) for q in history),
-            "total_questions": sum(q['total'] for q in history)
+            "average_score": avg,
+            "best_score": best,
+            "total_time": total_time,
+            "total_questions": total_questions,
+            "current_streak": current_streak,
+            "best_streak": best_streak,
+            "avg_time_per_question": avg_time,
+            "score_trend": score_trend,
+            "last_5_scores": last_5,
+            "score_by_type": score_by_type_pct,
+            "total_hints_used": total_hints,
         }

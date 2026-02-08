@@ -2329,24 +2329,50 @@ elif page == "🧠 Quiz":
     
     quiz_gen = QuizGenerator(api_key=api_key, model=model)
     
-    # Afficher les statistiques
-    st.markdown("### 📊 Vos Statistiques")
+    # --- STATISTIQUES PREMIUM ---
     quiz_stats = quiz_gen.get_stats()
+    bank_stats = quiz_gen.get_bank_stats()
     
-    col1, col2, col3, col4 = st.columns(4)
+    # Tendance visuelle
+    trend_icon = {"up": "📈", "down": "📉", "stable": "➡️"}.get(quiz_stats.get('score_trend', 'stable'), '➡️')
+    trend_label = {"up": "En progression", "down": "En baisse", "stable": "Stable"}.get(quiz_stats.get('score_trend', 'stable'), 'Stable')
+    
+    st.markdown("### 📊 Tableau de Bord")
+    
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
     with col1:
-        st.metric("Quiz Complétés", quiz_stats['total_quizzes'])
+        st.metric("Quiz", quiz_stats['total_quizzes'])
     with col2:
-        st.metric("Score Moyen", f"{quiz_stats['average_score']:.1f}%")
+        st.metric("Score Moyen", f"{quiz_stats['average_score']:.0f}%")
     with col3:
-        st.metric("Meilleur Score", f"{quiz_stats['best_score']:.1f}%")
+        st.metric("Meilleur", f"{quiz_stats['best_score']:.0f}%")
     with col4:
-        st.metric("Questions Totales", quiz_stats['total_questions'])
+        st.metric("🔥 Série", f"{quiz_stats.get('current_streak', 0)}")
+    with col5:
+        st.metric(f"{trend_icon} Tendance", trend_label)
+    with col6:
+        st.metric("🏦 Banque", f"{bank_stats.get('total', 0)} Q")
+    
+    # Mini sparkline des 5 derniers scores
+    last_scores = quiz_stats.get('last_5_scores', [])
+    if last_scores:
+        import plotly.graph_objects as go
+        fig_spark = go.Figure(go.Scatter(
+            y=last_scores, mode='lines+markers',
+            line=dict(color='#4CAF50', width=2),
+            marker=dict(size=6)
+        ))
+        fig_spark.update_layout(
+            height=80, margin=dict(l=0, r=0, t=0, b=0),
+            xaxis=dict(visible=False), yaxis=dict(visible=False, range=[0, 100]),
+            plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)'
+        )
+        st.plotly_chart(fig_spark, use_container_width=True, key="quiz_sparkline")
     
     st.divider()
     
     # Onglets
-    tab1, tab2, tab3 = st.tabs(["🆕 Nouveau Quiz", "🎓 Examen Blanc", "📜 Historique"])
+    tab1, tab2, tab3 = st.tabs(["🆕 Nouveau Quiz", "🎓 Examen Blanc", "� Analytics & Historique"])
     
     with tab1:
         st.markdown("### Configurer votre Quiz")
@@ -2428,6 +2454,8 @@ elif page == "🧠 Quiz":
                 else:
                     st.session_state['current_quiz'] = quiz
                     st.session_state['quiz_answers'] = {}
+                    st.session_state['quiz_confidence'] = {}
+                    st.session_state['quiz_hints_used'] = set()
                     st.session_state['quiz_start_time'] = time.time()
                     st.session_state['quiz_submitted'] = False
                     st.rerun()
@@ -2438,20 +2466,50 @@ elif page == "🧠 Quiz":
             
             st.markdown("---")
             st.markdown(f"### 📝 Quiz: {quiz['module']}")
-            st.caption(f"Difficulté: {quiz['difficulty']} | {quiz['num_questions']} questions")
+            
+            # Barre de progression en temps réel
+            answered_count = len(st.session_state.get('quiz_answers', {}))
+            progress_pct = answered_count / quiz['num_questions']
+            elapsed = int(time.time() - st.session_state.get('quiz_start_time', time.time()))
+            
+            col_prog1, col_prog2, col_prog3 = st.columns([3, 1, 1])
+            with col_prog1:
+                st.progress(progress_pct, text=f"📊 {answered_count}/{quiz['num_questions']} réponses")
+            with col_prog2:
+                st.caption(f"⏱️ {elapsed // 60}:{elapsed % 60:02d}")
+            with col_prog3:
+                st.caption(f"📈 {quiz['difficulty']}")
             
             # Afficher les questions (multi-type)
             for i, question in enumerate(quiz['questions'], 1):
                 q_type = question.get('type', 'qcm')
                 type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
+                concept_name = question.get('concept_name', '')
                 
                 st.markdown(f"#### {type_icon} Question {i}/{quiz['num_questions']}")
+                if concept_name:
+                    st.caption(f"📚 {concept_name}")
                 
                 # Scénario pour mise en situation
                 if q_type == 'mise_en_situation' and question.get('scenario'):
                     st.info(f"📋 **Situation :** {question['scenario']}")
                 
                 st.markdown(f"**{question['question']}**")
+                
+                # --- BOUTON INDICE 💡 ---
+                hint_text = question.get('hint')
+                if hint_text:
+                    hint_key = f"hint_{i}"
+                    if st.button(f"💡 Indice", key=hint_key, type="secondary"):
+                        st.session_state.setdefault('quiz_hints_used', set())
+                        if isinstance(st.session_state['quiz_hints_used'], set):
+                            st.session_state['quiz_hints_used'].add(i)
+                        else:
+                            st.session_state['quiz_hints_used'] = {i}
+                    
+                    hints_used = st.session_state.get('quiz_hints_used', set())
+                    if isinstance(hints_used, set) and i in hints_used:
+                        st.warning(f"💡 **Indice :** {hint_text}")
                 
                 # Rendu selon le type de question
                 if q_type in ('qcm', 'mise_en_situation'):
@@ -2499,6 +2557,18 @@ elif page == "🧠 Quiz":
                     elif i in st.session_state.get('quiz_answers', {}):
                         del st.session_state['quiz_answers'][i]
                 
+                # --- SÉLECTEUR DE CONFIANCE ---
+                confidence_options = {"🎲 Je devine": "devine", "🤔 Hésitant": "hesitant", "✅ Sûr de moi": "sur"}
+                conf = st.radio(
+                    "Niveau de confiance :",
+                    list(confidence_options.keys()),
+                    key=f"conf_{i}",
+                    horizontal=True,
+                    index=None
+                )
+                if conf:
+                    st.session_state.setdefault('quiz_confidence', {})[i] = confidence_options[conf]
+                
                 st.markdown("---")
             
             # Bouton soumettre
@@ -2514,6 +2584,10 @@ elif page == "🧠 Quiz":
         if st.session_state.get('quiz_submitted', False):
             quiz = st.session_state['current_quiz']
             answers = st.session_state['quiz_answers']
+            confidence = st.session_state.get('quiz_confidence', {})
+            hints_used = st.session_state.get('quiz_hints_used', set())
+            if not isinstance(hints_used, set):
+                hints_used = set()
             
             # Calculer le score
             correct = 0
@@ -2532,7 +2606,10 @@ elif page == "🧠 Quiz":
                     'correct_answer': question.get('correct_answer'),
                     'is_correct': is_correct,
                     'concept_id': question.get('concept_id'),
-                    'concept_name': question.get('concept_name', '')
+                    'concept_name': question.get('concept_name', ''),
+                    'type': question.get('type', 'qcm'),
+                    'confidence': confidence.get(i, 'non_renseigne'),
+                    'hint_used': i in hints_used
                 })
             
             score = correct
@@ -2542,13 +2619,20 @@ elif page == "🧠 Quiz":
             # Temps écoulé
             time_spent = int(time.time() - st.session_state.get('quiz_start_time', time.time()))
             
+            # Préparer les données de confiance pour la sauvegarde
+            confidence_save = {
+                'levels': {str(k): v for k, v in confidence.items()},
+                'hints_used': list(hints_used)
+            }
+            
             # Sauvegarder dans l'historique
             quiz_gen.save_quiz_result(
                 quiz_id=quiz['id'],
                 score=score,
                 total=total,
                 time_spent=time_spent,
-                answers=results
+                answers=results,
+                confidence_data=confidence_save
             )
             
             # --- ALIMENTER LE TRACKER DE CONCEPTS FAIBLES ---
@@ -2564,18 +2648,75 @@ elif page == "🧠 Quiz":
                 for q in results
             ])
             
-            # Afficher le résultat
+            # --- MESSAGE MOTIVATIONNEL ---
             st.markdown("---")
-            st.markdown("## 🎉 Résultats du Quiz")
+            if percentage >= 90:
+                st.success("## 🏆 Exceptionnel !")
+                st.balloons()
+                msg = "Performance remarquable ! Vous maîtrisez ce domaine."
+            elif percentage >= 70:
+                st.success("## 🎉 Très bien !")
+                msg = "Solide performance ! Continuez ainsi."
+            elif percentage >= 50:
+                st.warning("## 💪 Encourageant")
+                msg = "Bon début, mais certains concepts méritent d'être revus."
+            else:
+                st.error("## 📚 À retravailler")
+                msg = "Pas de panique ! Revoyez les concepts et retentez."
             
-            col_r1, col_r2, col_r3 = st.columns(3)
+            st.caption(msg)
+            
+            # Métriques principales
+            col_r1, col_r2, col_r3, col_r4 = st.columns(4)
             with col_r1:
                 st.metric("Score", f"{score}/{total}")
             with col_r2:
                 color = "🟢" if percentage >= 70 else "🟡" if percentage >= 50 else "🔴"
-                st.metric("Pourcentage", f"{color} {percentage:.1f}%")
+                st.metric("Pourcentage", f"{color} {percentage:.0f}%")
             with col_r3:
-                st.metric("Temps", f"{time_spent // 60}:{time_spent % 60:02d}")
+                st.metric("⏱️ Temps", f"{time_spent // 60}:{time_spent % 60:02d}")
+            with col_r4:
+                st.metric("💡 Indices", f"{len(hints_used)}/{total}")
+            
+            # --- ANALYSE DE CONFIANCE ---
+            if confidence:
+                st.markdown("### 🎯 Analyse de Confiance")
+                
+                conf_stats = {"devine": {"correct": 0, "total": 0}, 
+                              "hesitant": {"correct": 0, "total": 0}, 
+                              "sur": {"correct": 0, "total": 0}}
+                for r in results:
+                    cl = r.get('confidence', '')
+                    if cl in conf_stats:
+                        conf_stats[cl]['total'] += 1
+                        if r['is_correct']:
+                            conf_stats[cl]['correct'] += 1
+                
+                col_c1, col_c2, col_c3 = st.columns(3)
+                mappings = [
+                    ("col_c1", "🎲 Deviné", "devine"),
+                    ("col_c2", "🤔 Hésitant", "hesitant"),
+                    ("col_c3", "✅ Sûr", "sur")
+                ]
+                for col_ref, label, key in mappings:
+                    col_widget = col_c1 if col_ref == "col_c1" else (col_c2 if col_ref == "col_c2" else col_c3)
+                    with col_widget:
+                        data = conf_stats[key]
+                        if data['total'] > 0:
+                            pct = data['correct'] / data['total'] * 100
+                            st.metric(label, f"{pct:.0f}%", f"{data['correct']}/{data['total']}")
+                        else:
+                            st.metric(label, "—")
+                
+                # Alerte si confiance élevée mais mauvaise réponse
+                overconfident = [r for r in results if r.get('confidence') == 'sur' and not r['is_correct']]
+                if overconfident:
+                    st.warning(f"⚠️ **Attention :** {len(overconfident)} question(s) où vous étiez sûr mais avez eu tort — concepts à revoir en priorité !")
+                
+                # Alerte si deviné juste (faux savoir)
+                lucky_guesses = [r for r in results if r.get('confidence') == 'devine' and r['is_correct']]
+                if lucky_guesses:
+                    st.info(f"🍀 {len(lucky_guesses)} réponse(s) correcte(s) par chance — à consolider !")
             
             # Analyse détaillée
             st.markdown("### 📋 Analyse Détaillée")
@@ -2585,11 +2726,28 @@ elif page == "🧠 Quiz":
                 is_correct = result['is_correct']
                 q_type = question.get('type', 'qcm')
                 type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
+                concept_name = question.get('concept_name', '')
+                conf_label = {"devine": "🎲", "hesitant": "🤔", "sur": "✅"}.get(result.get('confidence', ''), '')
+                hint_label = "💡" if result.get('hint_used') else ""
                 
                 with st.expander(
-                    f"{'✅' if is_correct else '❌'} {type_icon} Question {i} - {'Correct' if is_correct else 'Incorrect'}",
+                    f"{'✅' if is_correct else '❌'} {type_icon} Q{i} — {concept_name[:50] if concept_name else 'Question'} {conf_label}{hint_label}",
                     expanded=not is_correct
                 ):
+                    # Afficher les métadonnées du concept
+                    meta_parts = []
+                    if question.get('module'):
+                        meta_parts.append(f"**Module :** {question['module']}")
+                    if question.get('source_document'):
+                        meta_parts.append(f"📄 {question['source_document']}")
+                    if question.get('page_references'):
+                        meta_parts.append(f"📖 {question['page_references']}")
+                    if meta_parts:
+                        st.caption(" | ".join(meta_parts))
+                    
+                    if question.get('fallback'):
+                        st.caption("⚠️ Question générée hors-ligne (l'IA n'a pas pu répondre)")
+                    
                     if q_type == 'mise_en_situation' and question.get('scenario'):
                         st.info(f"📋 {question['scenario']}")
                     st.markdown(f"**{question['question']}**")
@@ -2962,14 +3120,149 @@ elif page == "🧠 Quiz":
                         st.markdown("**Modules faibles :** " + ", ".join(h['weak_modules']))
     
     with tab3:
-        st.markdown("### 📜 Historique des Quiz")
+        st.markdown("### � Analytics & Historique Premium")
         
-        history = quiz_gen.get_history(limit=20)
+        history = quiz_gen.get_history(limit=50)
         
         if not history:
-            st.info("Vous n'avez pas encore complété de quiz")
+            st.info("Vous n'avez pas encore complété de quiz. Lancez votre premier quiz pour voir vos analytics ici !")
         else:
-            for quiz_result in history:
+            import plotly.express as px
+            import plotly.graph_objects as go
+            
+            # --- SECTION 1 : ÉVOLUTION DES SCORES ---
+            st.markdown("#### 📈 Évolution des Scores")
+            scores_data = []
+            for h in sorted(history, key=lambda x: x.get('completed_at', '')):
+                scores_data.append({
+                    "Date": h.get('completed_at', '')[:10],
+                    "Score (%)": h['percentage'],
+                    "Questions": h['total'],
+                    "Temps (s)": h.get('time_spent', 0)
+                })
+            
+            df_scores = pd.DataFrame(scores_data)
+            
+            if len(df_scores) > 1:
+                fig_evo = go.Figure()
+                fig_evo.add_trace(go.Scatter(
+                    x=list(range(1, len(df_scores) + 1)),
+                    y=df_scores['Score (%)'],
+                    mode='lines+markers',
+                    name='Score',
+                    line=dict(color='#2196F3', width=3),
+                    marker=dict(size=8),
+                    fill='tozeroy',
+                    fillcolor='rgba(33, 150, 243, 0.1)'
+                ))
+                # Ligne de moyenne mobile (3 quiz)
+                if len(df_scores) >= 3:
+                    rolling_avg = df_scores['Score (%)'].rolling(window=3, min_periods=1).mean()
+                    fig_evo.add_trace(go.Scatter(
+                        x=list(range(1, len(df_scores) + 1)),
+                        y=rolling_avg,
+                        mode='lines',
+                        name='Moyenne mobile (3)',
+                        line=dict(color='#FF9800', width=2, dash='dash')
+                    ))
+                fig_evo.add_hline(y=60, line_dash="dot", line_color="red", annotation_text="Seuil réussite (60%)")
+                fig_evo.update_layout(
+                    height=350,
+                    xaxis_title="Quiz #",
+                    yaxis_title="Score (%)",
+                    yaxis=dict(range=[0, 105]),
+                    showlegend=True,
+                    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+                )
+                st.plotly_chart(fig_evo, use_container_width=True, key="analytics_evo")
+            
+            # --- SECTION 2 : PERFORMANCE PAR TYPE DE QUESTION ---
+            st.markdown("#### 🎲 Performance par Type de Question")
+            score_by_type = quiz_stats.get('score_by_type', {})
+            
+            if score_by_type:
+                type_data = []
+                for t, data in score_by_type.items():
+                    label = QUESTION_TYPES.get(t, {}).get('label', t)
+                    icon = QUESTION_TYPES.get(t, {}).get('icon', '📋')
+                    type_data.append({
+                        "Type": f"{icon} {label}",
+                        "Score (%)": data['percentage'],
+                        "Questions": data['total']
+                    })
+                
+                df_types = pd.DataFrame(type_data)
+                
+                fig_types = px.bar(
+                    df_types, x="Type", y="Score (%)",
+                    color="Score (%)",
+                    color_continuous_scale=["#e53935", "#fb8c00", "#43a047"],
+                    range_color=[0, 100],
+                    hover_data=["Questions"],
+                    text="Score (%)"
+                )
+                fig_types.update_traces(texttemplate='%{text:.0f}%', textposition='outside')
+                fig_types.update_layout(height=300, showlegend=False)
+                st.plotly_chart(fig_types, use_container_width=True, key="analytics_types")
+            else:
+                st.caption("Pas assez de données par type de question.")
+            
+            # --- SECTION 3 : TEMPS D'ÉTUDE ---
+            st.markdown("#### ⏱️ Temps d'Étude")
+            total_time_min = sum(h.get('time_spent', 0) for h in history) / 60
+            avg_time_per_q = quiz_stats.get('avg_time_per_question', 0)
+            
+            col_t1, col_t2, col_t3 = st.columns(3)
+            with col_t1:
+                hours = int(total_time_min // 60)
+                mins = int(total_time_min % 60)
+                st.metric("⏱️ Temps total", f"{hours}h {mins}min")
+            with col_t2:
+                st.metric("⏳ Moy. / question", f"{avg_time_per_q:.0f}s")
+            with col_t3:
+                st.metric("📝 Total questions", quiz_stats['total_questions'])
+            
+            # --- SECTION 4 : BADGES ET ACCOMPLISSEMENTS ---
+            st.markdown("#### 🏅 Accomplissements")
+            
+            badges = []
+            if quiz_stats['total_quizzes'] >= 1:
+                badges.append(("🌟", "Premier Quiz", "Vous avez complété votre premier quiz !"))
+            if quiz_stats['total_quizzes'] >= 10:
+                badges.append(("🔥", "Assidu", "10 quiz complétés — belle constance !"))
+            if quiz_stats['total_quizzes'] >= 25:
+                badges.append(("💎", "Diamant", "25 quiz ! Vous êtes inarrêtable."))
+            if quiz_stats['best_score'] >= 90:
+                badges.append(("🏆", "Excellence", "Score de 90%+ atteint — bravo !"))
+            if quiz_stats['best_score'] == 100:
+                badges.append(("👑", "Perfection", "100% ! Score parfait obtenu."))
+            if quiz_stats.get('current_streak', 0) >= 3:
+                badges.append(("🔥", "En série", f"Série de {quiz_stats['current_streak']} quiz réussis !"))
+            if quiz_stats.get('best_streak', 0) >= 5:
+                badges.append(("⚡", "Imbattable", f"Meilleure série : {quiz_stats['best_streak']} quiz !"))
+            if quiz_stats['total_questions'] >= 100:
+                badges.append(("📚", "Centurion", "100+ questions répondues au total."))
+            if total_time_min >= 60:
+                badges.append(("⏰", "Marathonien", "1h+ de révision par quiz !"))
+            if quiz_stats.get('total_hints_used', 0) == 0 and quiz_stats['total_quizzes'] > 0:
+                badges.append(("🧠", "Sans filet", "Aucun indice utilisé !"))
+            
+            if badges:
+                badge_cols = st.columns(min(len(badges), 5))
+                for idx, (icon, title, desc) in enumerate(badges):
+                    with badge_cols[idx % len(badge_cols)]:
+                        st.markdown(f"### {icon}")
+                        st.caption(f"**{title}**")
+                        st.caption(desc)
+            else:
+                st.caption("Complétez des quiz pour débloquer vos premiers badges !")
+            
+            st.divider()
+            
+            # --- SECTION 5 : HISTORIQUE DÉTAILLÉ ---
+            st.markdown("#### 📜 Historique Détaillé")
+            
+            for quiz_result in history[:20]:
                 percentage = quiz_result['percentage']
                 color = "🟢" if percentage >= 70 else "🟡" if percentage >= 50 else "🔴"
                 

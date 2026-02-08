@@ -125,48 +125,91 @@ class ExamGenerator:
     def _generate_exam_question(self, module_code: str, module_label: str,
                                  concepts: List[Dict], question_num: int,
                                  directives_coverage: Dict = None) -> Optional[Dict]:
-        """Génère une question d'examen pour un module donné"""
+        """Génère une question d'examen pour un module donné — V2 enrichie"""
         
-        # Si on a des concepts pour ce module, en choisir un
+        # Si on a des concepts pour ce module, en choisir un (pondéré par importance)
         if concepts:
-            concept = random.choice(concepts)
+            # Sélection pondérée par importance
+            importance_weights = {"critical": 4, "high": 3, "medium": 2, "low": 1}
+            weights = [importance_weights.get(c.get('importance', 'medium'), 2) for c in concepts]
+            concept = random.choices(concepts, weights=weights, k=1)[0]
+            
             concept_name = concept.get('name', 'N/A')
-            concept_desc = concept.get('description', '')
             concept_keywords = ', '.join(concept.get('keywords', []))
+            concept_page_ref = concept.get('page_references', '')
+            concept_source = concept.get('source_document', '')
+            concept_category = concept.get('category', '')
+            concept_prerequisites = ', '.join(concept.get('prerequisites', []))
         else:
-            # Module sans concepts — utiliser les compétences des directives
+            concept = None
             concept_name = module_label
-            concept_desc = f"Compétences du module {module_code} - {module_label}"
             concept_keywords = module_label
-            # Enrichir avec les lacunes des directives
-            if directives_coverage and module_code in directives_coverage:
-                gaps = directives_coverage[module_code].get('gaps', [])
-                competences = directives_coverage[module_code].get('competences', [])
-                if gaps:
-                    concept_desc = f"Compétence requise : {random.choice(gaps)}"
-                elif competences:
-                    concept_desc = f"Compétence requise : {random.choice(competences)}"
+            concept_page_ref = ''
+            concept_source = ''
+            concept_category = ''
+            concept_prerequisites = ''
+
+        # Enrichir avec les compétences des directives d'examen
+        from src.directives_coverage import EXAM_REQUIREMENTS
+        exam_req = EXAM_REQUIREMENTS.get(module_code, {})
+        exam_competences = exam_req.get('competences', [])
+        poids_examen = exam_req.get('poids_examen', '')
+        
+        # Enrichir avec les lacunes détectées
+        concept_desc = f"Compétences du module {module_code} - {module_label}"
+        if directives_coverage and module_code in directives_coverage:
+            gaps = directives_coverage[module_code].get('gaps', [])
+            competences = directives_coverage[module_code].get('competences', [])
+            if gaps:
+                concept_desc = f"Compétence requise (lacune détectée) : {random.choice(gaps)}"
+            elif competences:
+                concept_desc = f"Compétence requise : {random.choice(competences)}"
 
         try:
-            prompt = f"""Tu es un examinateur pour le Brevet Fédéral Spécialiste de Réseau orientation Énergie en Suisse.
+            # Construction du contexte enrichi
+            context_parts = [
+                f"**Module :** {module_code} — {module_label}",
+                f"**Thème/Concept :** {concept_name}",
+            ]
+            if concept_keywords:
+                context_parts.append(f"**Mots-clés techniques :** {concept_keywords}")
+            if concept_category:
+                context_parts.append(f"**Catégorie :** {concept_category}")
+            if concept_page_ref:
+                context_parts.append(f"**Référence cours :** {concept_page_ref}")
+            if concept_source:
+                context_parts.append(f"**Document source :** {concept_source}")
+            if concept_prerequisites:
+                context_parts.append(f"**Prérequis :** {concept_prerequisites}")
+            if exam_competences:
+                relevant_comps = random.sample(exam_competences, min(3, len(exam_competences)))
+                context_parts.append(f"**Compétences d'examen à évaluer :**")
+                for comp in relevant_comps:
+                    context_parts.append(f"  - {comp}")
+            if poids_examen:
+                context_parts.append(f"**Format d'évaluation :** {poids_examen}")
+            context_parts.append(f"**Contexte additionnel :** {concept_desc}")
+            
+            context_block = '\n'.join(context_parts)
 
-Génère UNE question d'examen de niveau professionnel pour ce module :
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau orientation Énergie en Suisse.
 
-**Module :** {module_code} — {module_label}
-**Thème/Concept :** {concept_name}
-**Contexte :** {concept_desc}
-**Mots-clés :** {concept_keywords}
+Génère UNE question d'examen de niveau professionnel fédéral.
+
+{context_block}
 
 CONSIGNES STRICTES :
 1. La question doit correspondre au niveau d'un examen professionnel fédéral (pas trop facile)
-2. La question doit être concrète et pratique (mise en situation professionnelle si possible)
-3. Les 4 options doivent être plausibles et de longueur similaire
-4. L'explication doit être détaillée et pédagogique
-5. Tout doit être en français
+2. La question doit être CONCRÈTE et TECHNIQUE — utilise les mots-clés techniques fournis
+3. Privilégie les mises en situation professionnelles réalistes (chantier, maintenance, diagnostic)
+4. Les 4 options doivent être PLAUSIBLES et de longueur similaire
+5. L'explication doit être détaillée et PÉDAGOGIQUE avec référence aux normes (ESTI, NIBT, SUVA, EN)
+6. Ne génère JAMAIS de question vague du type "Que représente le concept X ?"
+7. La question doit tester une COMPÉTENCE RÉELLE du professionnel
 
-Réponds en JSON strict :
+Réponds UNIQUEMENT en JSON strict :
 {{
-  "question": "Question claire en contexte professionnel",
+  "question": "Question technique précise en contexte professionnel",
   "options": [
     "Option A",
     "Option B",
@@ -179,7 +222,7 @@ Réponds en JSON strict :
   "topic": "{module_label}"
 }}
 
-correct_answer = INDEX (0-3) de la bonne réponse."""
+correct_answer = INDEX (0-3) de la bonne réponse. Tout en français."""
 
             response = self.model.generate_content(prompt)
             text = response.text.strip()
@@ -205,17 +248,45 @@ correct_answer = INDEX (0-3) de la bonne réponse."""
 
     def _generate_fallback_exam_question(self, module_code: str, module_label: str,
                                           concept_name: str, question_num: int) -> Dict:
-        """Question de secours si l'IA échoue"""
+        """Question de secours de qualité professionnelle si l'IA échoue"""
+        
+        # Utiliser les compétences d'examen pour générer des questions pertinentes
+        from src.directives_coverage import EXAM_REQUIREMENTS
+        exam_req = EXAM_REQUIREMENTS.get(module_code, {})
+        competences = exam_req.get('competences', [])
+        
+        if competences:
+            comp = random.choice(competences)
+            # Générer une question basée sur la compétence d'examen
+            return {
+                "question": f"Dans le cadre du module {module_code} ({module_label}), quelle action est correcte concernant la compétence : '{comp}' ?",
+                "options": [
+                    f"Appliquer les procédures normalisées et les normes suisses en vigueur (ESTI, NIBT, SUVA)",
+                    "Procéder selon son expérience personnelle sans consulter les prescriptions",
+                    "Déléguer systématiquement cette tâche sans supervision",
+                    "Cette compétence n'est pas requise pour le Brevet Fédéral"
+                ],
+                "correct_answer": 0,
+                "explanation": f"Pour le module {module_code} ({module_label}), la compétence '{comp}' doit toujours être exercée conformément aux normes et prescriptions suisses. C'est une exigence des directives d'examen du Brevet Fédéral.",
+                "module": module_code,
+                "module_label": module_label,
+                "concept_name": concept_name,
+                "question_num": question_num,
+                "difficulty": "examen",
+                "type": "qcm",
+                "fallback": True,
+            }
+        
         return {
-            "question": f"Dans le cadre du module {module_code} ({module_label}), quel est l'élément le plus important concernant '{concept_name}' ?",
+            "question": f"Pour le module {module_code} ({module_label}), quelle approche est recommandée pour maîtriser '{concept_name}' en vue de l'examen ?",
             "options": [
-                f"La maîtrise complète de {concept_name} selon les normes en vigueur",
-                "L'application sans vérification préalable",
-                "La délégation systématique à un tiers",
-                "Aucune vérification n'est nécessaire"
+                "Étudier la théorie ET pratiquer sur le terrain en respectant les normes suisses",
+                "Se concentrer uniquement sur la théorie sans pratique",
+                "Se fier uniquement à l'expérience de terrain sans formation théorique",
+                "Ce sujet n'est jamais évalué à l'examen du Brevet Fédéral"
             ],
             "correct_answer": 0,
-            "explanation": f"Pour le brevet fédéral, la maîtrise de {concept_name} conformément aux normes est fondamentale dans le module {module_label}.",
+            "explanation": f"Le Brevet Fédéral évalue à la fois les connaissances théoriques et les compétences pratiques. Le module {module_code} ({module_label}) requiert une maîtrise complète de '{concept_name}'.",
             "module": module_code,
             "module_label": module_label,
             "concept_name": concept_name,
