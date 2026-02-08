@@ -31,7 +31,7 @@ Dans Streamlit Cloud :
 1. Allez dans "Settings" → "Secrets"
 2. Ajoutez :
 ```toml
-[general]
+[api]
 GOOGLE_API_KEY = "VOTRE_CLE_API_GOOGLE_GEMINI"
 ```
 
