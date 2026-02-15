@@ -88,6 +88,9 @@ import yaml
 @st.cache_data(ttl=60)  # Cache expire après 60 secondes pour recharger la clé API
 def load_config():
     config_path = Path("config/config.yaml")
+    # Fallback pour Streamlit Cloud
+    if not config_path.exists():
+        config_path = Path("cloud_data/config.yaml")
     if config_path.exists():
         with open(config_path, 'r', encoding='utf-8') as f:
             config = yaml.safe_load(f)
@@ -185,7 +188,7 @@ with st.sidebar:
     st.image("https://img.icons8.com/color/96/000000/graduation-cap.png", width=80)
     st.title("Navigation")
     
-    PAGES = ["🏠 Accueil", "📚 Mes Documents", "📅 Planning Cours", "🔬 Analyser", "🗺️ Concepts", "🎯 Couverture Examen", "📆 Planning Révisions", "📊 Ma Progression", "🧠 Quiz", "📇 Flashcards", "📖 Ressources", "⚙️ Paramètres"]
+    PAGES = ["🏠 Accueil", "📚 Mes Documents", "📅 Planning Cours", "🔬 Analyser", "🗺️ Concepts", "🎯 Couverture Examen", "� Focus Examen", "🎓 Coach Expert", "📆 Planning Révisions", "📊 Ma Progression", "🧠 Quiz", "🧪 Feynman", "📇 Flashcards", "📖 Ressources", "⚙️ Paramètres"]
     
     # Synchroniser avec les boutons de navigation
     default_index = 0
@@ -259,6 +262,50 @@ if page == "🏠 Accueil":
         if st.button("📅 Voir le planning", key="btn4"):
             st.session_state['page'] = "📅 Planning"
             st.rerun()
+    
+    # Bouton Focus Examen mis en avant
+    st.divider()
+    col_focus1, col_focus2, col_focus3 = st.columns([1, 2, 1])
+    with col_focus2:
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #e53935 0%, #ff6f00 100%); 
+                    padding: 1.5rem; border-radius: 15px; text-align: center; color: white;">
+            <h3>🔥 Focus Examen — Stratégie de Réussite</h3>
+            <p>Analyse Pareto · Pratique terrain · Technique Feynman</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("🔥 Accéder au Focus Examen", type="primary", key="btn_focus", use_container_width=True):
+            st.session_state['page'] = "🔥 Focus Examen"
+            st.rerun()
+    
+    # Coach Expert shortcut
+    col_coach1, col_coach2, col_coach3 = st.columns([1, 2, 1])
+    with col_coach2:
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #1565c0 0%, #7b1fa2 100%); 
+                    padding: 1.5rem; border-radius: 15px; text-align: center; color: white;">
+            <h3>🎓 Coach Expert IA — Ton prof dans chaque domaine</h3>
+            <p>Il te dit exactement : «ça DRILL» · «ça MAÎTRISE» · «ça IGNORE»</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("🎓 Consulter le Coach Expert", type="secondary", key="btn_coach_accueil", use_container_width=True):
+            st.session_state['page'] = "🎓 Coach Expert"
+            st.rerun()
+
+    # Mini résumé DRILL du jour
+    try:
+        from src.expert_coach import get_all_drill_items, get_global_mastery_stats
+        drills = get_all_drill_items()
+        mastery_stats = get_global_mastery_stats()
+        
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #e53935 0%, #c62828 100%); 
+                    padding: 1rem; border-radius: 10px; text-align: center; color: white; margin-top: 0.5rem;">
+            <p style="margin:0; font-size: 1.1em;">🔴 <strong>{} compétences DRILL</strong> — à pratiquer TOUS LES JOURS</p>
+        </div>
+        """.format(mastery_stats.get('drill_total', 0)), unsafe_allow_html=True)
+    except Exception:
+        pass
     
     st.divider()
     
@@ -1706,6 +1753,841 @@ elif page == "🎯 Couverture Examen":
     st.dataframe(df_coverage, use_container_width=True, hide_index=True)
 
 
+# ======================================================================
+# 🔥 PAGE FOCUS EXAMEN — Priorisation Pareto + Pratique Terrain + Feynman
+# ======================================================================
+elif page == "🔥 Focus Examen":
+    st.header("🔥 Focus Examen — Stratégie de Réussite")
+    st.markdown("""
+**Cibler ce qui rapporte le plus de points.** Cette page analyse chaque compétence et te dit :
+- 📖 Ce que tu peux réviser par **quiz et flashcards** (théorie + calcul)
+- 🔧 Ce que tu **dois pratiquer sur le terrain** (non quizzable)
+- 🎤 Ce que tu dois préparer pour l'**oral et les projets**
+- 🎯 La **priorité Pareto** : quels modules te feront gagner le plus de points
+""")
+
+    from src.exam_focus import ExamFocusAnalyzer, EXAM_WEIGHT, TYPE_LABELS, COMPETENCE_TYPES
+    from src.practice_tracker import PracticeTracker
+    from src.weak_concepts_tracker import WeakConceptsTracker
+
+    config = load_config()
+    weak_tracker = WeakConceptsTracker()
+    practice_tracker = PracticeTracker()
+    analyzer = ExamFocusAnalyzer(weak_tracker=weak_tracker, concept_map=load_concept_map(), config=config)
+
+    # ---- ONGLETS ----
+    tab_priority, tab_types, tab_practice, tab_stats = st.tabs([
+        "🎯 Priorité Pareto", "📊 Types d'apprentissage", "🔧 Pratique Terrain", "📈 Statistiques"
+    ])
+
+    # ============================================================
+    # TAB 1 : PRIORITÉ PARETO
+    # ============================================================
+    with tab_priority:
+        st.subheader("🎯 Classement Pareto — Où investir ton temps")
+        st.markdown("""
+> **Principe Pareto 80/20** : Les modules en haut de la liste te feront gagner le plus de points 
+> à l'examen car ils ont un **poids élevé** ET une **maîtrise faible**. Concentre-toi dessus en priorité.
+""")
+
+        ranking = analyzer.get_priority_ranking()
+
+        # Top 5 en surbrillance
+        st.markdown("### 🏆 Top 5 — Tes priorités absolues")
+        for i, mod in enumerate(ranking[:5], 1):
+            prio_color = "🔴" if mod['priority_score'] > 50 else ("🟡" if mod['priority_score'] > 25 else "🟢")
+            quizzable_icon = "✅" if mod['quizzable_pct'] > 50 else "⚠️"
+
+            with st.expander(f"{prio_color} **#{i} — {mod['module']} {mod['name']}** | "
+                           f"Poids: {mod['exam_questions']}Q | Maîtrise: {mod['mastery_pct']:.0f}% | "
+                           f"Score priorité: {mod['priority_score']:.0f}"):
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("📝 Questions examen", f"{mod['exam_questions']}/42")
+                    st.caption(mod['poids_examen'])
+                with col2:
+                    st.metric("📊 Maîtrise", f"{mod['mastery_pct']:.0f}%")
+                    st.progress(mod['mastery_pct'] / 100)
+                with col3:
+                    st.metric(f"{quizzable_icon} Quizzable", f"{mod['quizzable_pct']:.0f}%")
+                    if mod['practice_needed']:
+                        st.warning("🔧 Pratique terrain requise")
+
+                # Breakdown par type
+                if mod.get('breakdown', {}).get('breakdown'):
+                    st.markdown("**Répartition par type d'apprentissage :**")
+                    for ctype, info in mod['breakdown']['breakdown'].items():
+                        if info['count'] > 0:
+                            tl = TYPE_LABELS[ctype]
+                            st.markdown(f"- {tl['icon']} **{tl['label']}** : {info['count']} compétences ({info['pct']:.0f}%)")
+
+                if mod['weak_concepts']:
+                    st.error(f"⚠️ Concepts faibles : {', '.join(mod['weak_concepts'][:5])}")
+
+        # Tableau complet
+        st.markdown("### 📋 Classement complet")
+        table_data = []
+        for mod in ranking:
+            prio_emoji = "🔴" if mod['priority_score'] > 50 else ("🟡" if mod['priority_score'] > 25 else "🟢")
+            table_data.append({
+                "Priorité": f"{prio_emoji} {mod['priority_score']:.0f}",
+                "Module": f"{mod['module']} {mod['name']}",
+                "Questions": f"{mod['exam_questions']}",
+                "Maîtrise": f"{mod['mastery_pct']:.0f}%",
+                "Quizzable": f"{mod['quizzable_pct']:.0f}%",
+                "Épreuve": mod['poids_examen'],
+            })
+        st.dataframe(pd.DataFrame(table_data), use_container_width=True, hide_index=True)
+
+    # ============================================================
+    # TAB 2 : TYPES D'APPRENTISSAGE
+    # ============================================================
+    with tab_types:
+        st.subheader("📊 Classification par Type d'Apprentissage")
+        st.markdown("""
+Chaque compétence de l'examen est classée selon **comment** tu dois l'apprendre.
+Certaines compétences sont quizzables (📖 théorie, 🧮 calcul), d'autres non (🔧 pratique, 🎤 oral, 📐 projet).
+""")
+
+        global_stats = analyzer.get_global_stats()
+
+        # Résumé global
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Total compétences", global_stats['total_competences'])
+        with col2:
+            st.metric("✅ Quizzables", f"{global_stats['quizzable']} ({global_stats['quizzable_pct']:.0f}%)")
+        with col3:
+            st.metric("🔧 Non quizzables", f"{global_stats['non_quizzable']} ({global_stats['non_quizzable_pct']:.0f}%)")
+
+        # Bars par type
+        st.markdown("### Répartition globale")
+        import plotly.graph_objects as go
+
+        types_data = global_stats['by_type']
+        fig = go.Figure(go.Bar(
+            x=[TYPE_LABELS[t]['label'] for t in types_data],
+            y=[types_data[t]['count'] for t in types_data],
+            marker_color=[TYPE_LABELS[t]['color'] for t in types_data],
+            text=[f"{types_data[t]['count']} ({types_data[t]['pct']:.0f}%)" for t in types_data],
+            textposition='auto',
+        ))
+        fig.update_layout(
+            title="Compétences d'examen par type d'apprentissage",
+            xaxis_title="Type", yaxis_title="Nombre",
+            height=350, margin=dict(l=20, r=20, t=40, b=20),
+        )
+        st.plotly_chart(fig, use_container_width=True, key="exam_types_chart")
+
+        # Plan d'étude par type
+        study_plan = analyzer.get_study_plan_by_type()
+
+        for ctype, items in study_plan.items():
+            if not items:
+                continue
+            tl = TYPE_LABELS[ctype]
+            with st.expander(f"{tl['icon']} **{tl['label']}** — {len(items)} compétences | {'✅ Quizzable' if tl['quizzable'] else '🔧 Hors quiz'}"):
+                st.markdown(f"*{tl['description']}*")
+                for item in items:
+                    weight_emoji = "🔴" if item['exam_weight'] >= 3 else ("🟡" if item['exam_weight'] >= 2 else "⚪")
+                    st.markdown(f"- {weight_emoji} **[{item['module']}]** {item['competence']}")
+
+    # ============================================================
+    # TAB 3 : PRATIQUE TERRAIN
+    # ============================================================
+    with tab_practice:
+        st.subheader("🔧 Checklist Pratique Terrain")
+        st.markdown("""
+> Ces compétences **ne sont PAS testables par quiz**. Tu dois les pratiquer **physiquement** 
+> sur le terrain, en atelier ou par simulation. Coche ce que tu as fait !
+""")
+
+        checklist = analyzer.get_practice_checklist()
+        practice_stats = practice_tracker.get_global_practice_stats(checklist)
+
+        # Stats
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Exercices", f"{practice_stats['completed']}/{practice_stats['total_exercises']}")
+        with col2:
+            st.metric("Complétion", f"{practice_stats['completion_pct']:.0f}%")
+            st.progress(practice_stats['completion_pct'] / 100)
+        with col3:
+            st.metric("Heures terrain", f"{practice_stats['total_practice_hours']:.1f}h")
+        with col4:
+            st.metric("🔥 Série", f"{practice_stats['streak_days']}j")
+
+        # Exercices en retard
+        overdue = practice_tracker.get_overdue_exercises(checklist)
+        if overdue:
+            st.warning(f"⏰ **{len(overdue)} exercices en retard** (jamais faits ou > 14 jours)")
+            with st.expander("Voir les exercices en retard"):
+                for ex in overdue[:10]:
+                    tl = TYPE_LABELS.get(ex['type'], {})
+                    st.markdown(f"- {tl.get('icon', '🔧')} **[{ex['module']}]** {ex['competence']} — _{ex['reason']}_")
+
+        st.divider()
+
+        # Checklist par module
+        completion_by_mod = practice_tracker.get_completion_by_module(checklist)
+
+        for mod_code in sorted(completion_by_mod.keys()):
+            mod_data = completion_by_mod[mod_code]
+            pct = mod_data['pct']
+            pct_emoji = "🟢" if pct >= 70 else ("🟡" if pct >= 30 else "🔴")
+
+            with st.expander(f"{pct_emoji} **{mod_code}** — {mod_data['completed']}/{mod_data['total']} exercices ({pct:.0f}%)"):
+                for ex in mod_data['exercises']:
+                    tl = TYPE_LABELS.get(ex['type'], {})
+                    col1, col2 = st.columns([3, 1])
+
+                    with col1:
+                        done = st.checkbox(
+                            f"{tl.get('icon', '🔧')} {ex['competence']}",
+                            value=ex['done'],
+                            key=f"practice_{ex['id']}"
+                        )
+
+                        # Si changement de statut
+                        if done and not ex['done']:
+                            practice_tracker.mark_exercise(ex['id'], completed=True, duration_min=15)
+                            st.rerun()
+
+                        if ex.get('suggestion'):
+                            st.caption(f"💡 {ex['suggestion']}")
+
+                    with col2:
+                        if ex['done']:
+                            st.success(f"✅ Fait ({ex['attempts']}x)")
+                            if ex['confidence'] > 0:
+                                conf_stars = "⭐" * ex['confidence']
+                                st.caption(f"Confiance: {conf_stars}")
+
+        # Journal de pratique
+        st.divider()
+        st.subheader("📝 Ajouter une session de pratique")
+
+        with st.form("practice_log_form"):
+            pr_module = st.selectbox("Module", sorted(EXAM_WEIGHT.keys()),
+                                     format_func=lambda m: f"{m} — {COMPETENCE_TYPES.get(m, {}).keys().__class__.__name__}",
+                                     key="practice_module")
+            pr_desc = st.text_area("Qu'as-tu pratiqué ?", placeholder="Ex: Exercice de consignation complète avec formulaire...")
+            pr_duration = st.slider("Durée (minutes)", 5, 240, 30)
+
+            if st.form_submit_button("📝 Enregistrer la session", type="primary"):
+                if pr_desc:
+                    practice_tracker.log_practice_session(pr_module, pr_desc, pr_duration)
+                    st.success(f"✅ Session de {pr_duration} min enregistrée !")
+                    st.rerun()
+
+    # ============================================================
+    # TAB 4 : STATISTIQUES
+    # ============================================================
+    with tab_stats:
+        st.subheader("📈 Vue d'ensemble de ta préparation")
+
+        global_stats = analyzer.get_global_stats()
+
+        # Graphique donut quizzable vs non-quizzable
+        import plotly.graph_objects as go
+        fig = go.Figure(go.Pie(
+            values=[global_stats['quizzable'], global_stats['non_quizzable']],
+            labels=["✅ Quizzable (quiz + flashcards)", "🔧 Hors quiz (terrain + oral + projet)"],
+            marker_colors=["#2196F3", "#FF9800"],
+            hole=0.4,
+            textinfo='label+percent+value',
+        ))
+        fig.update_layout(title="Répartition Quizzable vs Non-Quizzable", height=350)
+        st.plotly_chart(fig, use_container_width=True, key="quizzable_donut")
+
+        # Répartition des questions d'examen
+        st.markdown("### 📝 Répartition des questions d'examen (42 questions)")
+
+        exam_data = sorted(EXAM_WEIGHT.items(), key=lambda x: x[1], reverse=True)
+        fig2 = go.Figure(go.Bar(
+            x=[f"{m}" for m, w in exam_data],
+            y=[w for m, w in exam_data],
+            marker_color=["#e53935" if w >= 3 else ("#fb8c00" if w >= 2 else "#43a047") for m, w in exam_data],
+            text=[f"{w}Q" for m, w in exam_data],
+            textposition='auto',
+        ))
+        fig2.update_layout(
+            title="Questions par module à l'examen",
+            xaxis_title="Module", yaxis_title="Nombre de questions",
+            height=350, margin=dict(l=20, r=20, t=40, b=20),
+        )
+        st.plotly_chart(fig2, use_container_width=True, key="exam_qs_chart")
+
+        # Top priorités
+        st.markdown("### 🎯 Top concepts à impact maximal")
+        top_concepts = analyzer.get_top_priority_concepts(15)
+        if top_concepts:
+            for i, tc in enumerate(top_concepts[:10], 1):
+                impact = tc.get('exam_impact', 0)
+                mastery = tc.get('mastery_score', 50)
+                st.markdown(f"**{i}.** [{tc.get('module', '?')}] {tc.get('concept_name', 'N/A')} — "
+                          f"Impact: {impact:.1f} | Maîtrise: {mastery}%")
+        else:
+            st.info("📊 Fais quelques quiz pour voir apparaître tes concepts prioritaires ici.")
+
+        # Conseil stratégique
+        st.divider()
+        st.markdown("""
+### 💡 Stratégie d'étude optimale
+
+| Méthode | Pour quoi | Quand |
+|---------|-----------|-------|
+| 🧠 **Quiz adaptatif** | Théorie + Calcul | Tous les jours, 15-30 min |
+| 📇 **Flashcards SM-2** | Mémorisation normes/valeurs | 2x par jour, 10 min |
+| 🧪 **Technique Feynman** | Compréhension profonde | 1 concept/jour, 20 min |
+| 🔧 **Pratique terrain** | Compétences manuelles | Weekend + chantier |
+| 📝 **Examen blanc** | Condition d'examen | 1x par mois |
+| 🎤 **Simulation orale** | Présentation projet | 1x par semaine |
+
+**Principe clé :** 80% de ton score viendra de 20% des modules. 
+Concentre-toi sur les modules en 🔴 dans l'onglet Priorité Pareto.
+""")
+
+
+# ======================================================================
+# 🧪 PAGE TECHNIQUE FEYNMAN
+# ======================================================================
+elif page == "🧪 Feynman":
+    st.header("🧪 Technique Feynman — Compréhension Profonde")
+    st.markdown("""
+> **Richard Feynman** : *« Si tu ne peux pas l'expliquer simplement, tu ne le comprends pas vraiment. »*
+> 
+> **Comment ça marche :**
+> 1. Choisis un concept
+> 2. Explique-le **avec tes propres mots** (comme à un collègue débutant)
+> 3. L'IA identifie les **lacunes** dans ton explication
+> 4. Tu combles les trous et tu réessayes
+""")
+
+    from src.feynman_method import FeynmanTracker, build_feynman_prompt
+    from src.exam_focus import ExamFocusAnalyzer, EXAM_WEIGHT
+
+    config = load_config()
+    feynman_tracker = FeynmanTracker()
+    concept_map = load_concept_map()
+
+    api_key = config.get('api', {}).get('gemini_api_key') or os.getenv('GOOGLE_API_KEY') if config else os.getenv('GOOGLE_API_KEY')
+    model_name = config.get('api', {}).get('model', 'gemini-3-pro-preview') if config else 'gemini-3-pro-preview'
+
+    # Stats Feynman
+    feynman_stats = feynman_tracker.get_stats()
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Concepts testés", feynman_stats['total_concepts'])
+    with col2:
+        st.metric("✅ Maîtrisés", feynman_stats['mastered'])
+    with col3:
+        st.metric("📝 En cours", feynman_stats['in_progress'])
+    with col4:
+        st.metric("Score moyen", f"{feynman_stats['average_score']:.0f}%")
+
+    st.divider()
+
+    tab_feynman, tab_history = st.tabs(["🧪 Nouvelle session", "📜 Historique"])
+
+    with tab_feynman:
+        if not concept_map or not concept_map.get('nodes'):
+            st.warning("⚠️ Analyse d'abord tes documents pour avoir des concepts disponibles.")
+            st.stop()
+
+        nodes = concept_map.get('nodes', [])
+        modules_available = sorted(set(n.get('module', '') for n in nodes if n.get('module')))
+
+        # Sélection module + concept
+        selected_module = st.selectbox("📁 Module", modules_available,
+                                        format_func=lambda m: f"{m} — {EXAM_WEIGHT.get(m, 0)}Q d'examen",
+                                        key="feynman_module")
+
+        module_concepts = [n for n in nodes if n.get('module') == selected_module]
+        if not module_concepts:
+            st.info("Aucun concept analysé pour ce module.")
+            st.stop()
+
+        concept_names = [n.get('name', 'N/A') for n in module_concepts]
+        selected_name = st.selectbox("📖 Concept", concept_names, key="feynman_concept")
+        selected_concept = next((n for n in module_concepts if n.get('name') == selected_name), {})
+
+        # Statut Feynman de ce concept
+        concept_id = selected_concept.get('id', selected_name)
+        feynman_status = feynman_tracker.get_concept_status(concept_id)
+        
+        if feynman_status.get('status') == 'mastered':
+            st.success(f"✅ Ce concept est maîtrisé (score : {feynman_status['best_score']}%)")
+        elif feynman_status.get('attempts', 0) > 0:
+            st.info(f"📝 Déjà {feynman_status['attempts']} tentative(s) — Meilleur score : {feynman_status['best_score']}%")
+
+        # Zone d'explication
+        st.markdown(f"### 📝 Explique **{selected_name}** avec tes propres mots")
+        st.caption("Imagine que tu expliques ce concept à un collègue qui débute. Sois précis et concret.")
+
+        user_explanation = st.text_area(
+            "Ton explication :",
+            height=200,
+            placeholder=f"Explique ici ce qu'est '{selected_name}', à quoi ça sert, comment ça fonctionne, "
+                        f"quelles sont les normes/règles associées, et donne un exemple concret du terrain...",
+            key="feynman_text"
+        )
+
+        if st.button("🧪 Évaluer mon explication", type="primary", key="feynman_evaluate"):
+            if not user_explanation or len(user_explanation.strip()) < 30:
+                st.error("✏️ Ton explication est trop courte. Développe davantage !")
+            elif not api_key:
+                st.error("🔑 Configure ta clé API dans les Paramètres.")
+            else:
+                # Construire le prompt avec contexte
+                previous_gaps = []
+                if feynman_status.get('history'):
+                    last = feynman_status['history'][-1]
+                    previous_gaps = last.get('gaps', [])
+
+                prompt = build_feynman_prompt(
+                    concept_name=selected_name,
+                    module=f"{selected_module} — {selected_concept.get('category', '')}",
+                    concept_description=selected_concept.get('description', ''),
+                    user_explanation=user_explanation,
+                    previous_gaps=previous_gaps,
+                )
+
+                with st.spinner("🧠 L'IA analyse ton explication..."):
+                    try:
+                        import google.generativeai as genai
+                        genai.configure(api_key=api_key)
+                        model = genai.GenerativeModel(model_name)
+                        response = model.generate_content(prompt)
+                        response_text = response.text.strip()
+
+                        # Parser le JSON
+                        import re
+                        json_match = re.search(r'\{[\s\S]*\}', response_text)
+                        if json_match:
+                            result = json.loads(json_match.group())
+                        else:
+                            result = {"score": 50, "verdict": "ERREUR", "feedback": response_text,
+                                     "strengths": [], "gaps": ["Impossible d'analyser"], "corrections": [],
+                                     "tip": "", "simplified_explanation": ""}
+
+                        score = result.get('score', 50)
+                        verdict = result.get('verdict', 'N/A')
+
+                        # Enregistrer
+                        feynman_tracker.start_session(concept_id, selected_name, selected_module)
+                        feynman_tracker.record_attempt(
+                            concept_id, user_explanation, score,
+                            result.get('feedback', ''),
+                            result.get('gaps', []),
+                            result.get('strengths', []),
+                        )
+
+                        # Afficher les résultats
+                        st.divider()
+
+                        verdict_colors = {
+                            "EXCELLENT": "🟢", "BON": "🔵", "MOYEN": "🟡",
+                            "INSUFFISANT": "🟠", "FAUX": "🔴"
+                        }
+                        v_color = verdict_colors.get(verdict, "⚪")
+
+                        st.markdown(f"## {v_color} Score : {score}/100 — {verdict}")
+
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            st.markdown("### ✅ Points forts")
+                            for s in result.get('strengths', []):
+                                st.markdown(f"- ✅ {s}")
+                        with col2:
+                            st.markdown("### ❌ Lacunes")
+                            for g in result.get('gaps', []):
+                                st.markdown(f"- ❌ {g}")
+
+                        if result.get('corrections'):
+                            st.error("### ⚠️ Corrections")
+                            for c in result['corrections']:
+                                st.markdown(f"- ⚠️ {c}")
+
+                        st.info(f"💡 **Conseil :** {result.get('tip', 'N/A')}")
+
+                        if result.get('simplified_explanation'):
+                            with st.expander("📖 Explication modèle de l'IA"):
+                                st.markdown(result['simplified_explanation'])
+
+                        st.markdown(result.get('feedback', ''))
+
+                    except Exception as e:
+                        st.error(f"Erreur IA : {e}")
+
+    with tab_history:
+        st.subheader("📜 Historique Feynman")
+
+        sessions = feynman_tracker.data.get('sessions', {})
+        if not sessions:
+            st.info("Aucune session Feynman encore. Lance-toi !")
+        else:
+            for cid, session in sorted(sessions.items(),
+                                        key=lambda x: x[1].get('best_score', 0)):
+                status_icon = "✅" if session['status'] == 'mastered' else ("📝" if session['status'] == 'in_progress' else "⚪")
+                with st.expander(f"{status_icon} **{session.get('concept_name', cid)}** [{session.get('module', '?')}] — "
+                               f"Score: {session['best_score']}% | Tentatives: {session['attempts']}"):
+                    for i, attempt in enumerate(session.get('history', []), 1):
+                        st.markdown(f"**Tentative {i}** ({attempt.get('date', '')[:10]}) — Score: {attempt['score']}%")
+                        if attempt.get('gaps'):
+                            st.caption(f"Lacunes: {', '.join(attempt['gaps'])}")
+
+        # Concepts à revoir
+        to_review = feynman_tracker.get_concepts_to_review()
+        if to_review:
+            st.divider()
+            st.subheader("🔄 Concepts à revoir")
+            for c in to_review[:10]:
+                st.markdown(f"- 🔄 **{c.get('concept_name', '?')}** [{c.get('module', '?')}] — Score: {c['best_score']}%")
+
+
+# ======================================================================
+# 🎓 PAGE COACH EXPERT — IA spécialisée par domaine
+# ======================================================================
+elif page == "🎓 Coach Expert":
+    st.header("🎓 Coach Expert — Ton prof spécialisé par domaine")
+    st.markdown("""
+**Un vrai formateur CIFER te dit exactement quoi étudier et à quel niveau.**
+
+| Niveau | Signification | Méthode d'étude |
+|--------|--------------|-----------------|
+| 🔴 **DRILL** | Automatisme — réponse en 3 secondes | Quiz quotidien + flashcards + chrono |
+| 🟠 **MAÎTRISER** | Comprendre + appliquer dans tout contexte | Feynman + cas pratiques + exercices |
+| 🟡 **CONNAÎTRE** | Comprendre le principe, savoir expliquer | Flashcards + lecture active |
+| 🟢 **RECONNAÎTRE** | Juste savoir que ça existe | Lecture seule, 1 passage |
+""")
+
+    try:
+        from src.expert_coach import (
+            COMPETENCE_MASTERY, MASTERY_LEVELS, MODULE_COACH_PROMPTS,
+            get_all_drill_items, get_global_mastery_stats, get_module_mastery_summary,
+            build_expert_coach_prompt, get_coach_for_module
+        )
+        from src.exam_focus import EXAM_WEIGHT
+
+        tab_overview, tab_drill, tab_module, tab_coach_ia = st.tabs([
+            "📊 Vue globale", "🔴 Plan de Drill", "📋 Par Module", "🤖 Coach IA"
+        ])
+
+        # -------- TAB 1 : VUE GLOBALE --------
+        with tab_overview:
+            stats = get_global_mastery_stats()
+            st.subheader(f"📊 {stats['total']} compétences classées par niveau d'exigence")
+
+            # KPI Cards
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("🔴 DRILL", stats['drill_total'],
+                          help="À driller quotidiennement")
+            with col2:
+                st.metric("🟠 MAÎTRISER", stats['maitriser_total'],
+                          help="Comprendre en profondeur + appliquer")
+            with col3:
+                st.metric("🟡 CONNAÎTRE", stats['connaitre_total'],
+                          help="Comprendre le principe")
+            with col4:
+                st.metric("🟢 RECONNAÎTRE", stats['reconnaitre_total'],
+                          help="Juste savoir que ça existe")
+
+            st.divider()
+
+            # Graphique par module
+            st.subheader("📊 Répartition par module")
+            import plotly.graph_objects as go
+
+            modules_sorted = sorted(stats['by_module'].keys())
+            fig = go.Figure()
+
+            colors = {
+                "drill": "#e53935",
+                "maitriser": "#ff6f00",
+                "connaitre": "#fdd835",
+                "reconnaitre": "#43a047",
+            }
+            labels = {
+                "drill": "🔴 Drill",
+                "maitriser": "🟠 Maîtriser",
+                "connaitre": "🟡 Connaître",
+                "reconnaitre": "🟢 Reconnaître",
+            }
+
+            for level in ["drill", "maitriser", "connaitre", "reconnaitre"]:
+                values = [stats['by_module'].get(m, {}).get(level, 0) for m in modules_sorted]
+                fig.add_trace(go.Bar(
+                    name=labels[level],
+                    x=modules_sorted,
+                    y=values,
+                    marker_color=colors[level],
+                ))
+
+            fig.update_layout(
+                barmode='stack',
+                title="Niveaux de maîtrise requis par module",
+                xaxis_title="Module",
+                yaxis_title="Nombre de compétences",
+                height=450,
+                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Poids d'examen overlay
+            st.subheader("⚖️ Impact examen")
+            st.caption("Modules triés par poids × nombre de compétences DRILL")
+            impact_data = []
+            for m, mod_counts in stats['by_module'].items():
+                weight = EXAM_WEIGHT.get(m, 1)
+                drill_count = mod_counts.get("drill", 0)
+                maitriser_count = mod_counts.get("maitriser", 0)
+                impact = weight * (drill_count * 3 + maitriser_count * 2)
+                impact_data.append((m, weight, drill_count, maitriser_count, impact))
+            
+            impact_data.sort(key=lambda x: x[4], reverse=True)
+            for m, weight, dc, mc, impact in impact_data:
+                bar_len = min(impact * 2, 40)
+                bar = "█" * bar_len
+                st.markdown(f"**{m}** — {weight}q examen | {dc} drill + {mc} maîtriser = impact **{impact}**")
+                st.progress(min(impact / 30, 1.0))
+
+        # -------- TAB 2 : PLAN DE DRILL --------
+        with tab_drill:
+            st.subheader("🔴 Les compétences que tu dois DRILLER — Plan quotidien")
+            st.markdown("""
+> **Règle d'or :** Si tu te trompes sur un item DRILL à l'examen, tu perds des points FACILES.  
+> Ces compétences doivent devenir des **automatismes**. Réponse en 3 secondes.
+""")
+            drills = get_all_drill_items()
+            st.info(f"**{len(drills)} compétences** de niveau DRILL identifiées")
+
+            # Grouper par module
+            from collections import defaultdict as ddict
+            drill_by_module = ddict(list)
+            for d in drills:
+                drill_by_module[d['module']].append(d)
+
+            for module in sorted(drill_by_module.keys()):
+                items = drill_by_module[module]
+                weight = EXAM_WEIGHT.get(module, 1)
+                with st.expander(f"🔴 {module} — {weight} question(s) examen — {len(items)} compétences DRILL", expanded=(weight >= 3)):
+                    for item in items:
+                        st.markdown(f"### 🔴 {item['competence']}")
+                        st.markdown(f"**💬 Coach :** {item['coach_note']}")
+                        st.markdown(f"**📝 Astuce examen :** {item['exam_tip']}")
+                        if item['key_points']:
+                            st.markdown("**🎯 Points clés à retenir PAR CŒUR :**")
+                            for kp in item['key_points']:
+                                st.markdown(f"  - ✅ {kp}")
+                        st.divider()
+
+            # Planning de drill quotidien
+            st.divider()
+            st.subheader("📅 Planning de Drill Quotidien Suggéré")
+            st.markdown("""
+| Moment | Durée | Quoi | Comment |
+|--------|-------|------|---------|
+| ☀️ Matin | 10 min | Flashcards DRILL | Réviser les 20 items les plus critiques |
+| 🌤️ Midi | 5 min | Mini-quiz DRILL | 5 questions chronométrées sur les formules |
+| 🌙 Soir | 15 min | Feynman sur 1 concept | Expliquer un concept DRILL à voix haute |
+| 🔄 Weekend | 30 min | Exercices complets | Cas pratiques mélangeant plusieurs DRILL |
+""")
+
+        # -------- TAB 3 : PAR MODULE --------
+        with tab_module:
+            st.subheader("📋 Analyse détaillée par module")
+
+            module_list = sorted(COMPETENCE_MASTERY.keys())
+            selected_module = st.selectbox(
+                "Choisis un module :",
+                module_list,
+                format_func=lambda m: f"{m} ({EXAM_WEIGHT.get(m, 1)}q) — {COMPETENCE_MASTERY.get(m, {}).get('module_coach_profile', '')}"
+            )
+
+            if selected_module:
+                summary = get_module_mastery_summary(selected_module)
+                if summary:
+                    st.markdown(f"### 🎓 {summary['coach_profile']}")
+                    st.info(f"📌 **Focus examen :** {summary['module_focus']}")
+
+                    # Compteurs par niveau
+                    cols = st.columns(4)
+                    for idx, level in enumerate(["drill", "maitriser", "connaitre", "reconnaitre"]):
+                        level_info = MASTERY_LEVELS.get(level, {})
+                        count = summary['counts'].get(level, 0)
+                        with cols[idx]:
+                            st.metric(
+                                f"{level_info['icon']} {level.upper()}",
+                                count,
+                                help=level_info.get('description', '')
+                            )
+
+                    st.divider()
+
+                    # Détail par niveau
+                    for level in ["drill", "maitriser", "connaitre", "reconnaitre"]:
+                        level_info = MASTERY_LEVELS.get(level, {})
+                        items = summary['by_level'].get(level, [])
+                        if items:
+                            st.markdown(f"### {level_info['icon']} {level_info['label']} — {len(items)} compétences")
+                            st.caption(f"📖 Méthode : {level_info['study_method']}")
+                            st.caption(f"⏰ Fréquence : {level_info['frequency']}")
+                            st.caption(f"⚠️ Risque examen : {level_info['exam_risk']}")
+                            
+                            for item in items:
+                                with st.container():
+                                    st.markdown(f"**{item['competence']}**")
+                                    st.markdown(f"💬 _{item['coach_note']}_")
+                                    if item.get('exam_tip'):
+                                        st.success(f"📝 Astuce : {item['exam_tip']}")
+                                    if item.get('key_points'):
+                                        kp_text = " | ".join(item['key_points'])
+                                        st.caption(f"🎯 {kp_text}")
+                                st.markdown("---")
+
+        # -------- TAB 4 : COACH IA --------
+        with tab_coach_ia:
+            st.subheader("🤖 Demande conseil à ton Coach Expert IA")
+            st.markdown("""
+Sélectionne un module et pose ta question. L'IA se comportera comme un **vrai formateur spécialisé** 
+dans ce domaine et te dira exactement ce que tu dois savoir, maîtriser ou ignorer.
+""")
+
+            coach_module = st.selectbox(
+                "Module :",
+                sorted(COMPETENCE_MASTERY.keys()),
+                format_func=lambda m: f"{m} — {COMPETENCE_MASTERY.get(m, {}).get('module_coach_profile', '')}",
+                key="coach_module_select"
+            )
+
+            coach_profile = get_coach_for_module(coach_module)
+            if coach_profile:
+                st.info(f"🎓 **Ton coach :** {coach_profile.get('role', '')}")
+                st.caption(f"Expertise : {coach_profile.get('expertise', '')}")
+                st.caption(f"Style : {coach_profile.get('tone', '')}")
+
+            # Sélection de compétence
+            comp_list = list(COMPETENCE_MASTERY.get(coach_module, {}).get("competences", {}).keys())
+            selected_comp = st.selectbox(
+                "Compétence (optionnel) :",
+                ["— Général —"] + comp_list,
+                key="coach_comp_select"
+            )
+
+            user_question = st.text_area(
+                "Ta question au coach :",
+                placeholder="Ex: Comment je dois m'y prendre pour apprendre les 5 règles de sécurité ? C'est quoi le plus important à retenir pour l'examen ?",
+                key="coach_question"
+            )
+
+            if st.button("🎓 Demander au Coach", type="primary", key="btn_coach"):
+                if not user_question.strip():
+                    st.warning("Pose une question à ton coach !")
+                else:
+                    concept_name = selected_comp if selected_comp != "— Général —" else f"Module {coach_module} en général"
+                    prompt = build_expert_coach_prompt(
+                        coach_module, concept_name, user_question
+                    )
+
+                    with st.spinner("🎓 Ton coach réfléchit..."):
+                        try:
+                            model = genai.GenerativeModel("gemini-2.0-flash")
+                            response = model.generate_content(prompt)
+                            coach_response = response.text
+
+                            st.markdown("### 🎓 Réponse du Coach Expert")
+                            
+                            # Essayer de parser le JSON
+                            import json as json_lib
+                            try:
+                                # Extraire le JSON de la réponse
+                                json_text = coach_response
+                                if "```json" in json_text:
+                                    json_text = json_text.split("```json")[1].split("```")[0]
+                                elif "```" in json_text:
+                                    json_text = json_text.split("```")[1].split("```")[0]
+                                
+                                data = json_lib.loads(json_text.strip())
+                                
+                                # Afficher le verdict
+                                verdict = data.get("verdict", "")
+                                verdict_colors = {
+                                    "DRILL": "🔴", "MAÎTRISER": "🟠",
+                                    "CONNAÎTRE": "🟡", "RECONNAÎTRE": "🟢"
+                                }
+                                verdict_icon = verdict_colors.get(verdict, "📌")
+                                st.markdown(f"## {verdict_icon} Verdict : **{verdict}**")
+                                
+                                # Message du coach
+                                st.markdown(f"### 💬 {data.get('message', '')}")
+                                
+                                # Ce qu'il FAUT savoir
+                                must = data.get("must_know", [])
+                                if must:
+                                    st.markdown("### ✅ Ce que tu DOIS savoir par cœur :")
+                                    for m in must:
+                                        st.markdown(f"- 🔴 **{m}**")
+                                
+                                # Nice to know
+                                nice = data.get("nice_to_know", [])
+                                if nice:
+                                    st.markdown("### 🟡 Bien à savoir mais pas critique :")
+                                    for n in nice:
+                                        st.markdown(f"- 🟡 {n}")
+                                
+                                # Skip
+                                skip = data.get("skip", [])
+                                if skip:
+                                    st.markdown("### ⏭️ Tu peux ignorer :")
+                                    for s in skip:
+                                        st.markdown(f"- ⚪ ~~{s}~~")
+                                
+                                # Exercice de drill
+                                drill_ex = data.get("drill_exercise", "")
+                                if drill_ex:
+                                    st.info(f"🏋️ **Exercice rapide (2 min) :** {drill_ex}")
+                                
+                                # Piège d'examen
+                                trap = data.get("exam_trap", "")
+                                if trap:
+                                    st.warning(f"⚠️ **Piège classique :** {trap}")
+                                
+                                # Mnémotechnique
+                                mnemonic = data.get("mnemonic", "")
+                                if mnemonic:
+                                    st.success(f"🧠 **Mnémotechnique :** {mnemonic}")
+                                    
+                            except (json_lib.JSONDecodeError, IndexError):
+                                # Si le JSON ne parse pas, afficher la réponse brute
+                                st.markdown(coach_response)
+
+                        except Exception as e:
+                            st.error(f"❌ Erreur IA : {e}")
+
+            # Afficher les infos de compétence sélectionnée
+            if selected_comp != "— Général —":
+                st.divider()
+                comp_data = COMPETENCE_MASTERY.get(coach_module, {}).get("competences", {}).get(selected_comp, {})
+                if comp_data:
+                    level = comp_data.get("level", "connaitre")
+                    level_info = MASTERY_LEVELS.get(level, {})
+                    st.markdown(f"### {level_info.get('icon', '')} Niveau requis : **{level_info.get('label', '')}**")
+                    st.markdown(f"_{level_info.get('description', '')}_")
+                    st.markdown(f"**💬 Coach :** {comp_data.get('coach_note', '')}")
+                    st.markdown(f"**📝 Astuce examen :** {comp_data.get('exam_tip', '')}")
+                    if comp_data.get('key_points'):
+                        st.markdown("**🎯 Points clés :**")
+                        for kp in comp_data['key_points']:
+                            st.markdown(f"  - {kp}")
+
+    except Exception as e:
+        st.error(f"❌ Erreur lors du chargement du module Coach : {e}")
+        import traceback
+        st.code(traceback.format_exc())
+
+
 elif page == "📆 Planning Révisions":
     st.header("📆 Planning de Révision Automatique")
     
@@ -1740,91 +2622,130 @@ elif page == "📆 Planning Révisions":
         stats = revision_plan.get('statistics', {})
         sessions = revision_plan.get('sessions', [])
         
-        # ===== METRIQUES EN HAUT =====
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("⏱️ Heures totales", f"{revision_plan.get('total_hours', 0):.1f}h")
-        with col2:
-            st.metric("📚 Concepts", revision_plan.get('total_concepts', 0))
-        with col3:
-            st.metric("📅 Sessions", revision_plan.get('total_sessions', 0))
-        with col4:
-            days_left = stats.get('days_until_exam', 0)
-            st.metric("🎯 Jours restants", days_left)
+        # ===== METRIQUES EN HAUT — DESIGN PREMIUM =====
+        days_left = stats.get('days_until_exam', 0)
+        total_hours = revision_plan.get('total_hours', 0)
+        total_concepts = revision_plan.get('total_concepts', 0)
+        total_sessions = revision_plan.get('total_sessions', 0)
         
-        st.divider()
+        # Calcul du % de progression (sessions passées)
+        today_str = datetime.now().strftime('%Y-%m-%d')
+        past_sessions = [s for s in sessions if s['date'] < today_str]
+        future_sessions = [s for s in sessions if s['date'] >= today_str]
+        progress_pct = len(past_sessions) / max(1, len(sessions))
         
-        # ===== ONGLETS VISUELS =====
-        tab1, tab2, tab3, tab4 = st.tabs(["📊 Vue d'ensemble", "📅 Calendrier", "📈 Progression", "📋 Sessions"])
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%); 
+                     padding: 1.5rem 2rem; border-radius: 16px; color: white; margin-bottom: 1.5rem;
+                     box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: bold;">{days_left}</div>
+                    <div style="opacity: 0.8; font-size: 0.85rem;">Jours restants</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: bold;">{total_hours:.0f}h</div>
+                    <div style="opacity: 0.8; font-size: 0.85rem;">Heures planifiées</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: bold;">{total_concepts}</div>
+                    <div style="opacity: 0.8; font-size: 0.85rem;">Concepts à couvrir</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: bold;">{len(future_sessions)}</div>
+                    <div style="opacity: 0.8; font-size: 0.85rem;">Sessions à venir</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 2.5rem; font-weight: bold;">{progress_pct*100:.0f}%</div>
+                    <div style="opacity: 0.8; font-size: 0.85rem;">Progression</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Barre de progression exam
+        st.progress(progress_pct, text=f"📅 Examen le {revision_plan.get('exam_date', 'N/A')} — {progress_pct*100:.0f}% du parcours écoulé")
+        
+        # ===== ONGLETS VISUELS REFONDUS =====
+        tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Vue d'ensemble", "📅 Semaine en cours", "🗓️ Calendrier", "📈 Progression", "📋 Toutes les sessions"])
         
         with tab1:
-            # Vue d'ensemble avec graphiques
             col1, col2 = st.columns(2)
             
             with col1:
-                # Graphique en anneau - Sessions par priorité
+                # Graphique en anneau - Sessions par priorité (design amélioré)
                 st.subheader("Sessions par priorité")
                 priority_data = stats.get('sessions_by_priority', {})
                 if priority_data:
                     fig_priority = go.Figure(data=[go.Pie(
-                        labels=['Haute', 'Moyenne', 'Basse'],
+                        labels=['🔴 Haute', '🟡 Moyenne', '🟢 Basse'],
                         values=[priority_data.get('high', 0), priority_data.get('medium', 0), priority_data.get('low', 0)],
-                        hole=.4,
-                        marker_colors=['#e53935', '#fdd835', '#43a047']
+                        hole=.5,
+                        marker_colors=['#e53935', '#fdd835', '#43a047'],
+                        textinfo='label+percent',
+                        textfont_size=13
                     )])
-                    fig_priority.update_layout(height=300, margin=dict(t=20, b=20, l=20, r=20))
+                    fig_priority.update_layout(
+                        height=320, 
+                        margin=dict(t=20, b=20, l=20, r=20),
+                        showlegend=False,
+                        annotations=[dict(text=f"{total_sessions}<br>sessions", x=0.5, y=0.5, font_size=16, showarrow=False)]
+                    )
                     st.plotly_chart(fig_priority, use_container_width=True)
             
             with col2:
-                # Graphique - Sessions par type
+                # Graphique - Sessions par type (design amélioré)
                 st.subheader("Type de sessions")
                 type_data = stats.get('sessions_by_type', {})
                 if type_data:
                     fig_type = go.Figure(data=[go.Pie(
-                        labels=['Apprentissage', 'Révision', 'Pratique'],
+                        labels=['📚 Apprentissage', '🔄 Révision', '✏️ Pratique'],
                         values=[type_data.get('new_learning', 0), type_data.get('revision', 0), type_data.get('practice', 0)],
-                        hole=.4,
-                        marker_colors=['#1E88E5', '#7E57C2', '#26A69A']
+                        hole=.5,
+                        marker_colors=['#1E88E5', '#7E57C2', '#26A69A'],
+                        textinfo='label+percent',
+                        textfont_size=13
                     )])
-                    fig_type.update_layout(height=300, margin=dict(t=20, b=20, l=20, r=20))
+                    fig_type.update_layout(
+                        height=320, 
+                        margin=dict(t=20, b=20, l=20, r=20),
+                        showlegend=False
+                    )
                     st.plotly_chart(fig_type, use_container_width=True)
             
-            # Timeline des jalons
-            st.subheader("🏁 Timeline des jalons")
+            # Timeline des jalons — design amélioré
+            st.subheader("🏁 Jalons du parcours")
             milestones = revision_plan.get('milestones', [])
             if milestones:
-                milestone_dates = [m['date'] for m in milestones]
-                milestone_names = [m['name'] for m in milestones]
-                milestone_progress = [m['progress'] for m in milestones]
-                
-                fig_timeline = go.Figure()
-                fig_timeline.add_trace(go.Scatter(
-                    x=milestone_dates,
-                    y=[1]*len(milestones),
-                    mode='markers+text',
-                    marker=dict(size=30, color=milestone_progress, colorscale='Viridis', showscale=True),
-                    text=milestone_names,
-                    textposition='top center',
-                    hovertemplate='%{text}<br>%{x}<br>Progression: %{marker.color}%<extra></extra>'
-                ))
-                fig_timeline.update_layout(
-                    height=200,
-                    showlegend=False,
-                    yaxis=dict(visible=False, range=[0.5, 1.8]),
-                    xaxis=dict(title='Date'),
-                    margin=dict(t=40, b=40)
-                )
-                st.plotly_chart(fig_timeline, use_container_width=True)
+                for i, m in enumerate(milestones):
+                    m_date = m.get('date', '')
+                    m_name = m.get('name', '')
+                    m_obj = m.get('objective', '')
+                    m_progress = m.get('progress', 0)
+                    is_past = m_date < today_str
+                    
+                    icon = "✅" if is_past else "🔜"
+                    color = "#4CAF50" if is_past else "#1976D2"
+                    
+                    st.markdown(f"""
+                    <div style="display: flex; align-items: center; padding: 0.5rem 1rem; margin: 0.3rem 0; 
+                                border-left: 4px solid {color}; background: {'#e8f5e9' if is_past else '#e3f2fd'}; 
+                                border-radius: 0 8px 8px 0;">
+                        <span style="font-size: 1.3rem; margin-right: 0.8rem;">{icon}</span>
+                        <div style="flex: 1;">
+                            <strong>{m_name}</strong> — {m_obj}
+                            <br><small style="color: #666;">{m_date} · {m_progress}%</small>
+                        </div>
+                        <div style="width: 60px; text-align: right; font-weight: bold; color: {color};">{m_progress}%</div>
+                    </div>
+                    """, unsafe_allow_html=True)
             
             # Distribution par catégorie
             st.subheader("📂 Concepts par catégorie")
             categories = revision_plan.get('categories', {})
             if categories and isinstance(categories, dict):
-                # categories est un dict {nom_categorie: [liste de concepts]}
                 cat_counts = {cat: len(concepts) for cat, concepts in categories.items()}
-                # Trier par nombre de concepts et prendre le top 10
                 sorted_cats = sorted(cat_counts.items(), key=lambda x: x[1], reverse=True)[:10]
-                # Créer un DataFrame pour le graphique
                 df_cats = pd.DataFrame({
                     'categorie': [c[0] for c in sorted_cats],
                     'count': [c[1] for c in sorted_cats]
@@ -1847,162 +2768,301 @@ elif page == "📆 Planning Révisions":
                 st.plotly_chart(fig_cats, use_container_width=True)
         
         with tab2:
-            # Calendrier visuel
-            st.subheader("📅 Calendrier des sessions")
+            # SEMAINE EN COURS — vue la plus utile au quotidien
+            st.subheader("📅 Votre semaine de révision")
+            
+            today = datetime.now()
+            # Début de la semaine (lundi)
+            start_of_week = today - timedelta(days=today.weekday())
+            end_of_week = start_of_week + timedelta(days=6)
+            
+            week_sessions = [s for s in sessions 
+                           if start_of_week.strftime('%Y-%m-%d') <= s['date'] <= end_of_week.strftime('%Y-%m-%d')]
+            
+            if not week_sessions:
+                st.info("Aucune session planifiée cette semaine.")
+            else:
+                # Charger le concept_map une seule fois pour la semaine
+                concept_dict = {}
+                if concept_map and 'nodes' in concept_map:
+                    concept_dict = {node['name']: node for node in concept_map['nodes']}
+                
+                total_week_min = sum(s['duration_minutes'] for s in week_sessions)
+                st.markdown(f"**{len(week_sessions)} sessions** · **{total_week_min} min** de révision prévues")
+                st.markdown("---")
+                
+                # Afficher chaque jour de la semaine
+                days_fr = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
+                
+                for day_offset in range(7):
+                    current_day = start_of_week + timedelta(days=day_offset)
+                    day_str = current_day.strftime('%Y-%m-%d')
+                    day_name = days_fr[day_offset]
+                    day_sessions = [s for s in week_sessions if s['date'] == day_str]
+                    
+                    is_today = day_str == today_str
+                    is_past = day_str < today_str
+                    
+                    if day_sessions:
+                        for session in day_sessions:
+                            priority_color = {'high': '#e53935', 'medium': '#fb8c00', 'low': '#43a047'}.get(session['priority'], '#757575')
+                            type_icon = {'new_learning': '📚', 'revision': '🔄', 'practice': '✏️'}.get(session['session_type'], '📖')
+                            bg_color = '#fff8e1' if is_today else ('#f5f5f5' if is_past else '#ffffff')
+                            border = '3px solid #ff9800' if is_today else f'3px solid {priority_color}'
+                            today_badge = ' <span style="background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">AUJOURD\'HUI</span>' if is_today else ''
+                            
+                            st.markdown(f"""
+                            <div style="border-left: {border}; padding: 1rem 1.2rem; margin: 0.5rem 0; 
+                                        background: {bg_color}; border-radius: 0 12px 12px 0;
+                                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong style="font-size: 1.1rem;">{type_icon} {day_name} {current_day.strftime('%d/%m')}</strong>{today_badge}
+                                        <br><span style="color: #666;">{session['duration_minutes']} min · {session['category']}</span>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <span style="background: {priority_color}; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem;">
+                                            {'Priorité haute' if session['priority'] == 'high' else 'Priorité moyenne' if session['priority'] == 'medium' else 'Priorité basse'}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                    {''.join(f'<div style="margin: 2px 0;">• <strong>{c}</strong></div>' for c in session['concepts'][:5])}
+                                    {'<div style="color: #999;">... +' + str(len(session["concepts"]) - 5) + ' autres</div>' if len(session["concepts"]) > 5 else ''}
+                                </div>
+                            </div>
+                            """, unsafe_allow_html=True)
+                    elif not is_past:
+                        st.markdown(f"""
+                        <div style="padding: 0.5rem 1.2rem; margin: 0.3rem 0; color: #aaa; font-size: 0.9rem;">
+                            {day_name} {current_day.strftime('%d/%m')} — <em>Pas de session</em>
+                        </div>
+                        """, unsafe_allow_html=True)
+            
+            # Navigation semaine
+            st.markdown("---")
+            st.caption("💡 Les sessions s'adaptent à votre charge : 30 min en semaine, 8h le weekend.")
+        
+        with tab3:
+            # Calendrier heatmap
+            st.subheader("🗓️ Calendrier des sessions")
             
             if sessions:
-                # Créer un heatmap calendrier
                 session_dates = [s['date'] for s in sessions]
                 session_durations = [s['duration_minutes'] for s in sessions]
                 
-                # Créer DataFrame pour le calendrier
                 df_calendar = pd.DataFrame({
                     'date': pd.to_datetime(session_dates),
                     'duration': session_durations
                 })
-                df_calendar['week'] = df_calendar['date'].dt.isocalendar().week
+                df_calendar['week'] = df_calendar['date'].dt.isocalendar().week.astype(int)
                 df_calendar['day'] = df_calendar['date'].dt.dayofweek
                 df_calendar['month'] = df_calendar['date'].dt.strftime('%Y-%m')
                 
-                # Grouper par semaine/jour
+                # Heatmap pour les 12 prochaines semaines
                 today = datetime.now()
-                next_8_weeks = df_calendar[df_calendar['date'] <= today + timedelta(weeks=8)]
+                next_weeks = df_calendar[
+                    (df_calendar['date'] >= today - timedelta(weeks=1)) & 
+                    (df_calendar['date'] <= today + timedelta(weeks=12))
+                ]
                 
-                if not next_8_weeks.empty:
-                    # Heatmap
-                    fig_heatmap = px.density_heatmap(
-                        next_8_weeks,
-                        x='week',
-                        y='day',
-                        z='duration',
-                        color_continuous_scale='YlOrRd',
-                        labels={'week': 'Semaine', 'day': 'Jour', 'duration': 'Minutes'}
-                    )
+                if not next_weeks.empty:
+                    fig_heatmap = go.Figure(data=go.Heatmap(
+                        x=next_weeks['week'],
+                        y=next_weeks['day'],
+                        z=next_weeks['duration'],
+                        colorscale=[
+                            [0, '#e3f2fd'],
+                            [0.25, '#90caf9'],
+                            [0.5, '#42a5f5'],
+                            [0.75, '#1e88e5'],
+                            [1, '#0d47a1']
+                        ],
+                        hoverongaps=False,
+                        hovertemplate='Semaine %{x}<br>%{text}<br>%{z} minutes<extra></extra>',
+                        text=[[days_fr[d] if d < 7 else '' for d in next_weeks['day'].unique()] for _ in next_weeks['week'].unique()],
+                        colorbar=dict(title='Min.', ticksuffix=' min')
+                    ))
                     fig_heatmap.update_yaxes(
                         ticktext=['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-                        tickvals=[0, 1, 2, 3, 4, 5, 6]
+                        tickvals=[0, 1, 2, 3, 4, 5, 6],
+                        autorange='reversed'
                     )
-                    fig_heatmap.update_layout(height=300)
+                    fig_heatmap.update_xaxes(title='Semaine de l\'année')
+                    fig_heatmap.update_layout(
+                        height=300,
+                        margin=dict(l=60, r=20, t=20, b=40)
+                    )
                     st.plotly_chart(fig_heatmap, use_container_width=True)
                 
-                # Sessions du mois
-                st.subheader("📆 Sessions ce mois-ci")
-                current_month = today.strftime('%Y-%m')
-                month_sessions = [s for s in sessions if s['date'].startswith(current_month)]
+                # Distribution heures par mois
+                st.subheader("📊 Charge de travail par mois")
+                df_monthly = df_calendar.groupby('month').agg(
+                    total_min=('duration', 'sum'),
+                    sessions=('duration', 'count')
+                ).reset_index()
+                df_monthly['heures'] = (df_monthly['total_min'] / 60).round(1)
                 
-                if month_sessions:
-                    for session in month_sessions[:10]:
-                        priority_color = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}.get(session['priority'], '⚪')
-                        st.markdown(f"{priority_color} **{session['day_name']} {session['date']}** - {session['duration_minutes']} min - {session['category']}")
-                else:
-                    st.info("Pas de sessions ce mois-ci")
+                fig_monthly = px.bar(
+                    df_monthly,
+                    x='month',
+                    y='heures',
+                    text='heures',
+                    color='heures',
+                    color_continuous_scale='Blues',
+                    labels={'month': 'Mois', 'heures': 'Heures'}
+                )
+                fig_monthly.update_traces(texttemplate='%{text}h', textposition='outside')
+                fig_monthly.update_layout(
+                    height=350,
+                    showlegend=False,
+                    xaxis_title='',
+                    yaxis_title='Heures de révision',
+                    margin=dict(t=30, b=20)
+                )
+                st.plotly_chart(fig_monthly, use_container_width=True)
         
-        with tab3:
-            # Graphique de progression
-            st.subheader("📈 Progression prévue")
+        with tab4:
+            # Graphique de progression amélioré
+            st.subheader("📈 Courbe de progression")
             
             if sessions:
-                # Calculer la progression cumulative
                 df_progress = pd.DataFrame(sessions)
                 df_progress['date'] = pd.to_datetime(df_progress['date'])
                 df_progress = df_progress.sort_values('date')
                 df_progress['cumulative_concepts'] = df_progress['concepts'].apply(len).cumsum()
                 df_progress['cumulative_hours'] = (df_progress['duration_minutes'].cumsum() / 60).round(1)
                 
-                # Graphique
                 fig_progress = go.Figure()
+                
+                # Zone remplie pour les heures
                 fig_progress.add_trace(go.Scatter(
                     x=df_progress['date'],
                     y=df_progress['cumulative_hours'],
-                    mode='lines+markers',
+                    mode='lines',
                     name='Heures cumulées',
                     line=dict(color='#1E88E5', width=3),
                     fill='tozeroy',
-                    fillcolor='rgba(30, 136, 229, 0.2)'
+                    fillcolor='rgba(30, 136, 229, 0.15)'
                 ))
                 
-                # Ajouter les jalons
+                # Ligne pour les concepts
+                fig_progress.add_trace(go.Scatter(
+                    x=df_progress['date'],
+                    y=df_progress['cumulative_concepts'],
+                    mode='lines',
+                    name='Concepts cumulés',
+                    line=dict(color='#43A047', width=2, dash='dot'),
+                    yaxis='y2'
+                ))
+                
+                # Marqueur "Aujourd'hui"
+                fig_progress.add_vline(
+                    x=pd.to_datetime(today_str),
+                    line_dash='dash',
+                    line_color='#FF5722',
+                    line_width=2,
+                    annotation_text='Aujourd\'hui',
+                    annotation_position='top',
+                    annotation_font_color='#FF5722'
+                )
+                
+                # Jalons
                 milestones = revision_plan.get('milestones', [])
                 for m in milestones:
                     try:
                         milestone_date = pd.to_datetime(m['date'])
                         fig_progress.add_vline(
                             x=milestone_date,
-                            line_dash='dash',
-                            line_color='gray',
+                            line_dash='dot',
+                            line_color='rgba(0,0,0,0.2)',
                             annotation_text=m.get('name', ''),
-                            annotation_position='top'
+                            annotation_position='top',
+                            annotation_font_size=10
                         )
                     except Exception:
-                        pass  # Ignorer les dates invalides
+                        pass
                 
                 fig_progress.update_layout(
-                    height=400,
+                    height=450,
                     xaxis_title='Date',
                     yaxis_title='Heures de révision',
-                    hovermode='x unified'
+                    yaxis2=dict(
+                        title='Concepts couverts',
+                        overlaying='y',
+                        side='right',
+                        showgrid=False
+                    ),
+                    hovermode='x unified',
+                    legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1),
+                    margin=dict(t=60, b=40)
                 )
                 st.plotly_chart(fig_progress, use_container_width=True)
                 
-                # Stats de progression
-                col1, col2, col3 = st.columns(3)
+                # Stats résumées 
+                col1, col2, col3, col4 = st.columns(4)
                 with col1:
-                    st.metric("📚 Concepts à couvrir", len(df_progress))
+                    st.metric("📚 Concepts à couvrir", total_concepts)
                 with col2:
-                    avg_per_week = round(df_progress['duration_minutes'].sum() / 60 / max(1, stats.get('days_until_exam', 1) / 7), 1)
-                    st.metric("⏱️ Heures/semaine (moy)", f"{avg_per_week}h")
+                    avg_per_week = round(total_hours / max(1, days_left / 7), 1)
+                    st.metric("⏱️ Heures/semaine requises", f"{avg_per_week}h")
                 with col3:
+                    avg_concepts = stats.get('average_concepts_per_session', 0)
+                    st.metric("📖 Concepts/session (moy)", f"{avg_concepts:.1f}")
+                with col4:
                     st.metric("📅 Date examen", revision_plan.get('exam_date', 'N/A'))
         
-        with tab4:
-            # Liste des sessions
+        with tab5:
+            # Liste des sessions avec meilleur design
             st.subheader("📋 Toutes les sessions à venir")
             
             today = datetime.now().strftime('%Y-%m-%d')
             upcoming = [s for s in sessions if s['date'] >= today]
             
-            # Filtres
-            col1, col2 = st.columns(2)
+            # Filtres améliorés 
+            col1, col2, col3 = st.columns(3)
             with col1:
                 filter_priority = st.multiselect(
-                    "Filtrer par priorité",
+                    "Priorité",
                     ['high', 'medium', 'low'],
                     default=['high', 'medium', 'low'],
                     format_func=lambda x: {'high': '🔴 Haute', 'medium': '🟡 Moyenne', 'low': '🟢 Basse'}[x]
                 )
             with col2:
-                num_sessions = st.slider("Nombre de sessions à afficher", 5, 50, 14)
+                filter_type = st.multiselect(
+                    "Type",
+                    ['new_learning', 'revision', 'practice'],
+                    default=['new_learning', 'revision', 'practice'],
+                    format_func=lambda x: {'new_learning': '📚 Apprentissage', 'revision': '🔄 Révision', 'practice': '✏️ Pratique'}[x]
+                )
+            with col3:
+                num_sessions = st.slider("Nombre à afficher", 5, 50, 14)
             
-            filtered = [s for s in upcoming if s['priority'] in filter_priority][:num_sessions]
+            filtered = [s for s in upcoming 
+                       if s['priority'] in filter_priority and s.get('session_type', 'new_learning') in filter_type][:num_sessions]
             
             if filtered:
+                # Charger le concept_map une seule fois
+                concept_dict = {}
+                if concept_map and 'nodes' in concept_map:
+                    concept_dict = {node['name']: node for node in concept_map['nodes']}
+                
                 for session in filtered:
                     priority_icon = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}.get(session['priority'], '⚪')
                     type_icon = {'new_learning': '📚', 'revision': '🔄', 'practice': '✏️'}.get(session['session_type'], '📖')
                     
-                    with st.expander(f"{priority_icon} {type_icon} {session['day_name']} {session['date']} - {session['duration_minutes']} min"):
+                    with st.expander(f"{priority_icon} {type_icon} {session['day_name']} {session['date']} — {session['duration_minutes']} min · {session['category']}"):
                         col1, col2 = st.columns([2, 1])
                         with col1:
-                            st.markdown(f"**Catégorie:** {session['category']}")
-                            st.markdown("**Concepts à étudier:**")
-                            
-                            # Charger la cartographie des concepts pour afficher les références
-                            concept_map = load_concept_map()
-                            concepts_with_refs = []
-                            if concept_map and 'nodes' in concept_map:
-                                concept_dict = {node['name']: node for node in concept_map['nodes']}
-                            else:
-                                concept_dict = {}
-                            
+                            st.markdown("**Concepts à étudier :**")
                             for concept_name in session['concepts'][:10]:
                                 concept_info = concept_dict.get(concept_name, {})
                                 source_doc = concept_info.get('source_document', '')
                                 page_ref = concept_info.get('page_references', '')
                                 
-                                # Afficher le concept avec ses références
                                 if page_ref and source_doc:
                                     st.markdown(f"  - **{concept_name}**")
-                                    st.caption(f"    📄 {source_doc} • 📖 {page_ref}")
+                                    st.caption(f"    📄 {source_doc} · 📖 {page_ref}")
                                 elif source_doc:
                                     st.markdown(f"  - **{concept_name}**")
                                     st.caption(f"    📄 {source_doc}")
@@ -2013,9 +3073,10 @@ elif page == "📆 Planning Révisions":
                                 st.caption(f"... et {len(session['concepts']) - 10} autres")
                         with col2:
                             if session.get('objectives'):
-                                st.markdown("**Objectifs:**")
+                                st.markdown("**Objectifs :**")
                                 for obj in session['objectives']:
                                     st.markdown(f"  - {obj}")
+                            st.markdown(f"**Module :** {session.get('module', 'N/A')}")
             else:
                 st.info("Aucune session trouvée avec ces filtres.")
         
@@ -2372,7 +3433,7 @@ elif page == "🧠 Quiz":
     st.divider()
     
     # Onglets
-    tab1, tab2, tab3 = st.tabs(["🆕 Nouveau Quiz", "🎓 Examen Blanc", "� Analytics & Historique"])
+    tab1, tab2, tab3 = st.tabs(["🆕 Nouveau Quiz", "🎓 Examen Blanc", "📊 Analytics & Historique"])
     
     with tab1:
         st.markdown("### Configurer votre Quiz")
@@ -2785,9 +3846,9 @@ elif page == "🧠 Quiz":
             
             # Bouton pour recommencer
             if st.button("🔄 Nouveau Quiz", use_container_width=True):
-                del st.session_state['current_quiz']
-                del st.session_state['quiz_answers']
-                del st.session_state['quiz_submitted']
+                for key in ['current_quiz', 'quiz_answers', 'quiz_submitted', 
+                            'quiz_confidence', 'quiz_hints_used', 'quiz_start_time']:
+                    st.session_state.pop(key, None)
                 st.rerun()
     
     with tab2:
@@ -3297,24 +4358,32 @@ elif page == "📇 Flashcards":
     
     fc_stats = fc_mgr.get_stats()
     
-    # --- Métriques ---
+    # --- Métriques avec style amélioré ---
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.metric("📇 Total cartes", fc_stats['total_cards'])
     with col2:
-        st.metric("📅 À réviser", fc_stats['due_today'])
+        due_count = fc_stats['due_today']
+        st.metric("📅 À réviser", due_count, delta=f"-{due_count}" if due_count > 0 else None, delta_color="inverse")
     with col3:
         st.metric("🆕 Nouvelles", fc_stats['new_cards'])
     with col4:
-        st.metric("✅ Maîtrisées", fc_stats['mastered'])
+        mastered_pct = f"({round(fc_stats['mastered'] / max(1, fc_stats['total_cards']) * 100)}%)" if fc_stats['total_cards'] > 0 else ""
+        st.metric("✅ Maîtrisées", f"{fc_stats['mastered']} {mastered_pct}")
     with col5:
         st.metric("🔥 Streak", f"{fc_stats['review_streak']} j")
+    
+    # Barre de progression globale
+    if fc_stats['total_cards'] > 0:
+        mastered_ratio = fc_stats['mastered'] / fc_stats['total_cards']
+        learning_ratio = fc_stats['learning'] / fc_stats['total_cards']
+        st.progress(mastered_ratio, text=f"✅ {fc_stats['mastered']} maîtrisées · 📗 {fc_stats['learning']} en apprentissage · 🆕 {fc_stats['new_cards']} nouvelles")
     
     st.divider()
     
     tab_review, tab_generate, tab_browse = st.tabs(["🔄 Réviser", "➕ Générer", "📋 Toutes les cartes"])
     
-    # ===== ONGLET RÉVISER =====
+    # ===== ONGLET RÉVISER (REDESIGN PREMIUM) =====
     with tab_review:
         fc_filter_mod = st.selectbox("Filtrer par module", ["Tous"] + fc_mgr.get_module_list(), key="fc_rev_mod")
         mod_filter = None if fc_filter_mod == "Tous" else fc_filter_mod
@@ -3335,50 +4404,123 @@ elif page == "📇 Flashcards":
             card = due_cards[st.session_state['fc_index']]
             
             st.progress((st.session_state['fc_index'] + 1) / len(due_cards))
-            st.caption(f"Carte {st.session_state['fc_index'] + 1} / {len(due_cards)} — Module: {card.get('module', '?')}")
             
-            # --- FACE AVANT ---
-            st.markdown("### ❓ Question")
-            st.markdown(f"**{card['front']}**")
+            # Badge type de carte
+            card_type = card.get('card_type', 'definition')
+            type_badges = {
+                'definition': '📖 Définition',
+                'norme': '⚖️ Norme',
+                'pratique': '🔧 Pratique terrain',
+                'formule': '📐 Formule/Calcul',
+                'comparaison': '⚖️ Comparaison',
+            }
+            type_badge = type_badges.get(card_type, '📖 Concept')
+            
+            col_meta1, col_meta2, col_meta3 = st.columns(3)
+            with col_meta1:
+                st.caption(f"Carte {st.session_state['fc_index'] + 1} / {len(due_cards)}")
+            with col_meta2:
+                st.caption(f"Module: **{card.get('module', '?')}** · {type_badge}")
+            with col_meta3:
+                interval = card.get('interval', 1)
+                difficulty_label = "🔴 Difficile" if interval <= 3 else "🟡 En cours" if interval < 21 else "🟢 Maîtrisée"
+                st.caption(difficulty_label)
+            
+            # --- FACE AVANT (design amélioré) ---
+            st.markdown("""<div style='background: linear-gradient(135deg, #1a237e 0%, #283593 100%); 
+                            padding: 2rem; border-radius: 12px; color: white; margin: 1rem 0;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>
+                <h3 style='margin:0; color: #e3f2fd;'>❓ Question</h3>
+                <p style='font-size: 1.2rem; margin-top: 0.5rem;'>{}</p>
+            </div>""".format(card['front']), unsafe_allow_html=True)
             
             if card.get('hint'):
                 with st.expander("💡 Voir l'indice"):
-                    st.caption(card['hint'])
+                    st.markdown(f"**Indice :** {card['hint']}")
             
             # --- RÉVÉLER ---
-            if st.button("👁️ Retourner la carte", key="fc_flip", use_container_width=True):
+            if st.button("👁️ Retourner la carte", key="fc_flip", use_container_width=True, type="primary"):
                 st.session_state['fc_show_back'] = True
             
             if st.session_state.get('fc_show_back', False):
-                st.markdown("### ✅ Réponse")
-                st.success(card['back'])
+                st.markdown("""<div style='background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); 
+                                padding: 2rem; border-radius: 12px; color: white; margin: 1rem 0;
+                                box-shadow: 0 4px 6px rgba(0,0,0,0.1);'>
+                    <h3 style='margin:0; color: #c8e6c9;'>✅ Réponse</h3>
+                    <p style='font-size: 1.1rem; margin-top: 0.5rem;'>{}</p>
+                </div>""".format(card['back']), unsafe_allow_html=True)
+                
+                # Référence source si disponible
+                source_ref = card.get('source_ref', '')
+                if source_ref and source_ref.strip():
+                    st.caption(f"📄 Source : {source_ref}")
                 
                 st.markdown("---")
-                st.markdown("**Comment avez-vous répondu ?** *(Note SM-2 : de 0 = oublié à 5 = parfait)*")
+                st.markdown("### Comment avez-vous répondu ?")
+                st.markdown("*(Note SM-2 : évaluez votre maîtrise de cette carte)*")
                 
-                col_q = st.columns(6)
-                labels = ["0 — Oublié", "1 — Vague", "2 — Partiel", "3 — Difficile", "4 — Hésitation", "5 — Parfait"]
-                colors = ["🔴", "🔴", "🟠", "🟡", "🟢", "🟢"]
+                # Boutons avec meilleur design -- 3 colonnes au lieu de 6
+                col_bad, col_mid, col_good = st.columns(3)
                 
-                for qi in range(6):
-                    with col_q[qi]:
-                        if st.button(f"{colors[qi]} {qi}", key=f"fc_q_{qi}", use_container_width=True, help=labels[qi]):
-                            fc_mgr.review_card(card['id'], quality=qi)
+                with col_bad:
+                    st.markdown("##### 🔴 Pas su")
+                    cb1, cb2 = st.columns(2)
+                    with cb1:
+                        if st.button("0 — Oublié", key="fc_q_0", use_container_width=True):
+                            fc_mgr.review_card(card['id'], quality=0)
+                            st.session_state['fc_show_back'] = False
+                            st.session_state['fc_index'] += 1
+                            st.rerun()
+                    with cb2:
+                        if st.button("1 — Vague", key="fc_q_1", use_container_width=True):
+                            fc_mgr.review_card(card['id'], quality=1)
                             st.session_state['fc_show_back'] = False
                             st.session_state['fc_index'] += 1
                             st.rerun()
                 
-                st.caption(" | ".join(labels))
+                with col_mid:
+                    st.markdown("##### 🟡 Hésitant")
+                    cm1, cm2 = st.columns(2)
+                    with cm1:
+                        if st.button("2 — Partiel", key="fc_q_2", use_container_width=True):
+                            fc_mgr.review_card(card['id'], quality=2)
+                            st.session_state['fc_show_back'] = False
+                            st.session_state['fc_index'] += 1
+                            st.rerun()
+                    with cm2:
+                        if st.button("3 — Difficile", key="fc_q_3", use_container_width=True):
+                            fc_mgr.review_card(card['id'], quality=3)
+                            st.session_state['fc_show_back'] = False
+                            st.session_state['fc_index'] += 1
+                            st.rerun()
+                
+                with col_good:
+                    st.markdown("##### 🟢 Bien su")
+                    cg1, cg2 = st.columns(2)
+                    with cg1:
+                        if st.button("4 — Hésitation", key="fc_q_4", use_container_width=True):
+                            fc_mgr.review_card(card['id'], quality=4)
+                            st.session_state['fc_show_back'] = False
+                            st.session_state['fc_index'] += 1
+                            st.rerun()
+                    with cg2:
+                        if st.button("5 — Parfait", key="fc_q_5", use_container_width=True):
+                            fc_mgr.review_card(card['id'], quality=5)
+                            st.session_state['fc_show_back'] = False
+                            st.session_state['fc_index'] += 1
+                            st.rerun()
             
             # Méta de la carte
-            with st.expander("ℹ️ Détails de la carte"):
-                mc1, mc2, mc3 = st.columns(3)
+            with st.expander("ℹ️ Détails SM-2"):
+                mc1, mc2, mc3, mc4 = st.columns(4)
                 with mc1:
                     st.caption(f"Intervalle : {card.get('interval', 1)} jour(s)")
                 with mc2:
-                    st.caption(f"Facilité : {card.get('easiness', 2.5):.2f}")
+                    st.caption(f"Facilité (EF) : {card.get('easiness', 2.5):.2f}")
                 with mc3:
                     st.caption(f"Révisions : {card.get('review_count', 0)}")
+                with mc4:
+                    st.caption(f"Concept : {card.get('concept_name', 'N/A')}")
     
     # ===== ONGLET GÉNÉRER =====
     with tab_generate:

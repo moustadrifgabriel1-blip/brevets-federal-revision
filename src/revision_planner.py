@@ -144,6 +144,18 @@ class RevisionPlannerAuto:
                     if c["importance"] in ["critical", "high"]:
                         prio = "high"
             if session_concepts:
+                # Générer des objectifs concrets basés sur les concepts
+                objectives = []
+                for sc in session_concepts[:3]:
+                    # Objectifs plus précis que "Comprendre X"
+                    if any(c.get("importance") in ["critical", "high"] for c in ordered[concept_index:concept_index+len(session_concepts)] if c["name"] == sc):
+                        objectives.append(f"Maîtriser {sc} (concept prioritaire pour l'examen)")
+                    else:
+                        objectives.append(f"Comprendre et retenir {sc}")
+                
+                if is_weekend:
+                    objectives.append("Faire un quiz de contrôle sur les concepts de la semaine")
+                
                 self.sessions.append(RevisionSession(
                     date=date_str,
                     day_name=self._translate_day(current_date.strftime("%A")),
@@ -154,7 +166,7 @@ class RevisionPlannerAuto:
                     session_type="new_learning",
                     module=ordered[concept_index].get("module"),
                     completed=False,
-                    objectives=[f"Comprendre {session_concepts[0]}"]
+                    objectives=objectives
                 ))
                 concept_index += len(session_concepts)
             current_date += timedelta(days=1)

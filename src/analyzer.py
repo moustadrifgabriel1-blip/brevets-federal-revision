@@ -92,7 +92,25 @@ Critères d'évaluation clés extraits des directives:
         prompt = f"""Tu es un expert en formation professionnelle pour les spécialistes de réseaux énergétiques en Suisse.
 Tu analyses des documents de cours pour le BREVET FÉDÉRAL - Spécialiste de Réseau orientation {self.orientation}.
 
-OBJECTIF: Extraire les concepts clés alignés avec les exigences de l'examen professionnel.
+CONTEXTE MÉTIER — Orientation Énergie :
+Le spécialiste de réseau orientation Énergie travaille sur les RÉSEAUX DE DISTRIBUTION ÉLECTRIQUE :
+- Réseaux moyenne tension (MT, 1-36 kV) et basse tension (BT, 230/400V)
+- Lignes aériennes (supports, conducteurs ACSR, isolateurs) et câbles souterrains (pose, jonctions)
+- Postes de transformation MT/BT
+- Installations de mise à terre et schémas de liaison (TN, TT, IT)
+- Éclairage public (LED, normes EN 13201)
+- Appareillage de protection et de coupure (disjoncteurs, fusibles, DDR, sectionneurs)
+- Technique de mesure (mégohmmètre, boucle de défaut, résistance de terre, réflectométrie TDR)
+- Consignation/déconsignation, 5 règles de sécurité, travaux sous tension (TST)
+- Normes suisses : NIBT, OIBT, OLEI, ESTI, SUVA, EN 50341, SIA 261
+
+OBJECTIF: Extraire les concepts clés PERTINENTS pour un futur spécialiste de réseau orientation Énergie.
+
+VOCABULAIRE TECHNIQUE à identifier en priorité :
+- Termes métier : consignation, déconsignation, sectionneur de terre, DDR, mégohmmètre, réenclencheur, boucle de défaut, sélectivité, coordination des protections
+- Grandeurs physiques : courant de court-circuit (Ik), chute de tension (ΔU), résistance d'isolement, impédance de boucle (Zs), cos φ
+- Équipements : transformateur MT/BT, cellule MT, tableau BT, câble XPE/PVC, conducteur ACSR, isolateur composite
+- Normes clés : NIBT, OIBT, OLEI, ESTI (ordonnances), EN 50341, EN 13201, SIA 261, IEC 60502
 
 DOCUMENT: {filename}
 MODULE: {module or 'Non spécifié'}
@@ -105,28 +123,37 @@ CONTENU DU COURS:
 INSTRUCTIONS:
 1. Identifie les concepts techniques essentiels pour l'orientation {self.orientation}
 2. Priorise les concepts qui correspondent aux critères d'évaluation de l'examen
-3. Pour chaque concept, détermine:
+3. Extrais le VOCABULAIRE TECHNIQUE PRÉCIS (pas de termes vagues ou génériques)
+4. Identifie les VALEURS NUMÉRIQUES CLÉS (seuils, distances, tensions, courants, normes)
+5. Pour chaque concept, détermine:
    - Son importance (critical si mentionné dans directives, high si fondamental, medium si utile, low si secondaire)
    - Les prérequis nécessaires
    - Si le concept est susceptible d'être évalué à l'examen (exam_relevant: true/false)
+   - Les mots-clés TECHNIQUES PRÉCIS (pas de mots génériques comme "important" ou "essentiel")
 
 Réponds en JSON avec cette structure:
 {{
     "concepts": [
         {{
-            "name": "Nom du concept",
-            "description": "Description claire et concise",
-            "category": "Catégorie technique",
+            "name": "Nom TECHNIQUE PRÉCIS du concept (ex: 'Résistance d'isolement' et non 'Mesures')",
+            "description": "Description claire avec les valeurs/seuils/normes si applicable",
+            "category": "Catégorie technique parmi : Électrotechnique, Réseaux de distribution, Sécurité au travail, Normes et réglementation, Technique de mesure, Maintenance, Technique de protection, Gestion de projet, Mise à terre et liaison, Éclairage public, Documentation et plans, Formation professionnelle, Conduite d'équipe",
             "importance": "critical|high|medium|low",
             "exam_relevant": true,
             "prerequisites": ["Concept prérequis 1", "Concept prérequis 2"],
             "related_concepts": ["Concept lié 1", "Concept lié 2"],
-            "key_points": ["Point clé 1", "Point clé 2"],
+            "key_points": ["Point clé 1 avec valeur/norme", "Point clé 2 avec valeur/norme"],
             "page_references": "Pages ou sections où trouver ce concept (ex: p.5-8, Chapitre 2, Section 3.1)",
-            "keywords": ["mot-clé1", "mot-clé2"]
+            "keywords": ["terme-technique-1", "terme-technique-2", "NORME-applicable"]
         }}
     ]
 }}
+
+ANTI-PATTERNS à éviter :
+- NE PAS créer de concepts vagues ("Introduction", "Généralités", "Bases")
+- NE PAS inclure de mots-clés génériques ("important", "essentiel", "fondamental")  
+- NE PAS mélanger plusieurs concepts distincts dans un seul
+- Chaque concept doit être ACTIONNABLE pour la révision
 
 Concentre-toi sur les concepts vraiment importants pour un futur spécialiste de réseaux énergétiques."""
 

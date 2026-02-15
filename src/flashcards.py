@@ -135,35 +135,76 @@ class FlashcardManager:
         return created
 
     def _generate_cards_for_concept(self, concept: Dict) -> List[Dict]:
-        """Génère 1 à 3 flashcards pour un concept donné."""
+        """Génère 2 à 4 flashcards PREMIUM pour un concept donné — orientation Énergie."""
         try:
-            prompt = f"""Génère des flashcards pour réviser ce concept du Brevet Fédéral Spécialiste de Réseau.
+            module = concept.get('module', 'N/A')
+            keywords = concept.get('keywords', [])
+            page_ref = concept.get('page_references', '')
+            source_doc = concept.get('source_document', '')
+
+            # Contexte module enrichi
+            module_context = {
+                "AA01": "Conduite d'équipe sur chantier de réseau",
+                "AA02": "Formation des apprentis électriciens de réseau",
+                "AA03": "Préparation de chantier : plans, matériel, logistique",
+                "AA04": "Gestion de mandat : offre, exécution, facturation",
+                "AA05": "Sécurité : 5 règles, EPI, SUVA, consignation",
+                "AA06": "Contrôle qualité et conformité des travaux",
+                "AA07": "Stratégies de maintenance : préventive, corrective, prédictive",
+                "AA08": "Maintenance des équipements de réseau MT/BT",
+                "AA09": "Électrotechnique : Ohm, Kirchhoff, triphasé, puissances",
+                "AA10": "Mécanique : forces, moments, supports de lignes",
+                "AA11": "Mathématiques appliquées : trigonométrie, géométrie",
+                "AE01": "Étude de projet réseau : dimensionnement, chute de tension",
+                "AE02": "Sécurité sur installations électriques sous tension",
+                "AE03": "Éclairage public : normes EN 13201, LED, lux",
+                "AE04": "Documentation réseaux : SIG/GIS, schémas unifilaires",
+                "AE05": "Mise à terre : piquet, résistance de terre, TN/TT/IT",
+                "AE06": "Exploitation de réseaux MT/BT : manœuvres, perturbations",
+                "AE07": "Technique de mesure : mégohmmètre, boucle de défaut",
+                "AE09": "Protection : fusibles, disjoncteurs, sélectivité, Ik",
+                "AE10": "Maintenance des réseaux : contrôles périodiques, localisation de défauts",
+                "AE11": "Travail de projet : gestion de A à Z, présentation",
+                "AE12": "Lignes souterraines : câbles, jonctions, pose en tranchée",
+                "AE13": "Lignes aériennes : supports, conducteurs ACSR, portées",
+            }.get(module, "Spécialiste de réseau orientation Énergie")
+
+            prompt = f"""Tu es un formateur expert du CIFER pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE (Suisse).
+
+Génère des flashcards de HAUTE QUALITÉ pour mémoriser ce concept technique.
 
 **Concept :** {concept.get('name', 'N/A')}
 **Description :** {concept.get('description', 'N/A')}
-**Module :** {concept.get('module', 'N/A')}
-**Mots-clés :** {', '.join(concept.get('keywords', []))}
+**Module :** {module} — {module_context}
+**Mots-clés techniques :** {', '.join(keywords) if keywords else 'N/A'}
+**Référence cours :** {page_ref if page_ref else 'N/A'}
+**Document source :** {source_doc if source_doc else 'N/A'}
 
-Génère entre 1 et 3 flashcards avec des angles différents :
-- Définition / terme technique
-- Application pratique
-- Règle ou norme à retenir
+Génère entre 2 et 4 flashcards avec des ANGLES DIFFÉRENTS parmi :
+1. **Définition technique précise** — terme métier + définition exacte avec unités/valeurs
+2. **Valeur normative à retenir** — norme (NIBT, ESTI, SUVA, EN) + valeur/seuil/limite
+3. **Application pratique terrain** — situation concrète de travail sur réseau → action/procédure
+4. **Formule ou calcul** — formule avec variables et unités, exemple numérique rapide
+5. **Distinction/comparaison** — différence entre deux concepts souvent confondus
+
+EXIGENCES DE QUALITÉ :
+- Front : question COURTE mais PRÉCISE (1-2 phrases max) — PAS de "Qu'est-ce que..." trop vague
+- Back : réponse COMPLÈTE mais CONCISE (2-5 phrases), avec les VALEURS NUMÉRIQUES et NORMES quand applicable
+- Hint : un seul MOT-CLÉ technique ou début de réponse qui aide sans tout révéler
+- Utiliser le vocabulaire MÉTIER suisse romand (consignation, DDR, mégohmmètre, manœuvre, etc.)
+- Chaque carte doit être AUTONOME (compréhensible sans les autres)
 
 Réponds en JSON strict (liste) :
 [
   {{
-    "front": "Question ou terme à mémoriser (concis)",
-    "back": "Réponse ou définition complète",
-    "hint": "Indice optionnel (un mot-clé ou début de réponse)"
+    "front": "Question technique précise et ciblée",
+    "back": "Réponse complète avec valeurs/normes/formules si applicable",
+    "hint": "Un mot-clé technique ou indice",
+    "card_type": "definition|norme|pratique|formule|comparaison"
   }}
 ]
 
-IMPORTANT :
-- Tout en français
-- Front : court (1-2 phrases max)
-- Back : réponse complète mais concise (2-4 phrases)
-- Hint : un seul mot-clé ou début de phrase
-"""
+IMPORTANT : Tout en français. Niveau professionnel. Pas de carte triviale."""
             response = self.model.generate_content(prompt)
             text = response.text.strip()
 
@@ -179,14 +220,22 @@ IMPORTANT :
             now = datetime.now().isoformat()
             result = []
             for rc in raw_cards:
+                # Validation qualité : rejeter les cartes trop courtes
+                front = rc.get('front', '')
+                back = rc.get('back', '')
+                if len(front) < 15 or len(back) < 20:
+                    continue
+                
                 card = {
                     "id": f"fc_{concept.get('id', 'x')}_{len(self.cards) + len(result)}",
                     "concept_id": concept.get('id'),
                     "concept_name": concept.get('name'),
                     "module": concept.get('module'),
-                    "front": rc.get('front', ''),
-                    "back": rc.get('back', ''),
+                    "front": front,
+                    "back": back,
                     "hint": rc.get('hint', ''),
+                    "card_type": rc.get('card_type', 'definition'),
+                    "source_ref": f"{source_doc} {page_ref}".strip(),
                     # SM-2 state
                     "repetitions": 0,
                     "easiness": 2.5,

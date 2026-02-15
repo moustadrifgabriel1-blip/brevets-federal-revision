@@ -461,12 +461,52 @@ class QuizGenerator:
         return selected
     
     def _weighted_sample(self, concepts: List[Dict], num: int) -> List[Dict]:
-        """Échantillonnage pondéré par importance — les concepts critiques sont choisis plus souvent."""
+        """
+        Échantillonnage pondéré par importance, poids d'examen ET niveau de maîtrise requis.
+        Les concepts DRILL et MAÎTRISER des modules à haut poids d'examen 
+        apparaissent BEAUCOUP plus souvent = stratégie coaching expert.
+        """
         if not concepts or num <= 0:
             return []
         num = min(num, len(concepts))
         
-        weights = [IMPORTANCE_WEIGHTS.get(c.get('importance', 'medium'), 2.0) for c in concepts]
+        # Poids d'examen par module (nb de questions à l'examen)
+        from src.exam_focus import EXAM_WEIGHT
+        
+        # Poids par niveau de maîtrise requis
+        MASTERY_WEIGHT = {
+            "drill": 4.0,       # 4× plus de chances d'apparaître
+            "maitriser": 2.5,   # 2.5× plus de chances
+            "connaitre": 1.5,   # Pondération normale
+            "reconnaitre": 0.5, # Rarement en quiz
+        }
+        
+        # Charger les niveaux de maîtrise
+        try:
+            from src.expert_coach import COMPETENCE_MASTERY
+            mastery_loaded = True
+        except ImportError:
+            mastery_loaded = False
+        
+        weights = []
+        for c in concepts:
+            importance_w = IMPORTANCE_WEIGHTS.get(c.get('importance', 'medium'), 2.0)
+            module = c.get('module', '')
+            exam_w = EXAM_WEIGHT.get(module, 1) / 2.0  # Normaliser (max 3 → 1.5)
+            
+            # Bonus mastery level
+            mastery_w = 1.0
+            if mastery_loaded:
+                mod_data = COMPETENCE_MASTERY.get(module, {})
+                concept_name = c.get('name', '')
+                # Chercher la compétence la plus proche
+                for comp, info in mod_data.get("competences", {}).items():
+                    if any(kw.lower() in concept_name.lower() for kw in comp.lower().split()[:2]):
+                        mastery_w = MASTERY_WEIGHT.get(info.get("level", "connaitre"), 1.0)
+                        break
+            
+            # Poids combiné : importance × poids examen × mastery
+            weights.append(importance_w * exam_w * mastery_w)
         
         selected = []
         remaining = list(range(len(concepts)))
@@ -592,7 +632,8 @@ Type : {type_label}
         used_formats = {t: format_examples[t] for t in set(assigned_types) if t in format_examples}
         formats_text = '\n'.join([f"  {t}: {fmt}" for t, fmt in used_formats.items()])
         
-        prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau (orientation Énergie) en Suisse.
+        prompt = f"""Tu es un examinateur expert et sévère pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE, en Suisse.
+Cet examen certifie des professionnels qui travaillent sur les réseaux de DISTRIBUTION D'ÉLECTRICITÉ (MT/BT) : lignes aériennes, câbles souterrains, postes de transformation, installations de mise à terre, éclairage public, protections de réseau.
 
 Génère EXACTEMENT {len(concepts)} questions d'examen professionnel variées et de haute qualité.
 
@@ -602,18 +643,21 @@ VOICI LES {len(concepts)} CONCEPTS À ÉVALUER (avec le type de question demand�
 
 {all_concepts_text}
 
-CONSIGNES PREMIUM :
+CONSIGNES PREMIUM (OBLIGATOIRES) :
 1. Chaque question doit être TECHNIQUE, CONCRÈTE et de niveau EXAMEN PROFESSIONNEL
-2. JAMAIS de question vague du type "Que représente le concept X ?"
-3. Les QCM doivent avoir 4 distracteurs PLAUSIBLES (erreurs courantes de candidats)
-4. Les mises en situation doivent décrire un scénario de TERRAIN réaliste
-5. Les calculs doivent inclure TOUTES les données nécessaires et des valeurs RÉALISTES
-6. Chaque question DOIT inclure un champ "hint" : un INDICE subtil qui aide sans donner la réponse
-7. Les explications doivent CITER les normes applicables (ESTI, NIBT, SUVA, EN)
-8. Pas de doublons entre les questions !
-9. Pour les QCM : correct_answer = INDEX (0-3)
-10. Pour les vrai/faux : correct_answer = true ou false (booléen)
-11. Pour les calculs : correct_answer = nombre (pas de texte)
+2. JAMAIS de question vague du type "Que représente le concept X ?" ou "Définissez..."
+3. Privilégier les questions qui testent la COMPRÉHENSION et l'APPLICATION, pas la mémorisation pure
+4. Les QCM doivent avoir 4 distracteurs PLAUSIBLES (erreurs courantes de candidats) — les options doivent être de longueur SIMILAIRE
+5. Les mises en situation doivent décrire un scénario de TERRAIN réaliste avec des détails concrets (tensions, équipements, conditions météo, etc.)
+6. Les calculs doivent inclure TOUTES les données nécessaires, des valeurs RÉALISTES suisses, et l'unité attendue
+7. Chaque question DOIT inclure un champ "hint" : un INDICE subtil qui aide sans donner la réponse (ex: règle de sécurité, formule, norme concernée)
+8. Les explications doivent CITER les normes suisses applicables (ESTI, NIBT, OIBT, OLEI, SUVA, EN 50341, EN 13201, SIA 261)
+9. Utiliser le VOCABULAIRE MÉTIER suisse romand (ex: consignation, déconsignation, sectionneur de terre, DDR, manoœuvre, etc.)
+10. Pas de doublons entre les questions !
+11. Pour les QCM : correct_answer = INDEX (0-3)
+12. Pour les vrai/faux : correct_answer = true ou false (booléen)
+13. Pour les calculs : correct_answer = nombre (pas de texte)
+14. Les questions doivent TOUJOURS être contextualisées dans le domaine des RÉSEAUX DE DISTRIBUTION ÉLECTRIQUE
 
 FORMATS JSON par type :
 {formats_text}
@@ -815,7 +859,7 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
         """Génère une question QCM — prompt enrichi avec contexte complet."""
         try:
             context = self._build_concept_context(concept)
-            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau (orientation Énergie) en Suisse.
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE (réseaux de distribution électrique MT/BT) en Suisse.
 
 Génère UNE question à choix multiples (QCM) de niveau examen professionnel.
 
@@ -823,12 +867,13 @@ Génère UNE question à choix multiples (QCM) de niveau examen professionnel.
 **Niveau de difficulté :** {difficulty}
 
 CONSIGNES :
-1. La question doit porter sur un aspect CONCRET et TECHNIQUE du concept
-2. Utilise les mots-clés techniques fournis dans ta question ou tes options
-3. Les 4 distracteurs doivent être PLAUSIBLES (erreurs courantes de candidats)
+1. La question doit porter sur un aspect CONCRET et TECHNIQUE du concept (valeurs, procédures, normes suisses)
+2. Utilise les mots-clés techniques fournis dans la question ou les options
+3. Les 4 distracteurs doivent être PLAUSIBLES (erreurs courantes de candidats sur le terrain)
 4. Les options doivent être de longueur similaire
-5. L'explication doit citer la règle/norme/formule applicable
-6. Pas de question vague du type "Que représente le concept X ?"
+5. L'explication doit citer la norme/règle/formule applicable (NIBT, ESTI, OIBT, SUVA, EN 50341, etc.)
+6. Pas de question vague du type "Que représente le concept X ?" — tester la COMPRÉHENSION
+7. Utiliser le vocabulaire métier suisse (consignation, sectionneur, DDR, etc.)
 
 Réponds UNIQUEMENT en JSON strict :
 {{
@@ -853,7 +898,7 @@ IMPORTANT : correct_answer = INDEX (0-3) de la bonne réponse. Tout en français
         """Génère une question Vrai/Faux — affirmation technique précise."""
         try:
             context = self._build_concept_context(concept)
-            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE (réseaux de distribution électrique MT/BT) en Suisse.
 
 Génère UNE affirmation VRAI ou FAUX de niveau examen professionnel.
 
@@ -861,13 +906,14 @@ Génère UNE affirmation VRAI ou FAUX de niveau examen professionnel.
 **Niveau de difficulté :** {difficulty}
 
 CONSIGNES :
-1. L'affirmation doit porter sur un FAIT TECHNIQUE PRÉCIS (valeur, norme, règle, procédure)
-2. Si l'affirmation est FAUSSE, elle doit contenir une erreur subtile mais identifiable
+1. L'affirmation doit porter sur un FAIT TECHNIQUE PRÉCIS (valeur numérique, norme suisse, règle, procédure)
+2. Si l'affirmation est FAUSSE, elle doit contenir une erreur subtile mais identifiable par un spécialiste
 3. Exemples de bonnes affirmations :
-   - "La tension de contact maximale admissible en milieu sec est de 50V selon la NIBT"
+   - "La tension de contact maximale admissible en milieu sec est de 50V selon la NIBT" (VRAI)
    - "En régime TN-C, le conducteur PEN peut avoir une section inférieure à 10mm²" (FAUX)
+   - "La distance de sécurité pour les travaux à proximité d'une ligne 16 kV est de 1 mètre" (FAUX — c'est 3m)
 4. Évite les affirmations vagues ou évidentes
-5. L'explication doit préciser la valeur/règle correcte
+5. L'explication doit préciser la valeur/règle CORRECTE avec référence normative
 
 Réponds UNIQUEMENT en JSON strict :
 {{
@@ -893,7 +939,7 @@ IMPORTANT : correct_answer est un booléen (true ou false). En français."""
             keywords = concept.get('keywords', [])
             keywords_hint = f"\nMots-clés techniques à cibler pour le trou : {', '.join(keywords)}" if keywords else ""
             
-            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE (réseaux de distribution électrique MT/BT) en Suisse.
 
 Génère UNE question à TEXTE À TROUS de niveau examen professionnel.
 
@@ -902,13 +948,15 @@ Génère UNE question à TEXTE À TROUS de niveau examen professionnel.
 **Niveau de difficulté :** {difficulty}
 
 CONSIGNES :
-1. La phrase doit être une définition ou une règle technique IMPORTANTE
-2. Le mot à trouver doit être un TERME TECHNIQUE CLÉ (pas un mot courant)
+1. La phrase doit être une définition, règle technique ou formule IMPORTANTE pour un spécialiste de réseau
+2. Le mot à trouver doit être un TERME TECHNIQUE CLÉ du métier (pas un mot courant)
 3. La phrase seule (avec le trou) doit donner assez de contexte pour deviner
 4. Exemples :
    - "L'appareil qui mesure la résistance d'isolement s'appelle un _____." → mégohmmètre
-   - "La règle de sécurité n°1 est : _____ et vérifier l'absence de tension." → déclencher/consigner
+   - "La règle de sécurité n°1 est : _____ et vérifier l'absence de tension." → consigner/déclencher
+   - "Le schéma de liaison où le neutre est relié directement à la terre s'appelle le régime _____." → TN
 5. Le mot à trouver doit faire partie des mots-clés du concept si possible
+6. Privilégier le vocabulaire métier suisse romand
 
 Réponds UNIQUEMENT en JSON strict :
 {{
@@ -945,7 +993,7 @@ IMPORTANT : Le trou = _____. Le mot doit être technique et important. En franç
             }
             hint = calcul_hints.get(module, "Calculs techniques appliqués aux réseaux électriques")
             
-            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE (réseaux de distribution électrique MT/BT) en Suisse.
 
 Génère UNE question de CALCUL de niveau examen professionnel.
 
@@ -954,13 +1002,14 @@ Génère UNE question de CALCUL de niveau examen professionnel.
 **Type de calcul attendu :** {hint}
 
 CONSIGNES :
-1. L'énoncé doit donner TOUTES les données numériques nécessaires
-2. Le calcul doit correspondre à une situation RÉELLE de travail sur réseau
-3. Les valeurs doivent être RÉALISTES (pas de valeurs absurdes)
-4. L'explication doit montrer CHAQUE ÉTAPE de calcul
+1. L'énoncé doit donner TOUTES les données numériques nécessaires (tension, courant, section, longueur, résistivité, etc.)
+2. Le calcul doit correspondre à une situation RÉELLE de travail sur réseau de distribution en Suisse
+3. Les valeurs doivent être RÉALISTES (tensions 230/400V, 16kV, sections normalisées, courants pratiques)
+4. L'explication doit montrer CHAQUE ÉTAPE de calcul avec les formules utilisées
 5. Exemples de bonnes questions :
    - "Un câble de 120m alimente une charge de 45A en monophasé 230V. Section 6mm² (ρ=0.0175 Ω·mm²/m). Calculer la chute de tension."
-   - "Trois résistances de 100Ω, 220Ω et 470Ω sont en parallèle. Calculer la résistance équivalente."
+   - "Calculer le courant de court-circuit au bout d'un câble..."
+   - "Déterminer la puissance réactive d'un moteur triphasé 400V, 25A, cos φ = 0.85"
 
 Réponds UNIQUEMENT en JSON strict :
 {{
@@ -1009,7 +1058,7 @@ IMPORTANT : correct_answer = valeur numérique. tolerance = marge relative (0.02
             }
             hint = scenario_hints.get(module, "Scénario professionnel réaliste sur un chantier de réseau électrique")
             
-            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau en Suisse.
+            prompt = f"""Tu es un examinateur expert pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE (réseaux de distribution électrique MT/BT) en Suisse.
 
 Génère UNE question de MISE EN SITUATION de niveau examen professionnel.
 
@@ -1018,14 +1067,14 @@ Génère UNE question de MISE EN SITUATION de niveau examen professionnel.
 **Type de situation :** {hint}
 
 CONSIGNES :
-1. Le scénario doit décrire une situation de terrain CONCRÈTE et RÉALISTE (2-3 phrases)
-2. Le scénario doit inclure des détails spécifiques (type d'installation, conditions, etc.)
+1. Le scénario doit décrire une situation de terrain CONCRÈTE et RÉALISTE en Suisse (2-3 phrases)
+2. Inclure des détails spécifiques : type d'installation (poste MT/BT, ligne aérienne, câble souterrain), niveau de tension (16kV, 400V, 230V), conditions (intérieur/extérieur, météo), équipe
 3. Les 4 options doivent être des ACTIONS concrètes que le professionnel pourrait entreprendre
-4. La mauvaise réponse la plus tentante doit être une erreur courante commise par les candidats
-5. L'explication doit référencer la norme ou bonne pratique applicable
+4. La mauvaise réponse la plus tentante doit être une ERREUR COURANTE commise par les candidats
+5. L'explication doit référencer la norme ou bonne pratique applicable (ESTI, SUVA, NIBT, OIBT, OLEI)
 6. Exemples de bons scénarios :
    - "Vous arrivez sur un chantier où un poste de transformation 16kV/400V doit être contrôlé. Le disjoncteur MT est ouvert mais le sectionneur de terre n'est pas enclenché..."
-   - "Un apprenti s'apprête à intervenir sur un coffret de distribution BT sans avoir vérifié l'absence de tension..."
+   - "Lors de la pose d'un câble souterrain, votre équipe découvre un câble non répertorié sur les plans SIG..."
 
 Réponds UNIQUEMENT en JSON strict :
 {{
