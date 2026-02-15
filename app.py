@@ -2961,10 +2961,16 @@ elif page == "📆 Planning Révisions":
                     x=today_str,
                     line_dash='dash',
                     line_color='#FF5722',
-                    line_width=2,
-                    annotation_text='Aujourd\'hui',
-                    annotation_position='top',
-                    annotation_font_color='#FF5722'
+                    line_width=2
+                )
+                fig_progress.add_annotation(
+                    x=today_str,
+                    y=1,
+                    yref='paper',
+                    text='Aujourd\'hui',
+                    showarrow=False,
+                    font=dict(color='#FF5722'),
+                    yshift=10
                 )
                 
                 # Jalons
@@ -2975,10 +2981,16 @@ elif page == "📆 Planning Révisions":
                         fig_progress.add_vline(
                             x=milestone_date_str,
                             line_dash='dot',
-                            line_color='rgba(0,0,0,0.2)',
-                            annotation_text=m.get('name', ''),
-                            annotation_position='top',
-                            annotation_font_size=10
+                            line_color='rgba(0,0,0,0.2)'
+                        )
+                        fig_progress.add_annotation(
+                            x=milestone_date_str,
+                            y=1,
+                            yref='paper',
+                            text=m.get('name', ''),
+                            showarrow=False,
+                            font=dict(size=10),
+                            yshift=10
                         )
                     except Exception:
                         pass
