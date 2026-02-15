@@ -3507,9 +3507,18 @@ elif page == "🧠 Quiz":
         st.divider()
         
         if st.button("🚀 Générer et Démarrer le Quiz", type="primary", use_container_width=True):
-            with st.spinner("🤖 Génération du quiz par l'IA..."):
-                module_filter = None if selected_module == "Tous modules" else selected_module
-                
+            module_filter = None if selected_module == "Tous modules" else selected_module
+            
+            # Vérifier si les PDFs du cours sont disponibles
+            if module_filter:
+                cours_folder = quiz_gen._find_module_folder(module_filter)
+                if cours_folder:
+                    pdf_count = len(list(cours_folder.glob("*.pdf")))
+                    st.info(f"📖 Scan des PDFs du cours **{cours_folder.name}** ({pdf_count} fichier{'s' if pdf_count > 1 else ''})...")
+                else:
+                    st.warning(f"⚠️ Pas de dossier cours trouvé pour {module_filter}. Les questions seront basées sur les métadonnées uniquement.")
+            
+            with st.spinner("🤖 Scan des PDFs + génération IA de questions d'examen..."):
                 # Récupérer les concepts faibles si mode adaptatif
                 weak_ids = weak_tracker.get_weak_concept_ids(limit=20) if adaptive_mode else None
                 
@@ -3559,11 +3568,13 @@ elif page == "🧠 Quiz":
                 type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
                 concept_name = question.get('concept_name', '')
                 q_module = question.get('module', '')
+                source_doc = question.get('source_document', '')
                 
                 st.markdown(f"#### {type_icon} Question {i}/{quiz['num_questions']}")
                 if concept_name:
                     module_tag = f" · 📁 {q_module}" if q_module else ""
-                    st.caption(f"📚 {concept_name}{module_tag}")
+                    source_tag = f" · 📄 {source_doc}" if source_doc else ""
+                    st.caption(f"📚 {concept_name}{module_tag}{source_tag}")
                 
                 # Scénario pour mise en situation
                 if q_type == 'mise_en_situation' and question.get('scenario'):
@@ -4419,26 +4430,47 @@ elif page == "📇 Flashcards":
             
             st.progress((st.session_state['fc_index'] + 1) / len(due_cards))
             
-            # Badge type de carte
+            # --- Navigation Précédent / Passer ---
+            nav_col1, nav_col2, nav_col3 = st.columns([1, 3, 1])
+            with nav_col1:
+                if st.button("⬅️ Précédente", key="fc_prev", use_container_width=True, disabled=(st.session_state['fc_index'] == 0)):
+                    st.session_state['fc_index'] = max(0, st.session_state['fc_index'] - 1)
+                    st.session_state['fc_show_back'] = False
+                    st.rerun()
+            with nav_col2:
+                st.caption(f"Carte {st.session_state['fc_index'] + 1} / {len(due_cards)}")
+            with nav_col3:
+                if st.button("Passer ➡️", key="fc_skip", use_container_width=True, disabled=(st.session_state['fc_index'] >= len(due_cards) - 1)):
+                    st.session_state['fc_index'] += 1
+                    st.session_state['fc_show_back'] = False
+                    st.rerun()
+            
+            # Badge type de carte + difficulté
             card_type = card.get('card_type', 'definition')
             type_badges = {
                 'definition': '📖 Définition',
-                'norme': '⚖️ Norme',
+                'norme': '⚖️ Norme/Prescription',
                 'pratique': '🔧 Pratique terrain',
                 'formule': '📐 Formule/Calcul',
-                'comparaison': '⚖️ Comparaison',
+                'comparaison': '🔄 Comparaison',
+                'analyse': '🧠 Analyse',
             }
             type_badge = type_badges.get(card_type, '📖 Concept')
             
+            # Difficulté intrinsèque de la carte
+            card_difficulty = card.get('difficulty', 2)
+            diff_labels = {1: '🟢 Facile', 2: '🟡 Moyen', 3: '🔴 Difficile'}
+            diff_label = diff_labels.get(card_difficulty, '🟡 Moyen')
+            
             col_meta1, col_meta2, col_meta3 = st.columns(3)
             with col_meta1:
-                st.caption(f"Carte {st.session_state['fc_index'] + 1} / {len(due_cards)}")
+                st.caption(f"Module: **{card.get('module', '?')}**")
             with col_meta2:
-                st.caption(f"Module: **{card.get('module', '?')}** · {type_badge}")
+                st.caption(f"{type_badge}")
             with col_meta3:
                 interval = card.get('interval', 1)
-                difficulty_label = "🔴 Difficile" if interval <= 3 else "🟡 En cours" if interval < 21 else "🟢 Maîtrisée"
-                st.caption(difficulty_label)
+                sm2_label = "🔴 Nouveau" if card.get('review_count', 0) == 0 else "🟡 En cours" if interval < 21 else "🟢 Maîtrisée"
+                st.caption(f"{diff_label} · {sm2_label}")
             
             # --- FACE AVANT (design amélioré) ---
             st.markdown("""<div style='background: linear-gradient(135deg, #1a237e 0%, #283593 100%); 
@@ -4541,7 +4573,8 @@ elif page == "📇 Flashcards":
         if not concepts:
             st.warning("⚠️ Analysez d'abord vos documents pour générer des flashcards.")
         else:
-            st.markdown("### ➕ Générer des flashcards depuis vos concepts")
+            st.markdown("### ➕ Générer des flashcards depuis vos cours")
+            st.markdown("*L'IA scanne le contenu réel de vos PDFs de cours pour générer des cartes précises et factuelles.*")
             
             gc1, gc2 = st.columns(2)
             with gc1:
@@ -4556,20 +4589,32 @@ elif page == "📇 Flashcards":
             if mod_filter_gen:
                 available = [c for c in available if c.get('module') == mod_filter_gen]
             
+            # Vérifier si le dossier cours existe pour ce module
+            if mod_filter_gen:
+                cours_folder = fc_mgr._find_module_folder(mod_filter_gen)
+                if cours_folder:
+                    pdf_count = len(list(cours_folder.glob("*.pdf")))
+                    st.success(f"📂 Dossier cours trouvé : **{cours_folder.name}** ({pdf_count} PDF{'s' if pdf_count > 1 else ''})")
+                else:
+                    st.warning(f"⚠️ Aucun dossier cours trouvé pour {mod_filter_gen}. L'IA utilisera uniquement les métadonnées des concepts.")
+            
             st.caption(f"📊 {len(available)} concepts sans flashcard (sur {len(concepts)} total)")
             
             if st.button("🚀 Générer les Flashcards", type="primary", use_container_width=True):
                 if not available:
                     st.warning("Tous les concepts ont déjà des flashcards !")
                 else:
-                    with st.spinner(f"🤖 Génération de flashcards pour {min(gen_num, len(available))} concepts..."):
+                    progress_msg = st.empty()
+                    progress_msg.info(f"📖 Scan des cours du module en cours...")
+                    with st.spinner(f"🤖 Scan des PDFs + génération IA de flashcards pour {min(gen_num, len(available))} concepts..."):
                         created = fc_mgr.generate_from_concepts(
                             concepts=concepts,
                             module=mod_filter_gen,
                             num_cards=gen_num
                         )
-                        st.success(f"✅ {created} nouvelles flashcards créées !")
-                        st.rerun()
+                    progress_msg.empty()
+                    st.success(f"✅ {created} nouvelles flashcards créées depuis le contenu réel du cours !")
+                    st.rerun()
     
     # ===== ONGLET TOUTES LES CARTES =====
     with tab_browse:

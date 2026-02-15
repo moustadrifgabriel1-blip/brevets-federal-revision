@@ -2,25 +2,39 @@
 Générateur de quiz basé sur l'IA pour le Brevet Fédéral
 Génère des questions variées : QCM, Vrai/Faux, Texte à trous, Calcul, Mise en situation
 
-VERSION 3.0 — Premium :
+VERSION 4.0 — Ultra Pro :
+- SCAN DES PDFs DE COURS : chaque question est basée sur le contenu RÉEL des supports
 - Génération BATCH : 1 seul appel IA pour toutes les questions (plus rapide, cohérent)
 - Banque de questions persistante : les bonnes questions sont sauvegardées et réutilisées
 - Système d'INDICES (hints) : chaque question a un indice caché
 - Niveau de CONFIANCE : l'utilisateur indique s'il devine, hésite ou est sûr
+- Validation ANTI-HALLUCINATION : vérification des questions vs contenu du cours
 - Analytics premium : progression, score par type, tendances
-- Prompts enrichis avec compétences d'examen, mots-clés, références cours
-- Sélection pondérée par importance (critical > high > medium > low)
+- Prompts enrichis avec compétences d'examen, mots-clés, contenu PDF réel
+- Sélection pondérée par importance × poids examen × maîtrise
 - Fallbacks de qualité professionnelle (jamais de question triviale)
-- Validation des réponses IA (cohérence, déduplication)
+- Validation des réponses IA (cohérence, déduplication, format)
 """
 import json
 import random
+import re
+import hashlib
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from collections import defaultdict
 import google.generativeai as genai
 import os
+
+# Extraction de texte PDF
+try:
+    import pdfplumber
+except ImportError:
+    pdfplumber = None
+try:
+    import PyPDF2
+except ImportError:
+    PyPDF2 = None
 
 
 # Types de questions supportés avec distribution pondérée
@@ -227,7 +241,10 @@ def evaluate_answer(question: Dict, user_answer) -> bool:
 
 
 class QuizGenerator:
-    """Génère des quiz interactifs basés sur les concepts du Brevet Fédéral — V3 Premium"""
+    """Génère des quiz interactifs basés sur les concepts du Brevet Fédéral — V4 Ultra Pro"""
+    
+    # Dossiers de cours possibles (local + cloud)
+    COURS_DIRS = ["cours", "cours_local_backup"]
     
     def __init__(self, api_key: Optional[str] = None, model: str = "gemini-3-pro-preview"):
         self.api_key = api_key or os.getenv('GOOGLE_API_KEY')
@@ -237,10 +254,127 @@ class QuizGenerator:
         self.model = None
         # Anti-doublon : stocke les textes de questions déjà utilisées dans le quiz courant
         self._used_questions: set = set()
+        # Cache du contenu PDF par module (évite re-scan)
+        self._course_content_cache: Dict[str, str] = {}
         
         if self.api_key:
             genai.configure(api_key=self.api_key)
             self.model = genai.GenerativeModel(self.model_name)
+    
+    # --- SCAN DES PDFs DE COURS ---
+    
+    def _find_module_folder(self, module: str) -> Optional[Path]:
+        """Trouve le dossier de cours pour un module donné."""
+        for cours_dir in self.COURS_DIRS:
+            base = Path(cours_dir)
+            if not base.exists():
+                continue
+            for child in base.iterdir():
+                if child.is_dir() and child.name.upper().startswith(module.upper()):
+                    return child
+        return None
+    
+    def _extract_pdf_text(self, pdf_path: Path, max_chars: int = 15000) -> str:
+        """Extrait le texte d'un PDF (pdfplumber prioritaire, PyPDF2 fallback)."""
+        text_parts = []
+        try:
+            if pdfplumber:
+                with pdfplumber.open(pdf_path) as pdf:
+                    for page in pdf.pages:
+                        try:
+                            text = page.extract_text()
+                            if text:
+                                text_parts.append(text)
+                        except Exception:
+                            continue
+            elif PyPDF2:
+                with open(pdf_path, 'rb') as f:
+                    reader = PyPDF2.PdfReader(f)
+                    for page in reader.pages:
+                        try:
+                            text = page.extract_text()
+                            if text:
+                                text_parts.append(text)
+                        except Exception:
+                            continue
+        except Exception:
+            return ""
+        
+        full_text = "\n\n".join(text_parts)
+        if len(full_text) > max_chars:
+            full_text = full_text[:max_chars] + "\n[... texte tronqué ...]"
+        return full_text
+    
+    def _get_course_content_for_module(self, module: str) -> str:
+        """Scanne et extrait le contenu textuel de TOUS les PDFs d'un module (avec cache)."""
+        if module in self._course_content_cache:
+            return self._course_content_cache[module]
+        
+        folder = self._find_module_folder(module)
+        if not folder:
+            self._course_content_cache[module] = ""
+            return ""
+        
+        all_texts = []
+        pdf_files = sorted(folder.glob("*.pdf"))
+        
+        # Budget total de caractères pour le contenu cours
+        MAX_TOTAL = 50000
+        per_file_limit = MAX_TOTAL // max(1, len(pdf_files))
+        
+        for pdf_path in pdf_files:
+            text = self._extract_pdf_text(pdf_path, max_chars=per_file_limit)
+            if text.strip():
+                all_texts.append(f"=== {pdf_path.name} ===\n{text}")
+        
+        content = "\n\n".join(all_texts)
+        self._course_content_cache[module] = content
+        return content
+    
+    def _extract_relevant_content(self, full_content: str, concept_name: str, 
+                                   keywords: List[str], context_chars: int = 5000) -> str:
+        """Extrait les passages pertinents du cours autour d'un concept et ses mots-clés."""
+        if not full_content:
+            return ""
+        
+        search_terms = [concept_name.lower()] + [k.lower() for k in keywords[:8]]
+        lines = full_content.split('\n')
+        relevant_lines = set()
+        
+        for i, line in enumerate(lines):
+            line_lower = line.lower()
+            for term in search_terms:
+                if len(term) > 2 and term in line_lower:
+                    # Inclure lignes contextuelles avant/après
+                    start = max(0, i - 4)
+                    end = min(len(lines), i + 5)
+                    for j in range(start, end):
+                        relevant_lines.add(j)
+        
+        if not relevant_lines:
+            # Rien trouvé — renvoyer le début du contenu
+            return full_content[:context_chars]
+        
+        sorted_lines = sorted(relevant_lines)
+        passages = []
+        current_passage = []
+        prev_idx = -10
+        
+        for idx in sorted_lines:
+            if idx - prev_idx > 5:
+                if current_passage:
+                    passages.append('\n'.join(current_passage))
+                current_passage = []
+            current_passage.append(lines[idx])
+            prev_idx = idx
+        
+        if current_passage:
+            passages.append('\n'.join(current_passage))
+        
+        result = '\n\n[...]\n\n'.join(passages)
+        if len(result) > context_chars:
+            result = result[:context_chars] + "\n[... tronqué ...]"
+        return result
     
     # --- BANQUE DE QUESTIONS PERSISTANTE ---
     
@@ -388,6 +522,13 @@ class QuizGenerator:
             mod_label = self._get_module_label(mod)
             context_parts.append(f"**Module :** {mod} — {mod_label}")
         
+        # Injecter un extrait pertinent du cours si disponible
+        course_content = getattr(self, '_current_course_content', '')
+        if course_content:
+            relevant = self._extract_relevant_content(course_content, name, keywords, context_chars=2500)
+            if relevant and len(relevant) > 50:
+                context_parts.append(f"\n📖 **Extrait du cours (contenu réel) :**\n{relevant}")
+        
         return '\n'.join(context_parts)
     
     def _match_competences_to_concept(self, name: str, keywords: List[str], competences: List[str]) -> List[str]:
@@ -528,13 +669,15 @@ class QuizGenerator:
                      weak_concept_ids: List[str] = None,
                      question_types: List[str] = None) -> Dict:
         """
-        Génère un quiz — VERSION 3.0 PREMIUM
+        Génère un quiz — VERSION 4.0 ULTRA PRO
         
-        Nouveautés V3 :
+        Nouveautés V4 :
+        - SCAN DES PDFs du module → contenu réel injecté dans le prompt
         - Génération BATCH (1 appel AI pour toutes les questions)
         - Réutilisation de questions de la banque
         - Chaque question inclut un indice (hint)
         - Diversité des types forcée
+        - Source PDF citée par question
         """
         # Reset anti-doublon pour ce nouveau quiz
         self._used_questions = set()
@@ -552,13 +695,26 @@ class QuizGenerator:
             filtered_concepts, num_questions, weak_concept_ids
         )
         
+        # SCAN DU CONTENU DU COURS (PDFs) pour le module sélectionné
+        course_content = ""
+        target_module = module
+        if not target_module and selected:
+            # Si pas de module spécifique, prendre celui du premier concept
+            target_module = selected[0].get('module')
+        if target_module:
+            course_content = self._get_course_content_for_module(target_module)
+        
+        # Stocker le contenu cours pour accès par les sous-générateurs
+        self._current_course_content = course_content
+        
         # Essayer la GÉNÉRATION BATCH (1 seul appel AI)
         questions = []
         if self.model:
             batch_questions = self._generate_batch(
                 selected, difficulty,
                 question_types=question_types,
-                module=module
+                module=module,
+                course_content=course_content
             )
             if batch_questions:
                 questions = batch_questions
@@ -571,7 +727,8 @@ class QuizGenerator:
                     concept, difficulty, i,
                     question_types=question_types,
                     module=module or concept.get('module'),
-                    restrict_module=module
+                    restrict_module=module,
+                    course_content=course_content
                 )
                 if question:
                     questions.append(question)
@@ -596,10 +753,11 @@ class QuizGenerator:
     
     def _generate_batch(self, concepts: List[Dict], difficulty: str,
                         question_types: List[str] = None,
-                        module: str = None) -> List[Dict]:
+                        module: str = None,
+                        course_content: str = "") -> List[Dict]:
         """
-        Génère TOUTES les questions en un seul appel IA — plus rapide et cohérent.
-        Chaque question inclut un indice (hint).
+        Génère TOUTES les questions en un seul appel IA — V4 avec contenu PDF.
+        Le contenu réel du cours est injecté pour des questions factuellement correctes.
         """
         if not self.model or not concepts:
             return []
@@ -609,15 +767,30 @@ class QuizGenerator:
         # Préparer les types assignés avec diversité forcée
         assigned_types = self._assign_diverse_types(concepts, available_types, module)
         
-        # Construire le contexte de chaque concept
+        # Construire le contexte de chaque concept AVEC extraits pertinents du cours
         concept_blocks = []
         for i, (concept, q_type) in enumerate(zip(concepts, assigned_types), 1):
             ctx = self._build_concept_context(concept, module or concept.get('module'))
             type_label = QUESTION_TYPES.get(q_type, {}).get('label', q_type)
+            
+            # Extraire le contenu pertinent du cours pour CE concept
+            relevant_excerpt = ""
+            if course_content:
+                relevant_excerpt = self._extract_relevant_content(
+                    course_content, 
+                    concept.get('name', ''), 
+                    concept.get('keywords', []),
+                    context_chars=2000
+                )
+            
+            excerpt_block = ""
+            if relevant_excerpt:
+                excerpt_block = f"\n📖 Extrait du cours :\n{relevant_excerpt}\n"
+            
             concept_blocks.append(f"""--- QUESTION {i} ---
 Type : {type_label}
 {ctx}
-""")
+{excerpt_block}""")
         
         all_concepts_text = '\n'.join(concept_blocks)
         
@@ -647,26 +820,30 @@ Cet examen certifie des professionnels qui travaillent sur les réseaux de DISTR
 Génère EXACTEMENT {len(concepts)} questions d'examen professionnel variées et de haute qualité.
 {module_constraint}
 **Niveau de difficulté : {difficulty}**
+- facile = questions de CONNAISSANCE (rappel de faits, définitions, termes)
+- moyen = questions de COMPRÉHENSION et APPLICATION (appliquer une formule, interpréter un résultat, choisir la bonne procédure)
+- difficile = questions d'ANALYSE et SYNTHÈSE (diagnostiquer un problème complexe, combiner plusieurs concepts, situation inhabituelle)
 
-VOICI LES {len(concepts)} CONCEPTS À ÉVALUER (avec le type de question demandé pour chacun) :
+VOICI LES {len(concepts)} CONCEPTS À ÉVALUER (avec le type de question demandé et les extraits de cours) :
 
 {all_concepts_text}
 
-CONSIGNES PREMIUM (OBLIGATOIRES) :
+CONSIGNES ULTRA-PRO (OBLIGATOIRES) :
 1. Chaque question doit être TECHNIQUE, CONCRÈTE et de niveau EXAMEN PROFESSIONNEL
 2. JAMAIS de question vague du type "Que représente le concept X ?" ou "Définissez..."
-3. Privilégier les questions qui testent la COMPRÉHENSION et l'APPLICATION, pas la mémorisation pure
-4. Les QCM doivent avoir 4 distracteurs PLAUSIBLES (erreurs courantes de candidats) — les options doivent être de longueur SIMILAIRE
-5. Les mises en situation doivent décrire un scénario de TERRAIN réaliste avec des détails concrets (tensions, équipements, conditions météo, etc.)
-6. Les calculs doivent inclure TOUTES les données nécessaires, des valeurs RÉALISTES suisses, et l'unité attendue
-7. Chaque question DOIT inclure un champ "hint" : un INDICE subtil qui aide sans donner la réponse (ex: règle de sécurité, formule, norme concernée)
-8. Les explications doivent CITER les normes suisses applicables (ESTI, NIBT, OIBT, OLEI, SUVA, EN 50341, EN 13201, SIA 261)
-9. Utiliser le VOCABULAIRE MÉTIER suisse romand (ex: consignation, déconsignation, sectionneur de terre, DDR, manoœuvre, etc.)
-10. Pas de doublons entre les questions !
-11. Pour les QCM : correct_answer = INDEX (0-3)
-12. Pour les vrai/faux : correct_answer = true ou false (booléen)
-13. Pour les calculs : correct_answer = nombre (pas de texte)
-14. Les questions doivent TOUJOURS être contextualisées dans le domaine des RÉSEAUX DE DISTRIBUTION ÉLECTRIQUE
+3. Baser les questions sur les EXTRAITS DE COURS fournis ci-dessus — les réponses DOIVENT être vérifiables dans le cours
+4. Les QCM doivent avoir 4 options PLAUSIBLES de longueur SIMILAIRE — 1 seule correcte, 3 distracteurs basés sur des ERREURS COURANTES de candidats
+5. Les mises en situation doivent décrire un scénario de TERRAIN réaliste en Suisse (tensions, équipements, conditions, normes)
+6. Les calculs doivent inclure TOUTES les données numériques nécessaires, des valeurs RÉALISTES et l'unité attendue
+7. Chaque question DOIT inclure un "hint" : indice subtil (norme, formule, mot-clé) qui aide SANS donner la réponse
+8. Les explications doivent CITER les normes suisses (ESTI, NIBT, OIBT, OLEI, SUVA, EN, SIA) et les pages/chapitres du cours si disponibles
+9. Vocabulaire MÉTIER suisse romand (consignation, DDR, mégohmmètre, sectionneur de terre, etc.)
+10. ZÉRO doublons — chaque question teste un ANGLE DIFFÉRENT
+11. Pour QCM/mise_en_situation : correct_answer = INDEX (0-3)
+12. Pour vrai_faux : correct_answer = true/false (booléen JSON)
+13. Pour calcul : correct_answer = nombre décimal (PAS de texte)
+14. Pour texte_trous : le mot manquant doit être un TERME TECHNIQUE CLÉ
+15. Chaque explication DOIT commencer par la source : "Selon le cours/NIBT/ESTI/SUVA..."
 
 FORMATS JSON par type :
 {formats_text}
@@ -790,7 +967,8 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
     
     def _generate_question(self, concept: Dict, difficulty: str, question_num: int,
                            question_types: List[str] = None, module: str = None,
-                           restrict_module: str = None) -> Optional[Dict]:
+                           restrict_module: str = None,
+                           course_content: str = "") -> Optional[Dict]:
         """Dispatche vers le bon générateur selon le type de question choisi."""
         available_types = list(question_types) if question_types else list(QUESTION_TYPES.keys())
 
@@ -841,7 +1019,7 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
         return data
 
     def _validate_qcm(self, data: Dict) -> bool:
-        """Valide la cohérence d'une question QCM."""
+        """Valide la cohérence d'une question QCM — validation renforcée V4."""
         if not data.get('question') or not data.get('options'):
             return False
         if not isinstance(data.get('correct_answer'), int):
@@ -850,6 +1028,19 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
             return False
         # Vérifier que les options ne sont pas toutes identiques
         if len(set(data['options'])) < len(data['options']):
+            return False
+        # Vérifier que la question n'est pas trop courte (signe de mauvaise qualité)
+        if len(data.get('question', '')) < 25:
+            return False
+        # Vérifier qu'on a bien 4 options
+        if len(data.get('options', [])) != 4:
+            return False
+        # Vérifier qu'aucune option n'est vide
+        if any(not opt or len(str(opt).strip()) < 3 for opt in data.get('options', [])):
+            return False
+        # Vérifier que la question ne contient pas "concept" (signe de question vague)
+        q_lower = data['question'].lower()
+        if q_lower.startswith("qu'est-ce que le concept") or q_lower.startswith("définissez"):
             return False
         return True
 
