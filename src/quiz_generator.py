@@ -570,7 +570,8 @@ class QuizGenerator:
                 question = self._generate_question(
                     concept, difficulty, i,
                     question_types=question_types,
-                    module=module or concept.get('module')
+                    module=module or concept.get('module'),
+                    restrict_module=module
                 )
                 if question:
                     questions.append(question)
@@ -632,11 +633,19 @@ Type : {type_label}
         used_formats = {t: format_examples[t] for t in set(assigned_types) if t in format_examples}
         formats_text = '\n'.join([f"  {t}: {fmt}" for t, fmt in used_formats.items()])
         
+        # Contrainte de module explicite
+        module_constraint = ""
+        if module:
+            mod_label = self._get_module_label(module)
+            module_constraint = f"""\n\n⚠️ CONTRAINTE ABSOLUE DE MODULE :\nToutes les questions DOIVENT porter EXCLUSIVEMENT sur le module {module} — {mod_label}.
+Ne génère AUCUNE question sur un autre module ou un autre domaine.
+Chaque question doit être directement liée aux compétences et au contenu du module {module}.\n"""
+
         prompt = f"""Tu es un examinateur expert et sévère pour le Brevet Fédéral Spécialiste de Réseau, orientation ÉNERGIE, en Suisse.
 Cet examen certifie des professionnels qui travaillent sur les réseaux de DISTRIBUTION D'ÉLECTRICITÉ (MT/BT) : lignes aériennes, câbles souterrains, postes de transformation, installations de mise à terre, éclairage public, protections de réseau.
 
 Génère EXACTEMENT {len(concepts)} questions d'examen professionnel variées et de haute qualité.
-
+{module_constraint}
 **Niveau de difficulté : {difficulty}**
 
 VOICI LES {len(concepts)} CONCEPTS À ÉVALUER (avec le type de question demandé pour chacun) :
@@ -697,7 +706,7 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
                 # Valider
                 if q_type in ('qcm', 'mise_en_situation'):
                     if not self._validate_qcm(q_data):
-                        q_data = self._generate_fallback(concept, i + 1, q_type)
+                        q_data = self._generate_fallback(concept, i + 1, q_type, restrict_module=module)
                 
                 if q_type == 'vrai_faux':
                     q_data['correct_answer'] = bool(q_data.get('correct_answer', True))
@@ -706,7 +715,7 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
                     try:
                         q_data['correct_answer'] = float(q_data.get('correct_answer', 0))
                     except (ValueError, TypeError):
-                        q_data = self._generate_fallback(concept, i + 1, 'calcul')
+                        q_data = self._generate_fallback(concept, i + 1, 'calcul', restrict_module=module)
                     q_data.setdefault('tolerance', 0.02)
                     q_data.setdefault('unit', '')
                 
@@ -718,7 +727,7 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
                 q_text = q_data.get('question', '')[:60]
                 if q_text in seen_questions or q_text in self._used_questions:
                     # Question dupliquée — générer un fallback unique
-                    q_data = self._generate_fallback(concept, i + 1, q_data.get('type', q_type))
+                    q_data = self._generate_fallback(concept, i + 1, q_data.get('type', q_type), restrict_module=module)
                     q_text = q_data.get('question', '')[:60]
                 
                 seen_questions.add(q_text)
@@ -780,7 +789,8 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
         return f"Ce concept fait partie du module {self._get_module_label(module)}"
     
     def _generate_question(self, concept: Dict, difficulty: str, question_num: int,
-                           question_types: List[str] = None, module: str = None) -> Optional[Dict]:
+                           question_types: List[str] = None, module: str = None,
+                           restrict_module: str = None) -> Optional[Dict]:
         """Dispatche vers le bon générateur selon le type de question choisi."""
         available_types = list(question_types) if question_types else list(QUESTION_TYPES.keys())
 
@@ -813,7 +823,7 @@ IMPORTANT : Réponse = UNIQUEMENT le tableau JSON, rien d'autre. Tout en frança
             # Anti-doublon : si question déjà vue, régénérer via fallback
             q_text = question.get('question', '')[:60]
             if q_text in self._used_questions:
-                question = self._generate_fallback(concept, question_num, question.get('type', chosen_type))
+                question = self._generate_fallback(concept, question_num, question.get('type', chosen_type), restrict_module=restrict_module)
             else:
                 self._used_questions.add(q_text)
         return question
@@ -1610,15 +1620,16 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
         },
     }
 
-    def _generate_fallback(self, concept: Dict, question_num: int, q_type: str = "qcm") -> Dict:
+    def _generate_fallback(self, concept: Dict, question_num: int, q_type: str = "qcm", restrict_module: str = None) -> Dict:
         """
         Génère une question de secours de qualité professionnelle.
         
-        Stratégie V3.1 :
+        Stratégie V3.2 :
         1. Banque par module/type (questions techniques réelles) — AVEC anti-doublon
-        2. Banque d'un module voisin MÊME TYPE (jamais de cross-type)
+        2. Si restrict_module est None : banque d'un module voisin MÊME TYPE
         3. Questions techniques construites à partir des compétences d'examen
         JAMAIS de question triviale, JAMAIS de mismatch de type
+        Quand restrict_module est défini, JAMAIS de cross-module
         """
         name = concept.get('name', 'inconnu')
         module = concept.get('module', '')
@@ -1637,30 +1648,31 @@ IMPORTANT : correct_answer = INDEX (0-3). Mélange l'ordre des options. En fran�
                 self._used_questions.add(question['question'][:60])
                 return self._add_metadata(question, concept, question_num)
         
-        # 2. Essayer un module voisin (même préfixe AA/AE) MÊME TYPE seulement
-        prefix = module[:2] if module else 'AA'
-        for other_mod, other_bank in self.FALLBACK_BANK.items():
-            if other_mod.startswith(prefix) and other_mod != module:
-                other_type_bank = other_bank.get(q_type, [])
-                available = [q for q in other_type_bank if q['question'][:60] not in self._used_questions]
-                if available:
-                    question = random.choice(available).copy()
-                    question['fallback'] = True
-                    question['type'] = q_type
-                    self._used_questions.add(question['question'][:60])
-                    return self._add_metadata(question, concept, question_num)
-        
-        # 3. Essayer n'importe quel module MÊME TYPE
-        for other_mod, other_bank in self.FALLBACK_BANK.items():
-            if other_mod != module:
-                other_type_bank = other_bank.get(q_type, [])
-                available = [q for q in other_type_bank if q['question'][:60] not in self._used_questions]
-                if available:
-                    question = random.choice(available).copy()
-                    question['fallback'] = True
-                    question['type'] = q_type
-                    self._used_questions.add(question['question'][:60])
-                    return self._add_metadata(question, concept, question_num)
+        # 2. Si pas de restriction de module, essayer un module voisin
+        if not restrict_module:
+            prefix = module[:2] if module else 'AA'
+            for other_mod, other_bank in self.FALLBACK_BANK.items():
+                if other_mod.startswith(prefix) and other_mod != module:
+                    other_type_bank = other_bank.get(q_type, [])
+                    available = [q for q in other_type_bank if q['question'][:60] not in self._used_questions]
+                    if available:
+                        question = random.choice(available).copy()
+                        question['fallback'] = True
+                        question['type'] = q_type
+                        self._used_questions.add(question['question'][:60])
+                        return self._add_metadata(question, concept, question_num)
+            
+            # 3. Essayer n'importe quel module MÊME TYPE (seulement si pas de restriction)
+            for other_mod, other_bank in self.FALLBACK_BANK.items():
+                if other_mod != module:
+                    other_type_bank = other_bank.get(q_type, [])
+                    available = [q for q in other_type_bank if q['question'][:60] not in self._used_questions]
+                    if available:
+                        question = random.choice(available).copy()
+                        question['fallback'] = True
+                        question['type'] = q_type
+                        self._used_questions.add(question['question'][:60])
+                        return self._add_metadata(question, concept, question_num)
         
         # 4. Construire une question du bon type à partir des compétences et keywords
         exam_comps = EXAM_COMPETENCES.get(module, [])

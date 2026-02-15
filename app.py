@@ -3558,10 +3558,12 @@ elif page == "🧠 Quiz":
                 q_type = question.get('type', 'qcm')
                 type_icon = QUESTION_TYPES.get(q_type, {}).get('icon', '📋')
                 concept_name = question.get('concept_name', '')
+                q_module = question.get('module', '')
                 
                 st.markdown(f"#### {type_icon} Question {i}/{quiz['num_questions']}")
                 if concept_name:
-                    st.caption(f"📚 {concept_name}")
+                    module_tag = f" · 📁 {q_module}" if q_module else ""
+                    st.caption(f"📚 {concept_name}{module_tag}")
                 
                 # Scénario pour mise en situation
                 if q_type == 'mise_en_situation' and question.get('scenario'):
