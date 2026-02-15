@@ -2958,7 +2958,7 @@ elif page == "📆 Planning Révisions":
                 
                 # Marqueur "Aujourd'hui"
                 fig_progress.add_vline(
-                    x=pd.to_datetime(today_str),
+                    x=today_str,
                     line_dash='dash',
                     line_color='#FF5722',
                     line_width=2,
@@ -2971,9 +2971,9 @@ elif page == "📆 Planning Révisions":
                 milestones = revision_plan.get('milestones', [])
                 for m in milestones:
                     try:
-                        milestone_date = pd.to_datetime(m['date'])
+                        milestone_date_str = str(pd.to_datetime(m['date']).strftime('%Y-%m-%d'))
                         fig_progress.add_vline(
-                            x=milestone_date,
+                            x=milestone_date_str,
                             line_dash='dot',
                             line_color='rgba(0,0,0,0.2)',
                             annotation_text=m.get('name', ''),
