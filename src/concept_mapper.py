@@ -269,7 +269,7 @@ class ConceptMapper:
         return gaps
     
     def export_to_json(self, filepath: str) -> None:
-        """Exporte la cartographie en JSON"""
+        """Exporte la cartographie en JSON (exports/ et cloud_data/)"""
         
         data = {
             "nodes": [
@@ -292,8 +292,13 @@ class ConceptMapper:
             "learning_order": self.get_learning_order()
         }
         
-        with open(filepath, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        # Écrire dans exports/ ET cloud_data/ pour Streamlit Cloud
+        from pathlib import Path
+        paths_to_write = [filepath, str(Path("cloud_data") / Path(filepath).name)]
+        for path_str in paths_to_write:
+            Path(path_str).parent.mkdir(parents=True, exist_ok=True)
+            with open(path_str, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
         
         console.print(f"[green]✅ Cartographie exportée vers {filepath}[/green]")
     

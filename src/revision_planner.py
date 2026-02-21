@@ -280,9 +280,11 @@ class RevisionPlannerAuto:
             "sessions": [asdict(s) for s in self.sessions],
             "statistics": stats
         }
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=2)
+        # Écrire dans exports/ ET cloud_data/ pour Streamlit Cloud
+        for path_str in [output_path, str(Path("cloud_data") / Path(output_path).name)]:
+            Path(path_str).parent.mkdir(parents=True, exist_ok=True)
+            with open(path_str, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
         return output_path
     
     def export_to_markdown(self, output_path: str = "exports/revision_plan.md"):
@@ -294,9 +296,12 @@ class RevisionPlannerAuto:
         lines.extend(["", "## Sessions de la semaine", ""])
         for s in self.sessions[:14]:
             lines.append(f"- **{s.day_name} {s.date}** ({s.duration_minutes}min): {', '.join(s.concepts[:3])}")
-        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(lines))
+        content = "\n".join(lines)
+        # Écrire dans exports/ ET cloud_data/
+        for path_str in [output_path, str(Path("cloud_data") / Path(output_path).name)]:
+            Path(path_str).parent.mkdir(parents=True, exist_ok=True)
+            with open(path_str, "w", encoding="utf-8") as f:
+                f.write(content)
         return output_path
 
 
