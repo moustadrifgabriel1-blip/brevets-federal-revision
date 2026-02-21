@@ -3254,7 +3254,14 @@ elif page == "📊 Ma Progression":
         
         # Afficher par catégorie
         for category, cat_sessions in categories.items():
-            with st.expander(f"📚 {category} ({len([s for s in cat_sessions if tracker.is_session_completed(s.get('id', ''))])}/{len(cat_sessions)} complétées)", expanded=False):
+            # Calculer le nombre de sessions complétées avec le bon ID
+            completed_count = 0
+            for idx_c, s_c in enumerate(cat_sessions):
+                sid = s_c.get('id') or f"{category}_{s_c.get('date', '')}_{idx_c}"
+                if tracker.is_session_completed(sid):
+                    completed_count += 1
+            
+            with st.expander(f"📚 {category} ({completed_count}/{len(cat_sessions)} complétées)", expanded=False):
                 for idx, session in enumerate(cat_sessions):
                     # Créer un ID unique pour chaque session
                     session_id = session.get('id') or f"{category}_{session.get('date', '')}_{idx}"
@@ -3274,8 +3281,24 @@ elif page == "📊 Ma Progression":
                     
                     with col_info:
                         status_icon = "✅" if is_completed else "⏳"
-                        st.markdown(f"{status_icon} **{session.get('module', 'Module')}** - {session.get('topics', ['Divers'])[0] if session.get('topics') else 'Divers'}")
-                        st.caption(f"Date: {session.get('date', 'N/A')} | Durée: {session.get('duration', 0)} min | Répétition: {session.get('repetition', 1)}")
+                        # Afficher le module et les concepts (pas 'topics' qui n'existe pas)
+                        concepts_list = session.get('concepts', [])
+                        concept_label = concepts_list[0] if concepts_list else session.get('category', 'Session')
+                        # Si plusieurs concepts, montrer le nombre
+                        extra = f" (+{len(concepts_list)-1})" if len(concepts_list) > 1 else ""
+                        st.markdown(f"{status_icon} **{session.get('module', '')}** - {concept_label}{extra}")
+                        
+                        # Afficher la durée en minutes et le type de session
+                        duration = session.get('duration_minutes', 0)
+                        session_type_map = {
+                            'new_learning': '📖 Nouveau',
+                            'review': '🔄 Révision',
+                            'spaced_repetition': '🧠 Répétition espacée',
+                            'exam_prep': '📝 Prépa examen'
+                        }
+                        session_type = session_type_map.get(session.get('session_type', ''), '')
+                        priority_icon = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}.get(session.get('priority', ''), '')
+                        st.caption(f"📅 {session.get('date', 'N/A')} | ⏱️ {duration} min | {session_type} {priority_icon}")
     
     with tab2:
         st.markdown("### 🎯 Concepts à Maîtriser")
