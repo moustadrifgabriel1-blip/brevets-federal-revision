@@ -93,7 +93,17 @@ class RevisionPlannerAuto:
             self.load_concepts()
         self.load_course_schedule()
         if start_date is None:
-            start_date = datetime.now()
+            # Utiliser formation_start de la config si disponible et dans le passé
+            formation_start_str = self.config.get("user", {}).get("formation_start", "")
+            if formation_start_str:
+                try:
+                    formation_start = datetime.strptime(str(formation_start_str)[:10], "%Y-%m-%d")
+                    # Commencer au plus tôt à la date de début de formation
+                    start_date = formation_start
+                except (ValueError, TypeError):
+                    start_date = datetime.now()
+            else:
+                start_date = datetime.now()
         concepts_by_priority = {"critical": [], "high": [], "medium": [], "low": []}
         for c in self.concepts:
             imp = c.get("importance", "medium").lower()
@@ -164,7 +174,7 @@ class RevisionPlannerAuto:
                     category=list(cats)[0] if cats else "General",
                     priority=prio,
                     session_type="new_learning",
-                    module=ordered[concept_index].get("module"),
+                    module=ordered[concept_index].get("module") or "General",
                     completed=False,
                     objectives=objectives
                 ))
@@ -231,7 +241,7 @@ class RevisionPlannerAuto:
                         category=limited[0].get("category", "Revision") if limited else "Revision",
                         priority="medium",
                         session_type="revision",
-                        module=limited[0].get("module") if limited else None,
+                        module=next((c.get("module") for c in limited if c.get("module")), "Revision"),
                         completed=False,
                         objectives=[f"Consolider les acquis"]
                     ))
