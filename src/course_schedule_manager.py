@@ -302,7 +302,7 @@ class CourseScheduleManager:
             json.dump(data, f, ensure_ascii=False, indent=2)
     
     def load(self):
-        """Charge le planning sauvegardé"""
+        """Charge le planning sauvegardé et synchronise les statuts"""
         if not self.schedule_file.exists():
             return
         
@@ -323,6 +323,26 @@ class CourseScheduleManager:
         ]
         
         self._sort_sessions()
+        
+        # Auto-synchroniser les statuts : sessions passées → "completed"
+        self._sync_statuses()
+    
+    def _sync_statuses(self):
+        """Met à jour automatiquement le statut des sessions passées"""
+        now = datetime.now()
+        changed = False
+        
+        for session in self.sessions:
+            if session.date <= now and session.status == "planned":
+                session.status = "completed"
+                changed = True
+            elif session.date > now and session.status == "completed":
+                # Correction inverse : si une session future est marquée complétée par erreur
+                session.status = "planned"
+                changed = True
+        
+        if changed:
+            self.save()
     
     def export_to_markdown(self, output_path: str):
         """Exporte le planning en Markdown"""

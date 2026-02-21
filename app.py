@@ -3134,6 +3134,7 @@ elif page == "📊 Ma Progression":
     
     # Charger le tracker de progression
     from src.progress_tracker import ProgressTracker
+    from src.course_schedule_manager import CourseScheduleManager
     tracker = ProgressTracker()
     
     # Charger le planning de révision
@@ -3147,22 +3148,65 @@ elif page == "📊 Ma Progression":
             st.rerun()
         st.stop()
     
-    # Mettre à jour les totaux
-    total_sessions = len(revision_plan.get('sessions', []))
-    total_concepts = len(concept_map.get('nodes', [])) if concept_map else 0
-    tracker.update_totals(total_sessions, total_concepts)
+    # Charger le calendrier des cours et synchroniser les statuts
+    config = load_config()
+    schedule_manager = CourseScheduleManager(config)
+    schedule_manager.load()  # Auto-sync les statuts des cours passés
+    
+    # Synchronisation automatique progression ↔ calendrier
+    sync_result = tracker.sync_with_calendar(
+        revision_plan=revision_plan,
+        course_schedule_sessions=schedule_manager.sessions,
+        concept_map=concept_map
+    )
     
     # Afficher les statistiques globales
     st.markdown("### 📈 Statistiques Globales")
     
     stats = tracker.get_stats()
+    course_stats = sync_result.get('course_stats', {})
+    
+    # Bandeau de synchronisation cours
+    if course_stats:
+        completed_courses = course_stats.get('completed_course_sessions', 0)
+        total_courses = course_stats.get('total_course_sessions', 0)
+        concepts_seen = course_stats.get('concepts_seen_in_class', 0)
+        total_concepts_map = len(concept_map.get('nodes', [])) if concept_map else 0
+        completed_mods = course_stats.get('completed_modules', [])
+        
+        course_pct = (completed_courses / max(1, total_courses)) * 100
+        
+        st.markdown(f"""
+        <div style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%); 
+                     padding: 1rem 1.5rem; border-radius: 12px; color: white; margin-bottom: 1rem;
+                     box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: bold;">{completed_courses}/{total_courses}</div>
+                    <div style="opacity: 0.85; font-size: 0.8rem;">Sessions de cours</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: bold;">{course_pct:.0f}%</div>
+                    <div style="opacity: 0.85; font-size: 0.8rem;">Formation avancée</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: bold;">{len(completed_mods)}</div>
+                    <div style="opacity: 0.85; font-size: 0.8rem;">Modules vus en cours</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: bold;">{concepts_seen}/{total_concepts_map}</div>
+                    <div style="opacity: 0.85; font-size: 0.8rem;">Concepts vus en cours</div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         completion_rate = stats['completion_rate']
         st.metric(
-            "Sessions Complétées", 
+            "Révisions Complétées", 
             f"{stats['completed_sessions']}/{stats['total_sessions']}",
             f"{completion_rate:.1f}%"
         )

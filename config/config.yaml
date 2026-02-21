@@ -13,13 +13,37 @@ categories:
   - puissance
   - résistance
   - transformateur
-  name: Technique électrique
+  - triphasé
+  - monophasé
+  - impédance
+  - réactance
+  - inductance
+  - capacité
+  - fréquence
+  - harmonique
+  - cos phi
+  - facteur de puissance
+  name: Électrotechnique
 - keywords:
   - distribution
   - réseau
   - ligne
   - poste
   - raccordement
+  - câble souterrain
+  - ligne aérienne
+  - MT
+  - BT
+  - moyenne tension
+  - basse tension
+  - poste de transformation
+  - boucle
+  - radial
+  - maillé
+  - ACSR
+  - conducteur
+  - portée
+  - flèche
   name: Réseaux de distribution
 - keywords:
   - sécurité
@@ -27,27 +51,137 @@ categories:
   - risque
   - EPI
   - consignation
-  name: Sécurité
+  - déconsignation
+  - 5 règles
+  - habilitation
+  - TST
+  - distance de sécurité
+  - SUVA
+  - MSST
+  - BLS-AED
+  - premiers secours
+  - zone de danger
+  name: Sécurité au travail
 - keywords:
   - norme
   - loi
   - ordonnance
   - OIBT
   - NIBT
-  name: Réglementation
+  - ESTI
+  - OLEI
+  - EN 50341
+  - EN 13201
+  - SIA 261
+  - SLG 202
+  - IEC
+  - prescription
+  name: Normes et réglementation
 - keywords:
   - mesure
   - contrôle
   - test
   - vérification
   - instrument
-  name: Mesures et contrôles
+  - mégohmmètre
+  - multimètre
+  - pince ampèremétrique
+  - isolement
+  - boucle de défaut
+  - continuité
+  - résistivité
+  - résistance de terre
+  - réflectométrie
+  - TDR
+  name: Technique de mesure
 - keywords:
   - maintenance
   - entretien
   - réparation
   - diagnostic
+  - préventive
+  - corrective
+  - prédictive
+  - GMAO
+  - contrôle périodique
+  - localisation de défaut
   name: Maintenance
+- keywords:
+  - fusible
+  - disjoncteur
+  - DDR
+  - différentiel
+  - court-circuit
+  - sélectivité
+  - coordination
+  - surintensité
+  - Ik
+  - courant de défaut
+  name: Technique de protection
+- keywords:
+  - projet
+  - dimensionnement
+  - chute de tension
+  - section
+  - devis
+  - planning
+  - budget
+  - mandat
+  - offre
+  - facturation
+  name: Gestion de projet
+- keywords:
+  - mise à terre
+  - prise de terre
+  - piquet
+  - ruban
+  - fondation
+  - résistance de terre
+  - TN
+  - TT
+  - IT
+  - schéma de liaison
+  - conducteur PEN
+  - PE
+  name: Mise à terre et liaison
+- keywords:
+  - éclairage
+  - luminaire
+  - LED
+  - lux
+  - lumen
+  - candela
+  - éclairement
+  - uniformité
+  - éclairage public
+  name: Éclairage public
+- keywords:
+  - SIG
+  - GIS
+  - schéma unifilaire
+  - plan
+  - documentation
+  - symbologie
+  - géoréférencement
+  name: Documentation et plans
+- keywords:
+  - formation
+  - apprenti
+  - pédagogie
+  - objectif évaluateur
+  - OFPr
+  - plan de formation
+  - lanterne magique
+  name: Formation professionnelle
+- keywords:
+  - conduite
+  - équipe
+  - collaborateur
+  - communication
+  - conflit
+  - leadership
+  - délégation
+  name: Conduite d'équipe
 paths:
   cours: ./cours
   database: ./data/database.json

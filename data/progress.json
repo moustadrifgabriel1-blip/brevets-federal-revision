@@ -1,11 +1,67 @@
 {
-  "sessions_completed": [],
+  "sessions_completed": [
+    "Fondamentaux de la maintenance_2026-02-04_0",
+    "Législation_2026-02-05_1",
+    "Psychologie du travail_2026-02-06_2",
+    "Droit de la construction / Administration_2026-02-07_3",
+    "Santé au travail_2026-02-08_4",
+    "Gestion de la sécurité_2026-02-09_5",
+    "Outils de développement personnel / Santé_2026-02-10_6",
+    "Bases techniques_2026-02-11_7",
+    "Réglementation_2026-02-12_8",
+    "Matériel réseau_2026-02-13_9",
+    "Sécurité & Contrôle_2026-02-14_10",
+    "Didactique (Module AA02)_2026-02-15_11",
+    "AA02 - Formation / AA05 - Sécurité_2026-02-16_12",
+    "Pédagogie et Didactique_2026-02-17_13",
+    "Pédagogie / Méthodologie_2026-02-18_14",
+    "Pédagogie_2026-02-19_15",
+    "Pédagogie appliquée (AA02)_2026-02-20_16"
+  ],
   "concepts_mastered": [],
-  "last_update": "2026-02-15T10:56:40.724196",
+  "last_update": "2026-02-21T16:44:56.229287",
   "stats": {
     "total_sessions": 153,
-    "completed_sessions": 0,
+    "completed_sessions": 17,
     "total_concepts": 456,
     "mastered_concepts": 0
+  },
+  "course_stats": {
+    "total_course_sessions": 109,
+    "completed_course_sessions": 42,
+    "completed_modules": [
+      "AA01",
+      "AA02",
+      "AA03",
+      "AA04",
+      "AA05",
+      "AA07",
+      "AA08",
+      "AA09",
+      "AA10",
+      "AA11",
+      "AE03",
+      "AE04",
+      "AE07",
+      "AE10",
+      "AE13"
+    ],
+    "modules_with_content": [
+      "AA02",
+      "AA03",
+      "AA04",
+      "AA05",
+      "AA07",
+      "AA08",
+      "AA09",
+      "AA10",
+      "AA11",
+      "AE03",
+      "AE04",
+      "AE07",
+      "AE10",
+      "AE13"
+    ],
+    "concepts_seen_in_class": 454
   }
 }
