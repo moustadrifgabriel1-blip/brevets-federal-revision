@@ -153,12 +153,16 @@ def test_planner_dual_write():
 def test_planner_sessions_structure():
     with open("exports/revision_plan.json") as f:
         rp = json.load(f)
-    required_fields = ["date", "day_name", "duration_minutes", "concepts", "category", "priority", "session_type", "module", "completed"]
+    required_fields = ["date", "day_name", "duration_minutes", "concepts", "category", "priority", "session_type", "module", "completed", "id"]
     for i, s in enumerate(rp["sessions"][:5]):
         for field in required_fields:
             assert field in s, f"Session {i} manque le champ '{field}'"
         assert isinstance(s["concepts"], list), f"Session {i}: concepts n'est pas une liste"
         assert len(s["concepts"]) > 0, f"Session {i}: concepts vide"
+        assert s["id"].startswith("rev_"), f"Session {i}: ID invalide '{s['id']}'"
+    # Vérifier unicité des IDs
+    all_ids = [s["id"] for s in rp["sessions"]]
+    assert len(all_ids) == len(set(all_ids)), f"IDs non uniques: {len(all_ids)} vs {len(set(all_ids))}"
     return True
 
 def test_planner_no_past_gaps():
@@ -244,7 +248,8 @@ def test_progress_sync():
     with open("exports/concept_map.json") as f:
         cm = json.load(f)
     result = t.sync_with_calendar(rp, m.sessions, cm)
-    assert result["sessions_synced"] > 0, "Aucune session synchronisée"
+    # sync met à jour les totaux et course_stats (pas d'auto-complétion)
+    assert result["total_sessions"] > 0, "total_sessions vide après sync"
     assert len(result["completed_modules"]) > 0, "Aucun module complété"
     assert "course_stats" in result
     return True

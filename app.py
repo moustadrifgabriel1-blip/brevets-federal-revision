@@ -2618,6 +2618,10 @@ elif page == "📆 Planning Révisions":
         import plotly.express as px
         import plotly.graph_objects as go
         from collections import Counter
+        from src.progress_tracker import ProgressTracker
+        
+        # Charger le tracker pour les checkboxes de complétion
+        tracker = ProgressTracker()
         
         stats = revision_plan.get('statistics', {})
         sessions = revision_plan.get('sessions', [])
@@ -2628,11 +2632,17 @@ elif page == "📆 Planning Révisions":
         total_concepts = revision_plan.get('total_concepts', 0)
         total_sessions = revision_plan.get('total_sessions', 0)
         
-        # Calcul du % de progression (sessions passées)
+        # Calcul du % de progression (sessions réellement complétées)
         today_str = datetime.now().strftime('%Y-%m-%d')
         past_sessions = [s for s in sessions if s['date'] < today_str]
         future_sessions = [s for s in sessions if s['date'] >= today_str]
-        progress_pct = len(past_sessions) / max(1, len(sessions))
+        
+        # Mettre à jour les totaux du tracker
+        tracker.update_totals(len(sessions), revision_plan.get('total_concepts', 0))
+        
+        # Progression basée sur les sessions cochées comme faites
+        completed_count = sum(1 for s in sessions if tracker.is_session_completed(s.get('id', '')))
+        progress_pct = completed_count / max(1, len(sessions))
         
         st.markdown(f"""
         <div style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 50%, #01579b 100%); 
@@ -2648,8 +2658,8 @@ elif page == "📆 Planning Révisions":
                     <div style="opacity: 0.8; font-size: 0.85rem;">Heures planifiées</div>
                 </div>
                 <div style="text-align: center;">
-                    <div style="font-size: 2.5rem; font-weight: bold;">{total_concepts}</div>
-                    <div style="opacity: 0.8; font-size: 0.85rem;">Concepts à couvrir</div>
+                    <div style="font-size: 2.5rem; font-weight: bold;">{completed_count}/{len(sessions)}</div>
+                    <div style="opacity: 0.8; font-size: 0.85rem;">Sessions complétées</div>
                 </div>
                 <div style="text-align: center;">
                     <div style="font-size: 2.5rem; font-weight: bold;">{len(future_sessions)}</div>
@@ -2788,7 +2798,8 @@ elif page == "📆 Planning Révisions":
                     concept_dict = {node['name']: node for node in concept_map['nodes']}
                 
                 total_week_min = sum(s['duration_minutes'] for s in week_sessions)
-                st.markdown(f"**{len(week_sessions)} sessions** · **{total_week_min} min** de révision prévues")
+                week_completed = sum(1 for s in week_sessions if tracker.is_session_completed(s.get('id', '')))
+                st.markdown(f"**{len(week_sessions)} sessions** · **{total_week_min} min** de révision · **{week_completed}/{len(week_sessions)}** complétées ✅")
                 st.markdown("---")
                 
                 # Afficher chaque jour de la semaine
@@ -2804,34 +2815,67 @@ elif page == "📆 Planning Révisions":
                     is_past = day_str < today_str
                     
                     if day_sessions:
-                        for session in day_sessions:
+                        for s_idx, session in enumerate(day_sessions):
+                            session_id = session.get('id', f"week_{day_str}_{s_idx}")
+                            is_done = tracker.is_session_completed(session_id)
+                            
                             priority_color = {'high': '#e53935', 'medium': '#fb8c00', 'low': '#43a047'}.get(session['priority'], '#757575')
                             type_icon = {'new_learning': '📚', 'revision': '🔄', 'practice': '✏️'}.get(session['session_type'], '📖')
-                            bg_color = '#fff8e1' if is_today else ('#f5f5f5' if is_past else '#ffffff')
-                            border = '3px solid #ff9800' if is_today else f'3px solid {priority_color}'
-                            today_badge = ' <span style="background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">AUJOURD\'HUI</span>' if is_today else ''
                             
-                            st.markdown(f"""
-                            <div style="border-left: {border}; padding: 1rem 1.2rem; margin: 0.5rem 0; 
-                                        background: {bg_color}; border-radius: 0 12px 12px 0;
-                                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <strong style="font-size: 1.1rem;">{type_icon} {day_name} {current_day.strftime('%d/%m')}</strong>{today_badge}
-                                        <br><span style="color: #666;">{session['duration_minutes']} min · {session['category']}</span>
+                            if is_done:
+                                bg_color = '#e8f5e9'
+                                border = '3px solid #4CAF50'
+                            elif is_today:
+                                bg_color = '#fff8e1'
+                                border = '3px solid #ff9800'
+                            elif is_past:
+                                bg_color = '#fce4ec'
+                                border = f'3px solid #e57373'
+                            else:
+                                bg_color = '#ffffff'
+                                border = f'3px solid {priority_color}'
+                            
+                            today_badge = ' <span style="background: #ff9800; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">AUJOURD\'HUI</span>' if is_today else ''
+                            done_badge = ' <span style="background: #4CAF50; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">✅ FAIT</span>' if is_done else ''
+                            
+                            # Checkbox + carte session
+                            col_check, col_card = st.columns([0.5, 9.5])
+                            
+                            with col_check:
+                                new_state = st.checkbox(
+                                    "fait", value=is_done,
+                                    key=f"plan_week_{session_id}",
+                                    label_visibility="collapsed"
+                                )
+                                if new_state != is_done:
+                                    if new_state:
+                                        tracker.mark_session_completed(session_id)
+                                    else:
+                                        tracker.unmark_session_completed(session_id)
+                                    st.rerun()
+                            
+                            with col_card:
+                                st.markdown(f"""
+                                <div style="border-left: {border}; padding: 1rem 1.2rem; margin: 0.5rem 0; 
+                                            background: {bg_color}; border-radius: 0 12px 12px 0;
+                                            box-shadow: 0 2px 4px rgba(0,0,0,0.05); {'opacity: 0.7;' if is_done else ''}">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <div>
+                                            <strong style="font-size: 1.1rem;">{type_icon} {day_name} {current_day.strftime('%d/%m')}</strong>{today_badge}{done_badge}
+                                            <br><span style="color: #666;">{session['duration_minutes']} min · {session['category']}</span>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <span style="background: {priority_color}; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem;">
+                                                {'Priorité haute' if session['priority'] == 'high' else 'Priorité moyenne' if session['priority'] == 'medium' else 'Priorité basse'}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div style="text-align: right;">
-                                        <span style="background: {priority_color}; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem;">
-                                            {'Priorité haute' if session['priority'] == 'high' else 'Priorité moyenne' if session['priority'] == 'medium' else 'Priorité basse'}
-                                        </span>
+                                    <div style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                        {''.join(f'<div style="margin: 2px 0;">• <strong>{c}</strong></div>' for c in session['concepts'][:5])}
+                                        {'<div style="color: #999;">... +' + str(len(session["concepts"]) - 5) + ' autres</div>' if len(session["concepts"]) > 5 else ''}
                                     </div>
                                 </div>
-                                <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-                                    {''.join(f'<div style="margin: 2px 0;">• <strong>{c}</strong></div>' for c in session['concepts'][:5])}
-                                    {'<div style="color: #999;">... +' + str(len(session["concepts"]) - 5) + ' autres</div>' if len(session["concepts"]) > 5 else ''}
-                                </div>
-                            </div>
-                            """, unsafe_allow_html=True)
+                                """, unsafe_allow_html=True)
                     elif not is_past:
                         st.markdown(f"""
                         <div style="padding: 0.5rem 1.2rem; margin: 0.3rem 0; color: #aaa; font-size: 0.9rem;">
@@ -3026,71 +3070,149 @@ elif page == "📆 Planning Révisions":
         
         with tab5:
             # Liste des sessions avec meilleur design
-            st.subheader("📋 Toutes les sessions à venir")
+            st.subheader("📋 Toutes les sessions")
             
             today = datetime.now().strftime('%Y-%m-%d')
-            upcoming = [s for s in sessions if s['date'] >= today]
             
-            # Filtres améliorés 
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                filter_priority = st.multiselect(
-                    "Priorité",
-                    ['high', 'medium', 'low'],
-                    default=['high', 'medium', 'low'],
-                    format_func=lambda x: {'high': '🔴 Haute', 'medium': '🟡 Moyenne', 'low': '🟢 Basse'}[x]
-                )
-            with col2:
-                filter_type = st.multiselect(
-                    "Type",
-                    ['new_learning', 'revision', 'practice'],
-                    default=['new_learning', 'revision', 'practice'],
-                    format_func=lambda x: {'new_learning': '📚 Apprentissage', 'revision': '🔄 Révision', 'practice': '✏️ Pratique'}[x]
-                )
-            with col3:
-                num_sessions = st.slider("Nombre à afficher", 5, 50, 14)
+            # Onglets Passées / À venir 
+            sub_past, sub_future = st.tabs(["⏪ Sessions passées", "⏩ Sessions à venir"])
             
-            filtered = [s for s in upcoming 
-                       if s['priority'] in filter_priority and s.get('session_type', 'new_learning') in filter_type][:num_sessions]
-            
-            if filtered:
-                # Charger le concept_map une seule fois
-                concept_dict = {}
-                if concept_map and 'nodes' in concept_map:
-                    concept_dict = {node['name']: node for node in concept_map['nodes']}
+            with sub_future:
+                upcoming = [s for s in sessions if s['date'] >= today]
                 
-                for session in filtered:
+                # Filtres améliorés 
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    filter_priority = st.multiselect(
+                        "Priorité",
+                        ['high', 'medium', 'low'],
+                        default=['high', 'medium', 'low'],
+                        format_func=lambda x: {'high': '🔴 Haute', 'medium': '🟡 Moyenne', 'low': '🟢 Basse'}[x],
+                        key="filter_prio_future"
+                    )
+                with col2:
+                    filter_type = st.multiselect(
+                        "Type",
+                        ['new_learning', 'revision', 'practice'],
+                        default=['new_learning', 'revision', 'practice'],
+                        format_func=lambda x: {'new_learning': '📚 Apprentissage', 'revision': '🔄 Révision', 'practice': '✏️ Pratique'}[x],
+                        key="filter_type_future"
+                    )
+                with col3:
+                    num_sessions = st.slider("Nombre à afficher", 5, 50, 14, key="slider_future")
+                
+                filtered = [s for s in upcoming 
+                           if s['priority'] in filter_priority and s.get('session_type', 'new_learning') in filter_type][:num_sessions]
+                
+                if filtered:
+                    concept_dict = {}
+                    if concept_map and 'nodes' in concept_map:
+                        concept_dict = {node['name']: node for node in concept_map['nodes']}
+                    
+                    for session in filtered:
+                        session_id = session.get('id', '')
+                        is_done = tracker.is_session_completed(session_id)
+                        priority_icon = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}.get(session['priority'], '⚪')
+                        type_icon = {'new_learning': '📚', 'revision': '🔄', 'practice': '✏️'}.get(session['session_type'], '📖')
+                        done_mark = "✅ " if is_done else ""
+                        
+                        col_chk, col_exp = st.columns([0.5, 9.5])
+                        with col_chk:
+                            new_val = st.checkbox("", value=is_done, key=f"plan_all_{session_id}", label_visibility="collapsed")
+                            if new_val != is_done:
+                                if new_val:
+                                    tracker.mark_session_completed(session_id)
+                                else:
+                                    tracker.unmark_session_completed(session_id)
+                                st.rerun()
+                        with col_exp:
+                            with st.expander(f"{done_mark}{priority_icon} {type_icon} {session['day_name']} {session['date']} — {session['duration_minutes']} min · {session['category']}"):
+                                col1, col2 = st.columns([2, 1])
+                                with col1:
+                                    st.markdown("**Concepts à étudier :**")
+                                    for concept_name in session['concepts'][:10]:
+                                        concept_info = concept_dict.get(concept_name, {})
+                                        source_doc = concept_info.get('source_document', '')
+                                        page_ref = concept_info.get('page_references', '')
+                                        
+                                        if page_ref and source_doc:
+                                            st.markdown(f"  - **{concept_name}**")
+                                            st.caption(f"    📄 {source_doc} · 📖 {page_ref}")
+                                        elif source_doc:
+                                            st.markdown(f"  - **{concept_name}**")
+                                            st.caption(f"    📄 {source_doc}")
+                                        else:
+                                            st.markdown(f"  - {concept_name}")
+                                    
+                                    if len(session['concepts']) > 10:
+                                        st.caption(f"... et {len(session['concepts']) - 10} autres")
+                                with col2:
+                                    if session.get('objectives'):
+                                        st.markdown("**Objectifs :**")
+                                        for obj in session['objectives']:
+                                            st.markdown(f"  - {obj}")
+                                    st.markdown(f"**Module :** {session.get('module', 'N/A')}")
+                else:
+                    st.info("Aucune session trouvée avec ces filtres.")
+            
+            with sub_past:
+                past_all = [s for s in sessions if s['date'] < today]
+                past_all.reverse()  # Plus récentes d'abord
+                
+                # Stats rapides
+                past_done = sum(1 for s in past_all if tracker.is_session_completed(s.get('id', '')))
+                past_missed = len(past_all) - past_done
+                
+                c1, c2, c3 = st.columns(3)
+                with c1:
+                    st.metric("Total passées", len(past_all))
+                with c2:
+                    st.metric("✅ Complétées", past_done)
+                with c3:
+                    st.metric("❌ Non faites", past_missed)
+                
+                if past_missed > 0:
+                    st.warning(f"⚠️ {past_missed} sessions passées non marquées comme faites. Cochez celles que vous avez réellement effectuées.")
+                
+                # Bouton pour tout cocher / tout décocher les passées
+                bc1, bc2 = st.columns(2)
+                with bc1:
+                    if st.button("✅ Tout marquer comme fait", key="mark_all_past"):
+                        for s in past_all:
+                            sid = s.get('id', '')
+                            if sid and not tracker.is_session_completed(sid):
+                                tracker.mark_session_completed(sid)
+                        st.rerun()
+                with bc2:
+                    if st.button("🔄 Tout décocher", key="unmark_all_past"):
+                        for s in past_all:
+                            sid = s.get('id', '')
+                            if sid and tracker.is_session_completed(sid):
+                                tracker.unmark_session_completed(sid)
+                        st.rerun()
+                
+                num_past = st.slider("Nombre à afficher", 5, 100, 20, key="slider_past")
+                
+                for session in past_all[:num_past]:
+                    session_id = session.get('id', '')
+                    is_done = tracker.is_session_completed(session_id)
                     priority_icon = {'high': '🔴', 'medium': '🟡', 'low': '🟢'}.get(session['priority'], '⚪')
                     type_icon = {'new_learning': '📚', 'revision': '🔄', 'practice': '✏️'}.get(session['session_type'], '📖')
                     
-                    with st.expander(f"{priority_icon} {type_icon} {session['day_name']} {session['date']} — {session['duration_minutes']} min · {session['category']}"):
-                        col1, col2 = st.columns([2, 1])
-                        with col1:
-                            st.markdown("**Concepts à étudier :**")
-                            for concept_name in session['concepts'][:10]:
-                                concept_info = concept_dict.get(concept_name, {})
-                                source_doc = concept_info.get('source_document', '')
-                                page_ref = concept_info.get('page_references', '')
-                                
-                                if page_ref and source_doc:
-                                    st.markdown(f"  - **{concept_name}**")
-                                    st.caption(f"    📄 {source_doc} · 📖 {page_ref}")
-                                elif source_doc:
-                                    st.markdown(f"  - **{concept_name}**")
-                                    st.caption(f"    📄 {source_doc}")
-                                else:
-                                    st.markdown(f"  - {concept_name}")
-                            
-                            if len(session['concepts']) > 10:
-                                st.caption(f"... et {len(session['concepts']) - 10} autres")
-                        with col2:
-                            if session.get('objectives'):
-                                st.markdown("**Objectifs :**")
-                                for obj in session['objectives']:
-                                    st.markdown(f"  - {obj}")
-                            st.markdown(f"**Module :** {session.get('module', 'N/A')}")
-            else:
-                st.info("Aucune session trouvée avec ces filtres.")
+                    col_chk, col_info = st.columns([0.5, 9.5])
+                    with col_chk:
+                        new_val = st.checkbox("", value=is_done, key=f"plan_past_{session_id}", label_visibility="collapsed")
+                        if new_val != is_done:
+                            if new_val:
+                                tracker.mark_session_completed(session_id)
+                            else:
+                                tracker.unmark_session_completed(session_id)
+                            st.rerun()
+                    with col_info:
+                        done_icon = "✅" if is_done else "❌"
+                        st.markdown(f"{done_icon} {priority_icon} {type_icon} **{session['day_name']} {session['date']}** — {session['duration_minutes']} min · {session['category']}")
+                        if session['concepts']:
+                            st.caption(f"Concepts: {', '.join(session['concepts'][:3])}{'...' if len(session['concepts']) > 3 else ''}")
         
         st.divider()
         
@@ -3254,17 +3376,13 @@ elif page == "📊 Ma Progression":
         
         # Afficher par catégorie
         for category, cat_sessions in categories.items():
-            # Calculer le nombre de sessions complétées avec le bon ID
-            completed_count = 0
-            for idx_c, s_c in enumerate(cat_sessions):
-                sid = s_c.get('id') or f"{category}_{s_c.get('date', '')}_{idx_c}"
-                if tracker.is_session_completed(sid):
-                    completed_count += 1
+            # Calculer le nombre de sessions complétées avec l'ID stable
+            completed_count = sum(1 for s in cat_sessions if tracker.is_session_completed(s.get('id', '')))
             
             with st.expander(f"📚 {category} ({completed_count}/{len(cat_sessions)} complétées)", expanded=False):
                 for idx, session in enumerate(cat_sessions):
-                    # Créer un ID unique pour chaque session
-                    session_id = session.get('id') or f"{category}_{session.get('date', '')}_{idx}"
+                    # Utiliser l'ID stable du JSON
+                    session_id = session.get('id', f"{category}_{session.get('date', '')}_{idx}")
                     is_completed = tracker.is_session_completed(session_id)
                     
                     col_check, col_info = st.columns([1, 9])

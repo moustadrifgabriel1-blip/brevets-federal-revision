@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-02-21T17:52:25.840867",
+  "generated_at": "2026-02-21T18:04:50.667599",
   "exam_date": "2027-03-20",
   "total_sessions": 182,
   "total_concepts": 515,
@@ -1120,7 +1120,7 @@
       "progress": 50
     },
     {
-      "date": "2026-12-11",
+      "date": "2026-12-12",
       "name": "Dernier Sprint",
       "objective": "Revisions intensives",
       "progress": 75
@@ -1149,7 +1149,8 @@
       "objectives": [
         "Maîtriser Loi fédérale sur l'assurance-accidents (LAA) (concept prioritaire pour l'examen)",
         "Maîtriser Hiérarchie des bases légales SST (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-01_0"
     },
     {
       "date": "2025-09-02",
@@ -1159,7 +1160,7 @@
         "Triangle Pédagogique (Houssaye)",
         "Mécanisme de l'accident"
       ],
-      "category": "Sécurité au travail",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -1167,7 +1168,8 @@
       "objectives": [
         "Maîtriser Triangle Pédagogique (Houssaye) (concept prioritaire pour l'examen)",
         "Maîtriser Mécanisme de l'accident (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-02_1"
     },
     {
       "date": "2025-09-03",
@@ -1185,7 +1187,8 @@
       "objectives": [
         "Maîtriser Loi d'Ohm et Couplages Mixtes (concept prioritaire pour l'examen)",
         "Comprendre et retenir Styles d'apprentissage (Felder & Silverman)"
-      ]
+      ],
+      "id": "rev_2025-09-03_2"
     },
     {
       "date": "2025-09-04",
@@ -1203,7 +1206,8 @@
       "objectives": [
         "Comprendre et retenir Supports d'Animation et Participants",
         "Comprendre et retenir Loi sur le travail (LTr)"
-      ]
+      ],
+      "id": "rev_2025-09-04_3"
     },
     {
       "date": "2025-09-05",
@@ -1221,7 +1225,8 @@
       "objectives": [
         "Comprendre et retenir Participation des travailleurs (Droit d'être entendu)",
         "Maîtriser Contrôles de sécurité électrique selon OIBT/NIBT (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-05_4"
     },
     {
       "date": "2025-09-06",
@@ -1235,7 +1240,7 @@
         "Instruction de sécurité au poste de travail (SUVA 66109.F)",
         "Analyse de la demande de formation"
       ],
-      "category": "Technique de protection",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE03",
@@ -1245,7 +1250,8 @@
         "Maîtriser Distances de sécurité et gabarits (OLEI) (concept prioritaire pour l'examen)",
         "Maîtriser Définition d'Objectif Pédagogique (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-06_5"
     },
     {
       "date": "2025-09-07",
@@ -1259,7 +1265,7 @@
         "Progression pédagogique",
         "Objectifs opérationnels et évaluables"
       ],
-      "category": "Sécurité au travail",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -1269,7 +1275,8 @@
         "Maîtriser Sécurisation des installations (AA05/AE02) (concept prioritaire pour l'examen)",
         "Maîtriser Objectifs Pédagogiques (OPG/OPP) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-07_6"
     },
     {
       "date": "2025-09-08",
@@ -1287,7 +1294,8 @@
       "objectives": [
         "Maîtriser Évaluation des acquis de formation (concept prioritaire pour l'examen)",
         "Maîtriser Planification et Dispense de Formation (AA02) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-08_7"
     },
     {
       "date": "2025-09-09",
@@ -1305,7 +1313,8 @@
       "objectives": [
         "Maîtriser Ingénierie de Formation (concept prioritaire pour l'examen)",
         "Maîtriser Méthodes Pédagogiques Actives (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-09_8"
     },
     {
       "date": "2025-09-10",
@@ -1323,7 +1332,8 @@
       "objectives": [
         "Maîtriser Guide Animateur (concept prioritaire pour l'examen)",
         "Maîtriser Transfert des acquis (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-10_9"
     },
     {
       "date": "2025-09-11",
@@ -1341,7 +1351,8 @@
       "objectives": [
         "Maîtriser Outils d'évaluation des Savoir-faire (concept prioritaire pour l'examen)",
         "Maîtriser Séquence réflexive (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-11_10"
     },
     {
       "date": "2025-09-12",
@@ -1359,7 +1370,8 @@
       "objectives": [
         "Maîtriser Démonstration pratique (Enseignant/Étudiant) (concept prioritaire pour l'examen)",
         "Maîtriser Mise en situation et Simulation (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-12_11"
     },
     {
       "date": "2025-09-13",
@@ -1373,7 +1385,7 @@
         "Système d'Information Réseau (SIR/NIS)",
         "Symboles graphiques: Commutateur vs Disjoncteur"
       ],
-      "category": "Électrotechnique",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -1383,7 +1395,8 @@
         "Maîtriser Distances de sécurité OLEl (Lignes aériennes) (concept prioritaire pour l'examen)",
         "Maîtriser Pose de câbles souterrains et fouilles (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-13_12"
     },
     {
       "date": "2025-09-14",
@@ -1397,7 +1410,7 @@
         "Surcharge mécanique (Givre/Neige)",
         "Dimensionnement des supports en bois"
       ],
-      "category": "Documentation et plans",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE04",
@@ -1407,7 +1420,8 @@
         "Maîtriser Distances de sécurité (Lignes aériennes) (concept prioritaire pour l'examen)",
         "Maîtriser Contrôle de stabilité des poteaux bois (CFST 6506) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-14_13"
     },
     {
       "date": "2025-09-15",
@@ -1425,7 +1439,8 @@
       "objectives": [
         "Maîtriser Directive CFST 6506 (concept prioritaire pour l'examen)",
         "Maîtriser Distances de sécurité (OLEI) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-15_14"
     },
     {
       "date": "2025-09-16",
@@ -1443,7 +1458,8 @@
       "objectives": [
         "Maîtriser Décomposition vectorielle des forces (Haubanage) (concept prioritaire pour l'examen)",
         "Maîtriser Résistance des matériaux (Sollicitations) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-16_15"
     },
     {
       "date": "2025-09-17",
@@ -1453,7 +1469,7 @@
         "Coefficient de sécurité",
         "Inspection visuelle des stations transformatrices (TS)"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA10",
@@ -1461,7 +1477,8 @@
       "objectives": [
         "Maîtriser Coefficient de sécurité (concept prioritaire pour l'examen)",
         "Maîtriser Inspection visuelle des stations transformatrices (TS) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-17_16"
     },
     {
       "date": "2025-09-18",
@@ -1471,7 +1488,7 @@
         "Mesure de résistance de terre (Ra)",
         "Méthodes de travail selon EN 50110-1"
       ],
-      "category": "Sécurité au travail",
+      "category": "Mise à terre et liaison",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -1479,7 +1496,8 @@
       "objectives": [
         "Maîtriser Mesure de résistance de terre (Ra) (concept prioritaire pour l'examen)",
         "Maîtriser Méthodes de travail selon EN 50110-1 (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-18_17"
     },
     {
       "date": "2025-09-19",
@@ -1497,7 +1515,8 @@
       "objectives": [
         "Maîtriser 5 règles de sécurité (Vitales) (concept prioritaire pour l'examen)",
         "Maîtriser Système d'arrêt des chutes (Composition) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-19_18"
     },
     {
       "date": "2025-09-20",
@@ -1511,7 +1530,7 @@
         "Sécurité et Méthodes de travail (ESTI 100)",
         "Programme de manœuvre MT"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -1521,7 +1540,8 @@
         "Maîtriser Harnais antichute (EN 361) vs Maintien (EN 358) (concept prioritaire pour l'examen)",
         "Maîtriser Mesures fondamentales de maintenance (DIN 31051) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-20_19"
     },
     {
       "date": "2025-09-21",
@@ -1535,7 +1555,7 @@
         "Périodicité de maintenance (Cycles)",
         "Bases légales et normatives (Maintenance)"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -1545,7 +1565,8 @@
         "Maîtriser Directive ESTI no. 100 (concept prioritaire pour l'examen)",
         "Maîtriser Rôles et Responsabilités (ESTI 100) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-21_20"
     },
     {
       "date": "2025-09-22",
@@ -1555,7 +1576,7 @@
         "Méthodes de travail (Sécurité)",
         "Impédance de mise à la terre (ZE)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Mise à terre et liaison",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -1563,7 +1584,8 @@
       "objectives": [
         "Maîtriser Méthodes de travail (Sécurité) (concept prioritaire pour l'examen)",
         "Maîtriser Impédance de mise à la terre (ZE) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-22_21"
     },
     {
       "date": "2025-09-23",
@@ -1581,7 +1603,8 @@
       "objectives": [
         "Maîtriser Courant de court-circuit (Ik) (concept prioritaire pour l'examen)",
         "Maîtriser 4 Mesures fondamentales de maintenance (DIN 31051 / EN 13306) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-23_22"
     },
     {
       "date": "2025-09-24",
@@ -1591,7 +1614,7 @@
         "Cadre Légal OICF (SR 734.2) - Art. 17",
         "Contrôle de stabilité des poteaux bois"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -1599,7 +1622,8 @@
       "objectives": [
         "Maîtriser Cadre Légal OICF (SR 734.2) - Art. 17 (concept prioritaire pour l'examen)",
         "Maîtriser Contrôle de stabilité des poteaux bois (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-24_23"
     },
     {
       "date": "2025-09-25",
@@ -1617,7 +1641,8 @@
       "objectives": [
         "Maîtriser Assurage contre le renversement (Modification des forces) (concept prioritaire pour l'examen)",
         "Maîtriser Protection contre les chutes (EPI) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-25_24"
     },
     {
       "date": "2025-09-26",
@@ -1635,7 +1660,8 @@
       "objectives": [
         "Maîtriser Méthodes de travail (AM1, AM2, AM3) (concept prioritaire pour l'examen)",
         "Maîtriser Organisation et Rôles (Hiérarchie de sécurité) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-26_25"
     },
     {
       "date": "2025-09-27",
@@ -1659,7 +1685,8 @@
         "Maîtriser Maintenance des tableaux Basse Tension (0.4 kV) (concept prioritaire pour l'examen)",
         "Maîtriser Signalisation de sécurité et documentation d'exploitation (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-27_26"
     },
     {
       "date": "2025-09-28",
@@ -1673,7 +1700,7 @@
         "Cadre réglementaire de la sécurité en maintenance",
         "Stratégies de Maintenance (CBM / CM)"
       ],
-      "category": "Technique de mesure",
+      "category": "Exploitation de réseaux",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA07",
@@ -1683,7 +1710,8 @@
         "Maîtriser Objectifs de Disponibilité et Fiabilité (concept prioritaire pour l'examen)",
         "Maîtriser Diagnostic Technique et Recherche de Panne (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-09-28_27"
     },
     {
       "date": "2025-09-29",
@@ -1701,7 +1729,8 @@
       "objectives": [
         "Maîtriser Types d'Opérations de Maintenance (DIN 31051) (concept prioritaire pour l'examen)",
         "Maîtriser Catégories de surtension (CAT I - IV) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-29_28"
     },
     {
       "date": "2025-09-30",
@@ -1719,7 +1748,8 @@
       "objectives": [
         "Maîtriser Transformateurs de mesure (TI et TP) (concept prioritaire pour l'examen)",
         "Maîtriser Impédance de boucle de défaut (Zs) et Courant de court-circuit (Ik) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-09-30_29"
     },
     {
       "date": "2025-10-01",
@@ -1729,7 +1759,7 @@
         "Mesure de résistance d'isolement (Riso)",
         "Contrôle des Disjoncteurs Différentiels (DDR/RCD)"
       ],
-      "category": "Technique de protection",
+      "category": "Maintenance",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE07",
@@ -1737,7 +1767,8 @@
       "objectives": [
         "Maîtriser Mesure de résistance d'isolement (Riso) (concept prioritaire pour l'examen)",
         "Maîtriser Contrôle des Disjoncteurs Différentiels (DDR/RCD) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-01_30"
     },
     {
       "date": "2025-10-02",
@@ -1747,7 +1778,7 @@
         "Localisation de défauts de câbles (Réflectométrie/TDR)",
         "Structure de l'Examen Professionnel (EP)"
       ],
-      "category": "Maintenance",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE07",
@@ -1755,7 +1786,8 @@
       "objectives": [
         "Maîtriser Localisation de défauts de câbles (Réflectométrie/TDR) (concept prioritaire pour l'examen)",
         "Maîtriser Structure de l'Examen Professionnel (EP) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-02_31"
     },
     {
       "date": "2025-10-03",
@@ -1765,7 +1797,7 @@
         "Sécurité sur et à proximité d'IE (Module AE02)",
         "Installations de mise à terre (Module AE05)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Mise à terre et liaison",
       "priority": "high",
       "session_type": "new_learning",
       "module": "General",
@@ -1773,7 +1805,8 @@
       "objectives": [
         "Maîtriser Sécurité sur et à proximité d'IE (Module AE02) (concept prioritaire pour l'examen)",
         "Maîtriser Installations de mise à terre (Module AE05) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-03_32"
     },
     {
       "date": "2025-10-04",
@@ -1797,7 +1830,8 @@
         "Maîtriser Technique de protection (Module AE09) (concept prioritaire pour l'examen)",
         "Maîtriser Triangle des puissances (AC) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-04_33"
     },
     {
       "date": "2025-10-05",
@@ -1811,7 +1845,7 @@
         "Procédures de Marchés Publics",
         "Droit de passage et Servitude"
       ],
-      "category": "Documentation et plans",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA11",
@@ -1821,7 +1855,8 @@
         "Maîtriser Puissance en courant alternatif (Triangle des puissances) (concept prioritaire pour l'examen)",
         "Maîtriser Contrôle des documents d'exécution (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-05_34"
     },
     {
       "date": "2025-10-06",
@@ -1839,7 +1874,8 @@
       "objectives": [
         "Maîtriser Obligations de l'employeur (LAA Art. 82) (concept prioritaire pour l'examen)",
         "Maîtriser Directive MSST (CFST 6508) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-06_35"
     },
     {
       "date": "2025-10-11",
@@ -1863,7 +1899,8 @@
         "Maîtriser Équipements de Protection Individuelle (EPI) (concept prioritaire pour l'examen)",
         "Maîtriser Travaux à proximité de lignes aériennes (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-11_36"
     },
     {
       "date": "2025-10-12",
@@ -1877,7 +1914,7 @@
         "Travaux en espaces fermés et puits",
         "Sécurisation des fouilles et tranchées"
       ],
-      "category": "Sécurité au travail",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -1887,7 +1924,8 @@
         "Maîtriser Blindage des fouilles (Étayage) (concept prioritaire pour l'examen)",
         "Maîtriser Protection des conduites souterraines existantes (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-12_37"
     },
     {
       "date": "2025-10-13",
@@ -1897,7 +1935,7 @@
         "Dimensionnement des fouilles (Largeur utile)",
         "Directive CFST 6508 (MSST)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -1905,7 +1943,8 @@
       "objectives": [
         "Maîtriser Dimensionnement des fouilles (Largeur utile) (concept prioritaire pour l'examen)",
         "Maîtriser Directive CFST 6508 (MSST) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-13_38"
     },
     {
       "date": "2025-10-14",
@@ -1915,7 +1954,7 @@
         "Phénomènes dangereux particuliers",
         "Règles reconnues de la technique (ST/PS)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -1923,7 +1962,8 @@
       "objectives": [
         "Maîtriser Phénomènes dangereux particuliers (concept prioritaire pour l'examen)",
         "Maîtriser Règles reconnues de la technique (ST/PS) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-14_39"
     },
     {
       "date": "2025-10-15",
@@ -1941,7 +1981,8 @@
       "objectives": [
         "Maîtriser Sécurité des opérations de levage (concept prioritaire pour l'examen)",
         "Maîtriser Prévention des chutes de hauteur (Logistique) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-15_40"
     },
     {
       "date": "2025-10-16",
@@ -1951,7 +1992,7 @@
         "Ordonnance sur les travaux de construction (OTConst)",
         "Matrice d'évaluation des risques"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -1959,7 +2000,8 @@
       "objectives": [
         "Maîtriser Ordonnance sur les travaux de construction (OTConst) (concept prioritaire pour l'examen)",
         "Maîtriser Matrice d'évaluation des risques (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-16_41"
     },
     {
       "date": "2025-10-17",
@@ -1969,7 +2011,7 @@
         "Directive CFST 6512 (Équipements de travail)",
         "Amiante"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -1977,7 +2019,8 @@
       "objectives": [
         "Maîtriser Directive CFST 6512 (Équipements de travail) (concept prioritaire pour l'examen)",
         "Maîtriser Amiante (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-17_42"
     },
     {
       "date": "2025-10-18",
@@ -2001,7 +2044,8 @@
         "Maîtriser Protection contre les chutes (concept prioritaire pour l'examen)",
         "Maîtriser Identification systématique des dangers (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-18_43"
     },
     {
       "date": "2025-10-19",
@@ -2015,7 +2059,7 @@
         "Règles vitales Suva - Lignes aériennes",
         "Cadre légal LAA / LTr"
       ],
-      "category": "Normes et réglementation",
+      "category": "Électrotechnique",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -2025,7 +2069,8 @@
         "Maîtriser Identification des dangers électriques (concept prioritaire pour l'examen)",
         "Maîtriser Sécurisation des parois de fouille (SUVA) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-19_44"
     },
     {
       "date": "2025-10-20",
@@ -2035,7 +2080,7 @@
         "OTConst - Travaux en fouille",
         "Règles vitales SUVA"
       ],
-      "category": "Sécurité au travail",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -2043,7 +2088,8 @@
       "objectives": [
         "Maîtriser OTConst - Travaux en fouille (concept prioritaire pour l'examen)",
         "Maîtriser Règles vitales SUVA (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-20_45"
     },
     {
       "date": "2025-10-21",
@@ -2061,7 +2107,8 @@
       "objectives": [
         "Maîtriser Analyse de risques et dangers (concept prioritaire pour l'examen)",
         "Maîtriser Concept de sécurité et de protection de la santé (OTConst) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-21_46"
     },
     {
       "date": "2025-10-22",
@@ -2079,7 +2126,8 @@
       "objectives": [
         "Maîtriser Règles vitales et Méthodes de travail électriques (concept prioritaire pour l'examen)",
         "Maîtriser Équipements de Protection Individuelle (EPI) Électrique (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-22_47"
     },
     {
       "date": "2025-10-23",
@@ -2097,7 +2145,8 @@
       "objectives": [
         "Maîtriser Obligations de l'employeur (Art. 6 OPA / Art. 82 LAA) (concept prioritaire pour l'examen)",
         "Maîtriser Obligations du travailleur (Art. 11 OPA / Art. 82 LAA) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-23_48"
     },
     {
       "date": "2025-10-24",
@@ -2107,7 +2156,7 @@
         "Modes de rémunération des travaux",
         "Rapport de régie"
       ],
-      "category": "Documentation et plans",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA03",
@@ -2115,7 +2164,8 @@
       "objectives": [
         "Maîtriser Modes de rémunération des travaux (concept prioritaire pour l'examen)",
         "Maîtriser Rapport de régie (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-24_49"
     },
     {
       "date": "2025-10-25",
@@ -2139,7 +2189,8 @@
         "Maîtriser Signalisation temporaire de chantier (VSS) (concept prioritaire pour l'examen)",
         "Maîtriser Signalisation de chantiers (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-25_50"
     },
     {
       "date": "2025-10-26",
@@ -2163,7 +2214,8 @@
         "Maîtriser Gestion des EPI (Équipements de Protection Individuelle) (concept prioritaire pour l'examen)",
         "Maîtriser Directive CFST 6512 (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-10-26_51"
     },
     {
       "date": "2025-10-27",
@@ -2181,7 +2233,8 @@
       "objectives": [
         "Maîtriser Puissances en courant alternatif (P, Q, S) (concept prioritaire pour l'examen)",
         "Maîtriser Dimensionnement de section de conducteur (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-27_52"
     },
     {
       "date": "2025-10-28",
@@ -2191,7 +2244,7 @@
         "Transformateur de puissance MT/BT",
         "Courant de court-circuit (Icc) et Résistance interne (Ri)"
       ],
-      "category": "Technique de protection",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA09",
@@ -2199,7 +2252,8 @@
       "objectives": [
         "Maîtriser Transformateur de puissance MT/BT (concept prioritaire pour l'examen)",
         "Maîtriser Courant de court-circuit (Icc) et Résistance interne (Ri) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-28_53"
     },
     {
       "date": "2025-10-29",
@@ -2209,7 +2263,7 @@
         "Chute de Tension en Ligne",
         "Puissances en Courant Alternatif"
       ],
-      "category": "Électrotechnique",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA09",
@@ -2217,7 +2271,8 @@
       "objectives": [
         "Maîtriser Chute de Tension en Ligne (concept prioritaire pour l'examen)",
         "Maîtriser Puissances en Courant Alternatif (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-29_54"
     },
     {
       "date": "2025-10-30",
@@ -2227,7 +2282,7 @@
         "Systèmes Triphasés et Charge Asymétrique",
         "Rupture du Conducteur Neutre"
       ],
-      "category": "Sécurité au travail",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA09",
@@ -2235,7 +2290,8 @@
       "objectives": [
         "Maîtriser Systèmes Triphasés et Charge Asymétrique (concept prioritaire pour l'examen)",
         "Maîtriser Rupture du Conducteur Neutre (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-30_55"
     },
     {
       "date": "2025-10-31",
@@ -2253,7 +2309,8 @@
       "objectives": [
         "Maîtriser Outils numériques d'animation (Digital Learning) (concept prioritaire pour l'examen)",
         "Maîtriser Grandeurs photométriques fondamentales (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-10-31_56"
     },
     {
       "date": "2025-11-01",
@@ -2267,7 +2324,7 @@
         "Analyse Quadripolaire (OSCA)",
         "Structuration d'une action de formation"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE03",
@@ -2277,7 +2334,8 @@
         "Maîtriser Contrôle de stabilité des supports (Candélabres) (concept prioritaire pour l'examen)",
         "Maîtriser Normes d'éclairage EN 13201 et SLG 202 (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-01_57"
     },
     {
       "date": "2025-11-02",
@@ -2291,7 +2349,7 @@
         "Rôle du Management en formation",
         "Analyse des besoins de formation (CQQCOQP)"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -2301,7 +2359,8 @@
         "Maîtriser Mesure des résultats de formation (concept prioritaire pour l'examen)",
         "Maîtriser Modèle MPFA (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-02_58"
     },
     {
       "date": "2025-11-03",
@@ -2319,7 +2378,8 @@
       "objectives": [
         "Maîtriser Démarche contractuelle par objectifs (concept prioritaire pour l'examen)",
         "Maîtriser Apprentissage social (Social Learning) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-03_59"
     },
     {
       "date": "2025-11-04",
@@ -2337,7 +2397,8 @@
       "objectives": [
         "Maîtriser Renforcement vicariant (concept prioritaire pour l'examen)",
         "Maîtriser Apprentissage entre pairs (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-04_60"
     },
     {
       "date": "2025-11-05",
@@ -2355,7 +2416,8 @@
       "objectives": [
         "Maîtriser Réponse au cahier des charges (Formation) (concept prioritaire pour l'examen)",
         "Maîtriser Gestion des perturbations et avaries (AE06) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-05_61"
     },
     {
       "date": "2025-11-06",
@@ -2373,7 +2435,8 @@
       "objectives": [
         "Maîtriser Méthodes et Techniques Pédagogiques (concept prioritaire pour l'examen)",
         "Maîtriser Évaluation de la formation (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-06_62"
     },
     {
       "date": "2025-11-07",
@@ -2391,7 +2454,8 @@
       "objectives": [
         "Maîtriser Analyse des besoins de formation (concept prioritaire pour l'examen)",
         "Maîtriser Ingénierie pédagogique (Contenus et Modalités) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-07_63"
     },
     {
       "date": "2025-11-08",
@@ -2405,7 +2469,7 @@
         "Processus de production de compétences",
         "Matrice de choix d'évaluation"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -2415,7 +2479,8 @@
         "Maîtriser Méthode DESC (Affirmation de soi) (concept prioritaire pour l'examen)",
         "Maîtriser Cycle de Conclusion et Transfert (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-08_64"
     },
     {
       "date": "2025-11-09",
@@ -2439,7 +2504,8 @@
         "Maîtriser Modalités de formation (Travail vs Hors travail) (concept prioritaire pour l'examen)",
         "Maîtriser Séquencement pédagogique (Synchrone vs Asynchrone) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-09_65"
     },
     {
       "date": "2025-11-10",
@@ -2457,7 +2523,8 @@
       "objectives": [
         "Maîtriser Apprentissage par projet (concept prioritaire pour l'examen)",
         "Maîtriser Apprentissage par entraînement (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-10_66"
     },
     {
       "date": "2025-11-11",
@@ -2467,7 +2534,7 @@
         "Taxonomie de Bloom",
         "Transition de câbles MT/BT (Contexte Formation)"
       ],
-      "category": "Réseaux de distribution",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -2475,7 +2542,8 @@
       "objectives": [
         "Maîtriser Taxonomie de Bloom (concept prioritaire pour l'examen)",
         "Maîtriser Transition de câbles MT/BT (Contexte Formation) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-11_67"
     },
     {
       "date": "2025-11-16",
@@ -2489,7 +2557,7 @@
         "Méthode DESC (Feedback)",
         "Structuration pédagogique"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA02",
@@ -2499,7 +2567,8 @@
         "Maîtriser Techniques de présentation des participants (concept prioritaire pour l'examen)",
         "Maîtriser Animation de formation à distance (Classe virtuelle) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-16_68"
     },
     {
       "date": "2025-11-17",
@@ -2509,7 +2578,7 @@
         "Stabilité mécanique des supports et fondations",
         "Documentation et Plans de l'ouvrage (Géodonnées)"
       ],
-      "category": "Documentation et plans",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE04",
@@ -2517,7 +2586,8 @@
       "objectives": [
         "Maîtriser Stabilité mécanique des supports et fondations (concept prioritaire pour l'examen)",
         "Maîtriser Documentation et Plans de l'ouvrage (Géodonnées) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-17_69"
     },
     {
       "date": "2025-11-18",
@@ -2535,7 +2605,8 @@
       "objectives": [
         "Maîtriser Systèmes de coordonnées nationaux (MN95 vs MN03) (concept prioritaire pour l'examen)",
         "Maîtriser Croquis de montage et Échelles normalisées (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-18_70"
     },
     {
       "date": "2025-11-19",
@@ -2545,7 +2616,7 @@
         "Plan de l'ouvrage et Géoschéma",
         "Norme SIA 405 et Cadastre des conduites"
       ],
-      "category": "Documentation et plans",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE04",
@@ -2553,7 +2624,8 @@
       "objectives": [
         "Maîtriser Plan de l'ouvrage et Géoschéma (concept prioritaire pour l'examen)",
         "Maîtriser Norme SIA 405 et Cadastre des conduites (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-19_71"
     },
     {
       "date": "2025-11-20",
@@ -2563,7 +2635,7 @@
         "Technique de mesure GNSS (GPS/RTK)",
         "Croquis de montage et cotation"
       ],
-      "category": "Documentation et plans",
+      "category": "Technique de mesure",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE04",
@@ -2571,7 +2643,8 @@
       "objectives": [
         "Maîtriser Technique de mesure GNSS (GPS/RTK) (concept prioritaire pour l'examen)",
         "Maîtriser Croquis de montage et cotation (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-20_72"
     },
     {
       "date": "2025-11-21",
@@ -2589,7 +2662,8 @@
       "objectives": [
         "Maîtriser Statique et ancrage des supports bois (concept prioritaire pour l'examen)",
         "Maîtriser Réglage de la flèche et traction des conducteurs (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-21_73"
     },
     {
       "date": "2025-11-22",
@@ -2603,7 +2677,7 @@
         "Dimensionnement par Nomogramme",
         "Calcul de flèche et traction"
       ],
-      "category": "Documentation et plans",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE13",
@@ -2613,7 +2687,8 @@
         "Maîtriser Remplacement de supports sous tension ou à proximité (concept prioritaire pour l'examen)",
         "Maîtriser Flèche et contrainte de traction (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-22_74"
     },
     {
       "date": "2025-11-23",
@@ -2627,7 +2702,7 @@
         "Contrôle de sélectivité et calibrage des fusibles BT",
         "Maintenance des équipements MT (SF6/Huile)"
       ],
-      "category": "Technique de protection",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE13",
@@ -2637,7 +2712,8 @@
         "Maîtriser Dimensionnement des mâts métalliques (Acier/HEB) (concept prioritaire pour l'examen)",
         "Maîtriser Forces de frottement (Tirage de câbles) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-23_75"
     },
     {
       "date": "2025-11-24",
@@ -2655,7 +2731,8 @@
       "objectives": [
         "Maîtriser Travaux sous tension (AuS / Méthode 3) (concept prioritaire pour l'examen)",
         "Maîtriser Travaux à proximité de la tension (Méthode 2) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-24_76"
     },
     {
       "date": "2025-11-25",
@@ -2665,7 +2742,7 @@
         "Technique de grimpe sur poteaux (Lignes aériennes)",
         "Maintenance et contrôle des EPI antichute"
       ],
-      "category": "Maintenance",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -2673,7 +2750,8 @@
       "objectives": [
         "Maîtriser Technique de grimpe sur poteaux (Lignes aériennes) (concept prioritaire pour l'examen)",
         "Maîtriser Maintenance et contrôle des EPI antichute (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-25_77"
     },
     {
       "date": "2025-11-26",
@@ -2691,7 +2769,8 @@
       "objectives": [
         "Maîtriser Stratégies de maintenance (Prédictive vs Préventive) (concept prioritaire pour l'examen)",
         "Maîtriser Inspection périodique des installations (1-2 ans) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-26_78"
     },
     {
       "date": "2025-11-27",
@@ -2701,7 +2780,7 @@
         "Entretien et Révision approfondie (5-10 ans)",
         "Mandat de travail"
       ],
-      "category": "Maintenance",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -2709,7 +2788,8 @@
       "objectives": [
         "Maîtriser Entretien et Révision approfondie (5-10 ans) (concept prioritaire pour l'examen)",
         "Maîtriser Mandat de travail (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-27_79"
     },
     {
       "date": "2025-11-28",
@@ -2727,7 +2807,8 @@
       "objectives": [
         "Maîtriser Maintenance des lignes aériennes MT (concept prioritaire pour l'examen)",
         "Maîtriser Gestion des modifications de schéma (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-11-28_80"
     },
     {
       "date": "2025-11-29",
@@ -2751,7 +2832,8 @@
         "Maîtriser Inspection des installations (concept prioritaire pour l'examen)",
         "Maîtriser Maintenance préventive périodique (OIBT) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-29_81"
     },
     {
       "date": "2025-11-30",
@@ -2765,7 +2847,7 @@
         "Diagnostic des échauffements et défauts de contact",
         "Contrôle de l'état des supports de lignes (Bois/Béton/Acier)"
       ],
-      "category": "Électrotechnique",
+      "category": "Sécurité au travail",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -2775,7 +2857,8 @@
         "Maîtriser Contribution mécanique des conducteurs (Courant Fort vs Faible) (concept prioritaire pour l'examen)",
         "Maîtriser Analyse de Risques (Check-list de sécurité) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-11-30_82"
     },
     {
       "date": "2025-12-01",
@@ -2785,7 +2868,7 @@
         "Maintenance de l'appareillage Moyenne Tension (16 kV)",
         "Révision de réseaux (Partielle vs Générale)"
       ],
-      "category": "Maintenance",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AE10",
@@ -2793,7 +2876,8 @@
       "objectives": [
         "Maîtriser Maintenance de l'appareillage Moyenne Tension (16 kV) (concept prioritaire pour l'examen)",
         "Maîtriser Révision de réseaux (Partielle vs Générale) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-01_83"
     },
     {
       "date": "2025-12-02",
@@ -2811,7 +2895,8 @@
       "objectives": [
         "Maîtriser Détermination des intervalles de maintenance (concept prioritaire pour l'examen)",
         "Maîtriser Les 7 Bases de la Maintenance (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-02_84"
     },
     {
       "date": "2025-12-03",
@@ -2829,7 +2914,8 @@
       "objectives": [
         "Maîtriser Processus de Rétablissement de l'État de Référence (concept prioritaire pour l'examen)",
         "Maîtriser Stratégies de Maintenance (CBM, CM, TPM) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-03_85"
     },
     {
       "date": "2025-12-07",
@@ -2843,7 +2929,7 @@
         "Contrôle de l'état (Condition Monitoring)",
         "Diagnostic et Méthodes de Mesure"
       ],
-      "category": "Documentation et plans",
+      "category": "Maintenance",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA07",
@@ -2853,7 +2939,8 @@
         "Maîtriser Documentation et Mandat de Maintenance (concept prioritaire pour l'examen)",
         "Maîtriser Objectifs de la maintenance (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-07_86"
     },
     {
       "date": "2025-12-08",
@@ -2863,7 +2950,7 @@
         "Mandat de Maintenance et Documentation",
         "Mesure TRMS (True Root Mean Square)"
       ],
-      "category": "Documentation et plans",
+      "category": "Technique de mesure",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA07",
@@ -2871,7 +2958,8 @@
       "objectives": [
         "Maîtriser Mandat de Maintenance et Documentation (concept prioritaire pour l'examen)",
         "Maîtriser Mesure TRMS (True Root Mean Square) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-08_87"
     },
     {
       "date": "2025-12-09",
@@ -2889,7 +2977,8 @@
       "objectives": [
         "Maîtriser Ordre des phases (Champ tournant) (concept prioritaire pour l'examen)",
         "Maîtriser Identification et traçage de câbles (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-09_88"
     },
     {
       "date": "2025-12-10",
@@ -2907,7 +2996,8 @@
       "objectives": [
         "Maîtriser Technique de mesure (Module AE07) (concept prioritaire pour l'examen)",
         "Maîtriser Éclairage public (Module AE03) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-10_89"
     },
     {
       "date": "2025-12-11",
@@ -2925,7 +3015,8 @@
       "objectives": [
         "Maîtriser Analyse vectorielle des systèmes triphasés (concept prioritaire pour l'examen)",
         "Maîtriser Calcul des forces sur supports (Statique) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-11_90"
     },
     {
       "date": "2025-12-12",
@@ -2935,7 +3026,7 @@
         "Influence de la température sur la résistance",
         "Sécurité d'accès (Échelles)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Électrotechnique",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA11",
@@ -2943,7 +3034,8 @@
       "objectives": [
         "Maîtriser Influence de la température sur la résistance (concept prioritaire pour l'examen)",
         "Maîtriser Sécurité d'accès (Échelles) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-12_91"
     },
     {
       "date": "2025-12-13",
@@ -2967,7 +3059,8 @@
         "Maîtriser Système International d'Unités (SI) (concept prioritaire pour l'examen)",
         "Maîtriser Calcul vectoriel (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-13_92"
     },
     {
       "date": "2025-12-14",
@@ -2981,7 +3074,7 @@
         "Vérification des documents d'exécution",
         "Indemnités pour dégâts de culture"
       ],
-      "category": "Documentation et plans",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA11",
@@ -2991,7 +3084,8 @@
         "Maîtriser Gestion des modifications de chantier (concept prioritaire pour l'examen)",
         "Maîtriser Indemnisation et dégâts de culture (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-14_93"
     },
     {
       "date": "2025-12-15",
@@ -3001,7 +3095,7 @@
         "Gestion des modifications de projet",
         "Profondeur d'enfouissement (Terres agricoles)"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA04",
@@ -3009,7 +3103,8 @@
       "objectives": [
         "Maîtriser Gestion des modifications de projet (concept prioritaire pour l'examen)",
         "Maîtriser Profondeur d'enfouissement (Terres agricoles) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-15_94"
     },
     {
       "date": "2025-12-16",
@@ -3027,7 +3122,8 @@
       "objectives": [
         "Maîtriser Barèmes d'indemnisation AES/USP (concept prioritaire pour l'examen)",
         "Maîtriser Indemnisation de droits de passage et dégâts aux cultures (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-16_95"
     },
     {
       "date": "2025-12-17",
@@ -3045,7 +3141,8 @@
       "objectives": [
         "Maîtriser Indemnité de passage de ligne (Survol) (concept prioritaire pour l'examen)",
         "Maîtriser Facteurs de majoration technique et topographique (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-17_96"
     },
     {
       "date": "2025-12-18",
@@ -3055,7 +3152,7 @@
         "Responsabilité civile et pénale (Code des Obligations)",
         "CFST (Commission Fédérale de Coordination pour la Sécurité au Travail)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3063,7 +3160,8 @@
       "objectives": [
         "Maîtriser Responsabilité civile et pénale (Code des Obligations) (concept prioritaire pour l'examen)",
         "Maîtriser CFST (Commission Fédérale de Coordination pour la Sécurité au Travail) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-18_97"
     },
     {
       "date": "2025-12-19",
@@ -3073,7 +3171,7 @@
         "Ordonnance sur la prévention des accidents (OPA)",
         "Bases légales de la sécurité (LAA/LTr/LIE)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3081,7 +3179,8 @@
       "objectives": [
         "Maîtriser Ordonnance sur la prévention des accidents (OPA) (concept prioritaire pour l'examen)",
         "Maîtriser Bases légales de la sécurité (LAA/LTr/LIE) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-19_98"
     },
     {
       "date": "2025-12-20",
@@ -3095,7 +3194,7 @@
         "Garde-corps périphérique",
         "Moyens d'accès aux fouilles et puits"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3105,7 +3204,8 @@
         "Maîtriser Organes de contrôle et surveillance (ESTI/Suva) (concept prioritaire pour l'examen)",
         "Maîtriser Personne compétente en sécurité (Art. 5 OTConst) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-20_99"
     },
     {
       "date": "2025-12-21",
@@ -3129,7 +3229,8 @@
         "Maîtriser Protection contre les chutes (Toitures) (concept prioritaire pour l'examen)",
         "Maîtriser Travaux de peu d'ampleur (Toits) (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-21_100"
     },
     {
       "date": "2025-12-22",
@@ -3139,7 +3240,7 @@
         "Habilitation et Formation (Levage)",
         "Équipements de Protection Individuelle (Logistique)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Formation professionnelle",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3147,7 +3248,8 @@
       "objectives": [
         "Maîtriser Habilitation et Formation (Levage) (concept prioritaire pour l'examen)",
         "Maîtriser Équipements de Protection Individuelle (Logistique) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-22_101"
     },
     {
       "date": "2025-12-23",
@@ -3157,7 +3259,7 @@
         "Responsabilités LAA et OPA",
         "Sécurité des fouilles et tranchées"
       ],
-      "category": "Réseaux de distribution",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3165,7 +3267,8 @@
       "objectives": [
         "Maîtriser Responsabilités LAA et OPA (concept prioritaire pour l'examen)",
         "Maîtriser Sécurité des fouilles et tranchées (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-23_102"
     },
     {
       "date": "2025-12-24",
@@ -3183,7 +3286,8 @@
       "objectives": [
         "Maîtriser Travaux en hauteur et utilisation d'échelles (concept prioritaire pour l'examen)",
         "Maîtriser Audit de sécurité (Check-list Suva) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-24_103"
     },
     {
       "date": "2025-12-25",
@@ -3201,7 +3305,8 @@
       "objectives": [
         "Maîtriser Catégorisation des EPI (concept prioritaire pour l'examen)",
         "Maîtriser Protection de l'ouïe (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-25_104"
     },
     {
       "date": "2025-12-26",
@@ -3211,7 +3316,7 @@
         "Déclaration de conformité (LSPro)",
         "Protection de la tête (Casque)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3219,7 +3324,8 @@
       "objectives": [
         "Maîtriser Déclaration de conformité (LSPro) (concept prioritaire pour l'examen)",
         "Maîtriser Protection de la tête (Casque) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-26_105"
     },
     {
       "date": "2025-12-27",
@@ -3233,7 +3339,7 @@
         "Sécurité génie civil et fouilles",
         "Solution par branche"
       ],
-      "category": "Sécurité au travail",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3243,7 +3349,8 @@
         "Maîtriser Dimensions des fouilles et tranchées (concept prioritaire pour l'examen)",
         "Maîtriser Phénomènes dangereux (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-27_106"
     },
     {
       "date": "2025-12-28",
@@ -3257,7 +3364,7 @@
         "Moyens d'accès et de sortie (Fouilles)",
         "Audit de sécurité et identification des dangers"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3267,7 +3374,8 @@
         "Maîtriser Responsabilités LAA et LTr (concept prioritaire pour l'examen)",
         "Maîtriser Audit de sécurité interne (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2025-12-28_107"
     },
     {
       "date": "2025-12-29",
@@ -3277,7 +3385,7 @@
         "Directives ESTI pour la sécurité des lignes",
         "Organes d'exécution et spécialistes"
       ],
-      "category": "Sécurité au travail",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3285,7 +3393,8 @@
       "objectives": [
         "Maîtriser Directives ESTI pour la sécurité des lignes (concept prioritaire pour l'examen)",
         "Maîtriser Organes d'exécution et spécialistes (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-29_108"
     },
     {
       "date": "2025-12-30",
@@ -3303,7 +3412,8 @@
       "objectives": [
         "Maîtriser Analyse de risques (Terminologie) (concept prioritaire pour l'examen)",
         "Maîtriser Travaux en hauteur et Échelles (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-30_109"
     },
     {
       "date": "2025-12-31",
@@ -3321,7 +3431,8 @@
       "objectives": [
         "Maîtriser Organisation de la sécurité (PERCO) (concept prioritaire pour l'examen)",
         "Maîtriser Instruction et Formation continue (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2025-12-31_110"
     },
     {
       "date": "2026-01-01",
@@ -3339,7 +3450,8 @@
       "objectives": [
         "Maîtriser Travaux en hauteur et Protection antichute (concept prioritaire pour l'examen)",
         "Maîtriser Organisation des secours et Urgences (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-01_111"
     },
     {
       "date": "2026-01-02",
@@ -3349,7 +3461,7 @@
         "Travail seul (Isolé)",
         "Norme SIA 112 - Modèle de prestations"
       ],
-      "category": "Sécurité au travail",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA05",
@@ -3357,7 +3469,8 @@
       "objectives": [
         "Maîtriser Travail seul (Isolé) (concept prioritaire pour l'examen)",
         "Maîtriser Norme SIA 112 - Modèle de prestations (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-02_112"
     },
     {
       "date": "2026-01-03",
@@ -3381,7 +3494,8 @@
         "Maîtriser Planification temporelle (Gantt / PERT) (concept prioritaire pour l'examen)",
         "Maîtriser Acteurs du projet et Types de contrats (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-03_113"
     },
     {
       "date": "2026-01-04",
@@ -3395,7 +3509,7 @@
         "Contrôle des Équipements de Levage (Élingues/Sangles)",
         "Définitions de Maintenance (CFST 6512)"
       ],
-      "category": "Maintenance",
+      "category": "Gestion de projet",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA03",
@@ -3405,7 +3519,8 @@
         "Maîtriser Inspection des jeux de barres et isolateurs (concept prioritaire pour l'examen)",
         "Maîtriser Surveillance des câbles HT et terminaux (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-04_114"
     },
     {
       "date": "2026-01-05",
@@ -3415,7 +3530,7 @@
         "Instruments de mesure et de contrôle",
         "Responsabilités LAA/OPA"
       ],
-      "category": "Technique de mesure",
+      "category": "Normes et réglementation",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA08",
@@ -3423,7 +3538,8 @@
       "objectives": [
         "Maîtriser Instruments de mesure et de contrôle (concept prioritaire pour l'examen)",
         "Maîtriser Responsabilités LAA/OPA (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-05_115"
     },
     {
       "date": "2026-01-06",
@@ -3441,7 +3557,8 @@
       "objectives": [
         "Maîtriser Contrôle des Élingues et Sangles (Levage) (concept prioritaire pour l'examen)",
         "Maîtriser Maintenance des Échelles Portables (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-06_116"
     },
     {
       "date": "2026-01-07",
@@ -3451,7 +3568,7 @@
         "Traçabilité et Documentation de Maintenance",
         "Lois de Kirchhoff (Mailles et Nœuds)"
       ],
-      "category": "Documentation et plans",
+      "category": "Électrotechnique",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA08",
@@ -3459,7 +3576,8 @@
       "objectives": [
         "Maîtriser Traçabilité et Documentation de Maintenance (concept prioritaire pour l'examen)",
         "Maîtriser Lois de Kirchhoff (Mailles et Nœuds) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-07_117"
     },
     {
       "date": "2026-01-08",
@@ -3477,7 +3595,8 @@
       "objectives": [
         "Maîtriser Résistance Équivalente et Impédance de Boucle (concept prioritaire pour l'examen)",
         "Maîtriser Nature du Courant (AC vs DC) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-08_118"
     },
     {
       "date": "2026-01-09",
@@ -3495,7 +3614,8 @@
       "objectives": [
         "Maîtriser Source de tension réelle et résistance interne (Ri) (concept prioritaire pour l'examen)",
         "Maîtriser Réactance Inductive (XL) et Capacitive (XC) (concept prioritaire pour l'examen)"
-      ]
+      ],
+      "id": "rev_2026-01-09_119"
     },
     {
       "date": "2026-01-10",
@@ -3509,7 +3629,7 @@
         "Résistivité et Matériaux conducteurs",
         "Puissance active et Rendement (η)"
       ],
-      "category": "Documentation et plans",
+      "category": "Réseaux de distribution",
       "priority": "high",
       "session_type": "new_learning",
       "module": "AA09",
@@ -3519,7 +3639,8 @@
         "Maîtriser Marche en parallèle de transformateurs (concept prioritaire pour l'examen)",
         "Maîtriser Batteries d'accumulateurs stationnaires (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-10_120"
     },
     {
       "date": "2026-01-11",
@@ -3543,7 +3664,8 @@
         "Maîtriser Source de Tension Réelle (Batteries) (concept prioritaire pour l'examen)",
         "Maîtriser Compensation de l'Énergie Réactive (concept prioritaire pour l'examen)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-11_121"
     },
     {
       "date": "2026-01-12",
@@ -3561,7 +3683,8 @@
       "objectives": [
         "Comprendre et retenir Carte Mentale (Carte Heuristique)",
         "Comprendre et retenir Méthode d'animation Post-it"
-      ]
+      ],
+      "id": "rev_2026-01-12_122"
     },
     {
       "date": "2026-01-13",
@@ -3571,7 +3694,7 @@
         "Règles de fonctionnement de groupe",
         "Feedback et Évaluation formative"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Formation professionnelle",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA02",
@@ -3579,7 +3702,8 @@
       "objectives": [
         "Comprendre et retenir Règles de fonctionnement de groupe",
         "Comprendre et retenir Feedback et Évaluation formative"
-      ]
+      ],
+      "id": "rev_2026-01-13_123"
     },
     {
       "date": "2026-01-18",
@@ -3593,7 +3717,7 @@
         "Paradigme éducatif social vs newtonien",
         "Outils digitaux en formation (Digital Learning)"
       ],
-      "category": "Documentation et plans",
+      "category": "Formation professionnelle",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA02",
@@ -3603,7 +3727,8 @@
         "Comprendre et retenir Planification et Documentation de la formation",
         "Comprendre et retenir Typologie des formations techniques",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-18_124"
     },
     {
       "date": "2026-01-19",
@@ -3621,7 +3746,8 @@
       "objectives": [
         "Comprendre et retenir Proposition commerciale et pédagogique",
         "Comprendre et retenir Respiration en carré"
-      ]
+      ],
+      "id": "rev_2026-01-19_125"
     },
     {
       "date": "2026-01-20",
@@ -3631,7 +3757,7 @@
         "Respiration abdominale",
         "Organisation de l'exploitation (Service de piquet)"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Formation professionnelle",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA02",
@@ -3639,7 +3765,8 @@
       "objectives": [
         "Comprendre et retenir Respiration abdominale",
         "Comprendre et retenir Organisation de l'exploitation (Service de piquet)"
-      ]
+      ],
+      "id": "rev_2026-01-20_126"
     },
     {
       "date": "2026-01-21",
@@ -3657,7 +3784,8 @@
       "objectives": [
         "Comprendre et retenir Sélection des Contenus (Messages Clefs)",
         "Comprendre et retenir Analyse du Contexte et Public (Positionnement)"
-      ]
+      ],
+      "id": "rev_2026-01-21_127"
     },
     {
       "date": "2026-01-22",
@@ -3667,7 +3795,7 @@
         "Assurance Qualité en Formation (Référentiel)",
         "Gestion des Situations Délicates (Analyse)"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Formation professionnelle",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA02",
@@ -3675,7 +3803,8 @@
       "objectives": [
         "Comprendre et retenir Assurance Qualité en Formation (Référentiel)",
         "Comprendre et retenir Gestion des Situations Délicates (Analyse)"
-      ]
+      ],
+      "id": "rev_2026-01-22_128"
     },
     {
       "date": "2026-01-23",
@@ -3693,7 +3822,8 @@
       "objectives": [
         "Comprendre et retenir Posture et Communication du Formateur",
         "Comprendre et retenir Changement de paradigme formation"
-      ]
+      ],
+      "id": "rev_2026-01-23_129"
     },
     {
       "date": "2026-01-24",
@@ -3717,7 +3847,8 @@
         "Comprendre et retenir Outils d'évaluation des Savoirs",
         "Comprendre et retenir Analyse de l'activité (Prescrit vs Réel)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-24_130"
     },
     {
       "date": "2026-01-25",
@@ -3731,7 +3862,7 @@
         "Croisements et parallélismes d'infrastructures",
         "Technique d'isolation et armements de ligne"
       ],
-      "category": "Sécurité au travail",
+      "category": "Formation professionnelle",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA02",
@@ -3741,7 +3872,8 @@
         "Comprendre et retenir Méthodes d'animation actives (Icebreakers)",
         "Comprendre et retenir Techniques de débriefing",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-01-25_131"
     },
     {
       "date": "2026-01-26",
@@ -3751,7 +3883,7 @@
         "Techniques de métrage et GNSS",
         "Gestion et sécurité des données"
       ],
-      "category": "Documentation et plans",
+      "category": "Technique de mesure",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AE04",
@@ -3759,7 +3891,8 @@
       "objectives": [
         "Comprendre et retenir Techniques de métrage et GNSS",
         "Comprendre et retenir Gestion et sécurité des données"
-      ]
+      ],
+      "id": "rev_2026-01-26_132"
     },
     {
       "date": "2026-01-27",
@@ -3777,7 +3910,8 @@
       "objectives": [
         "Comprendre et retenir Méthode de métrage orthogonale",
         "Comprendre et retenir Photogrammétrie par drone"
-      ]
+      ],
+      "id": "rev_2026-01-27_133"
     },
     {
       "date": "2026-01-28",
@@ -3795,7 +3929,8 @@
       "objectives": [
         "Comprendre et retenir Piquetage et implantation de ligne",
         "Comprendre et retenir Armements et ferrures de ligne"
-      ]
+      ],
+      "id": "rev_2026-01-28_134"
     },
     {
       "date": "2026-02-01",
@@ -3809,7 +3944,7 @@
         "Contrôle des Dispositifs Différentiels (DDR/RCD)",
         "Gestion des données techniques (NIS/SIG)"
       ],
-      "category": "Technique de protection",
+      "category": "Sécurité au travail",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AE13",
@@ -3819,7 +3954,8 @@
         "Comprendre et retenir Contrefiches et Haubanage",
         "Comprendre et retenir Réparation des conducteurs aériens",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-02-01_135"
     },
     {
       "date": "2026-02-02",
@@ -3837,7 +3973,8 @@
       "objectives": [
         "Comprendre et retenir Rôles et Responsabilités (Organisation)",
         "Comprendre et retenir Antichutes mobiles sur support rigide (EN 353-1)"
-      ]
+      ],
+      "id": "rev_2026-02-02_136"
     },
     {
       "date": "2026-02-03",
@@ -3855,7 +3992,8 @@
       "objectives": [
         "Comprendre et retenir Maintenance spécifique Postes et Lignes",
         "Comprendre et retenir Topologie de réseau en boucle"
-      ]
+      ],
+      "id": "rev_2026-02-03_137"
     },
     {
       "date": "2026-02-04",
@@ -3873,7 +4011,8 @@
       "objectives": [
         "Comprendre et retenir Plan de maintenance",
         "Comprendre et retenir Documentation technique et NIS"
-      ]
+      ],
+      "id": "rev_2026-02-04_138"
     },
     {
       "date": "2026-02-05",
@@ -3891,7 +4030,8 @@
       "objectives": [
         "Comprendre et retenir Loi sur l'approvisionnement en électricité (LApEl)",
         "Comprendre et retenir Optimisation des coûts de maintenance"
-      ]
+      ],
+      "id": "rev_2026-02-05_139"
     },
     {
       "date": "2026-02-06",
@@ -3909,7 +4049,8 @@
       "objectives": [
         "Comprendre et retenir Escalade conventionnelle",
         "Comprendre et retenir Balisage et Zone de Travail"
-      ]
+      ],
+      "id": "rev_2026-02-06_140"
     },
     {
       "date": "2026-02-07",
@@ -3933,7 +4074,8 @@
         "Comprendre et retenir Travaux de remise en état",
         "Comprendre et retenir Origine des perturbations et défaillances",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-02-07_141"
     },
     {
       "date": "2026-02-08",
@@ -3947,7 +4089,7 @@
         "Gestion des Déchets et Environnement (OMoD)",
         "Corrosion et Protection des Métaux"
       ],
-      "category": "Maintenance",
+      "category": "Normes et réglementation",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA07",
@@ -3957,7 +4099,8 @@
         "Comprendre et retenir Système tribologique",
         "Comprendre et retenir Composition des graisses lubrifiantes",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-02-08_142"
     },
     {
       "date": "2026-02-09",
@@ -3967,7 +4110,7 @@
         "Qualité du réseau (Power Quality)",
         "Résolution de systèmes d'équations"
       ],
-      "category": "Électrotechnique",
+      "category": "Réseaux de distribution",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AE07",
@@ -3975,7 +4118,8 @@
       "objectives": [
         "Comprendre et retenir Qualité du réseau (Power Quality)",
         "Comprendre et retenir Résolution de systèmes d'équations"
-      ]
+      ],
+      "id": "rev_2026-02-09_143"
     },
     {
       "date": "2026-02-10",
@@ -3985,7 +4129,7 @@
         "Calcul vectoriel (Phaseurs)",
         "Mesure d'énergie (Constante de compteur)"
       ],
-      "category": "Mathématiques appliquées",
+      "category": "Technique de mesure",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA11",
@@ -3993,7 +4137,8 @@
       "objectives": [
         "Comprendre et retenir Calcul vectoriel (Phaseurs)",
         "Comprendre et retenir Mesure d'énergie (Constante de compteur)"
-      ]
+      ],
+      "id": "rev_2026-02-10_144"
     },
     {
       "date": "2026-02-15",
@@ -4007,7 +4152,7 @@
         "Rôle de l'AES (VSE)",
         "Classification des terrains agricoles (A/P)"
       ],
-      "category": "Électrotechnique",
+      "category": "Gestion de projet",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA11",
@@ -4017,7 +4162,8 @@
         "Comprendre et retenir Marchés publics (AIMP)",
         "Comprendre et retenir Cycle de vie des documents",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-02-15_145"
     },
     {
       "date": "2026-02-16",
@@ -4027,7 +4173,7 @@
         "Indemnisation des regards et chambres",
         "Remise en état des sols (Cultures)"
       ],
-      "category": "Maintenance",
+      "category": "Réseaux de distribution",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA04",
@@ -4035,7 +4181,8 @@
       "objectives": [
         "Comprendre et retenir Indemnisation des regards et chambres",
         "Comprendre et retenir Remise en état des sols (Cultures)"
-      ]
+      ],
+      "id": "rev_2026-02-16_146"
     },
     {
       "date": "2026-02-17",
@@ -4045,7 +4192,7 @@
         "Gestion des obstacles sur terrain agricole",
         "Négociation de servitudes et accès"
       ],
-      "category": "Conduite d'équipe",
+      "category": "Réseaux de distribution",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA04",
@@ -4053,7 +4200,8 @@
       "objectives": [
         "Comprendre et retenir Gestion des obstacles sur terrain agricole",
         "Comprendre et retenir Négociation de servitudes et accès"
-      ]
+      ],
+      "id": "rev_2026-02-17_147"
     },
     {
       "date": "2026-02-18",
@@ -4071,7 +4219,8 @@
       "objectives": [
         "Comprendre et retenir Classification des cultures (A1-A3, P1-P4)",
         "Comprendre et retenir Calcul de valeur actuelle (25 vs 50 ans)"
-      ]
+      ],
+      "id": "rev_2026-02-18_148"
     },
     {
       "date": "2026-02-19",
@@ -4089,7 +4238,8 @@
       "objectives": [
         "Comprendre et retenir Organes d'exécution (Suva, SECO, ESTI)",
         "Comprendre et retenir Responsabilité (Code des Obligations)"
-      ]
+      ],
+      "id": "rev_2026-02-19_149"
     },
     {
       "date": "2026-02-20",
@@ -4107,7 +4257,8 @@
       "objectives": [
         "Comprendre et retenir Protection des ouvertures et surfaces non résistantes",
         "Comprendre et retenir Largeur utile de passage et travail"
-      ]
+      ],
+      "id": "rev_2026-02-20_150"
     },
     {
       "date": "2026-02-21",
@@ -4131,7 +4282,8 @@
         "Comprendre et retenir Distances de sécurité véhicules et dépôts",
         "Comprendre et retenir Éclairage de chantier et protection IP",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-02-21_151"
     },
     {
       "date": "2026-02-22",
@@ -4155,7 +4307,8 @@
         "Comprendre et retenir Instruction vs Formation",
         "Comprendre et retenir Utilisation des échelles portables",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-02-22_152"
     },
     {
       "date": "2026-02-23",
@@ -4173,7 +4326,8 @@
       "objectives": [
         "Comprendre et retenir Appel aux spécialistes MSST",
         "Comprendre et retenir Contrôle d'atmosphère en fouille"
-      ]
+      ],
+      "id": "rev_2026-02-23_153"
     },
     {
       "date": "2026-02-24",
@@ -4183,7 +4337,7 @@
         "Sécurité des Plateformes Élévatrices (PEMP)",
         "Système de sécurité (10 éléments)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Gestion de projet",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA05",
@@ -4191,7 +4345,8 @@
       "objectives": [
         "Comprendre et retenir Sécurité des Plateformes Élévatrices (PEMP)",
         "Comprendre et retenir Système de sécurité (10 éléments)"
-      ]
+      ],
+      "id": "rev_2026-02-24_154"
     },
     {
       "date": "2026-02-25",
@@ -4201,7 +4356,7 @@
         "Gestion du risque Amiante",
         "Protection des jeunes travailleurs (OLT 5)"
       ],
-      "category": "Sécurité au travail",
+      "category": "Formation professionnelle",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA05",
@@ -4209,7 +4364,8 @@
       "objectives": [
         "Comprendre et retenir Gestion du risque Amiante",
         "Comprendre et retenir Protection des jeunes travailleurs (OLT 5)"
-      ]
+      ],
+      "id": "rev_2026-02-25_155"
     },
     {
       "date": "2026-02-26",
@@ -4227,7 +4383,8 @@
       "objectives": [
         "Comprendre et retenir Calcul de génie civil (Masses et Volumes)",
         "Comprendre et retenir Planification temporelle (Gantt et PERT)"
-      ]
+      ],
+      "id": "rev_2026-02-26_156"
     },
     {
       "date": "2026-02-27",
@@ -4245,7 +4402,8 @@
       "objectives": [
         "Comprendre et retenir Calcul de génie civil pour fondations",
         "Comprendre et retenir Calcul des coûts et Devis"
-      ]
+      ],
+      "id": "rev_2026-02-27_157"
     },
     {
       "date": "2026-02-28",
@@ -4263,7 +4421,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-02-28_158"
     },
     {
       "date": "2026-03-01",
@@ -4279,7 +4438,7 @@
         "Reviser: Grandeurs photométriques fondamentales",
         "Reviser: Méthode de la Lanterne Magique"
       ],
-      "category": "Documentation et plans",
+      "category": "Gestion de projet",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA03",
@@ -4289,7 +4448,8 @@
         "Comprendre et retenir Services auxiliaires de sous-station",
         "Comprendre et retenir Normes de Management (ISO)",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-03-01_159"
     },
     {
       "date": "2026-03-02",
@@ -4299,7 +4459,7 @@
         "Systèmes de Management (ISO)",
         "Contrôle des Machines Électriques Portatives"
       ],
-      "category": "Sécurité au travail",
+      "category": "Gestion de projet",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA08",
@@ -4307,7 +4467,8 @@
       "objectives": [
         "Comprendre et retenir Systèmes de Management (ISO)",
         "Comprendre et retenir Contrôle des Machines Électriques Portatives"
-      ]
+      ],
+      "id": "rev_2026-03-02_160"
     },
     {
       "date": "2026-03-03",
@@ -4317,7 +4478,7 @@
         "Principe du Diviseur de Tension",
         "Caractéristiques des Appareils de Mesure (Voltmètre)"
       ],
-      "category": "Technique de mesure",
+      "category": "Électrotechnique",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA09",
@@ -4325,7 +4486,8 @@
       "objectives": [
         "Comprendre et retenir Principe du Diviseur de Tension",
         "Comprendre et retenir Caractéristiques des Appareils de Mesure (Voltmètre)"
-      ]
+      ],
+      "id": "rev_2026-03-03_161"
     },
     {
       "date": "2026-03-04",
@@ -4343,7 +4505,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-04_162"
     },
     {
       "date": "2026-03-05",
@@ -4361,7 +4524,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-05_163"
     },
     {
       "date": "2026-03-06",
@@ -4378,7 +4542,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-06_164"
     },
     {
       "date": "2026-03-08",
@@ -4392,7 +4557,7 @@
         "Coefficient de température (α)",
         "Capacité et Énergie des accumulateurs"
       ],
-      "category": "Maintenance",
+      "category": "Réseaux de distribution",
       "priority": "medium",
       "session_type": "new_learning",
       "module": "AA09",
@@ -4402,7 +4567,8 @@
         "Comprendre et retenir Rendement énergétique (η)",
         "Comprendre et retenir Corrosion électrochimique",
         "Faire un quiz de contrôle sur les concepts de la semaine"
-      ]
+      ],
+      "id": "rev_2026-03-08_165"
     },
     {
       "date": "2026-03-09",
@@ -4420,7 +4586,8 @@
       "objectives": [
         "Comprendre et retenir Coefficient de Température (Alpha)",
         "Comprendre et retenir Impédance et Circuits RLC"
-      ]
+      ],
+      "id": "rev_2026-03-09_166"
     },
     {
       "date": "2026-03-10",
@@ -4436,7 +4603,8 @@
       "completed": false,
       "objectives": [
         "Comprendre et retenir Indemnités accessoires (Gêne et Tiers)"
-      ]
+      ],
+      "id": "rev_2026-03-10_167"
     },
     {
       "date": "2026-03-14",
@@ -4454,7 +4622,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-14_168"
     },
     {
       "date": "2026-03-15",
@@ -4472,7 +4641,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-15_169"
     },
     {
       "date": "2026-03-16",
@@ -4490,7 +4660,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-16_170"
     },
     {
       "date": "2026-03-17",
@@ -4508,7 +4679,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-17_171"
     },
     {
       "date": "2026-03-18",
@@ -4526,7 +4698,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-18_172"
     },
     {
       "date": "2026-03-19",
@@ -4544,7 +4717,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-19_173"
     },
     {
       "date": "2026-03-20",
@@ -4561,7 +4735,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-03-20_174"
     },
     {
       "date": "2026-04-07",
@@ -4579,7 +4754,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-07_175"
     },
     {
       "date": "2026-04-08",
@@ -4597,7 +4773,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-08_176"
     },
     {
       "date": "2026-04-09",
@@ -4615,7 +4792,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-09_177"
     },
     {
       "date": "2026-04-10",
@@ -4633,7 +4811,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-10_178"
     },
     {
       "date": "2026-04-11",
@@ -4651,7 +4830,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-11_179"
     },
     {
       "date": "2026-04-12",
@@ -4669,7 +4849,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-12_180"
     },
     {
       "date": "2026-04-13",
@@ -4686,7 +4867,8 @@
       "completed": false,
       "objectives": [
         "Consolider les acquis"
-      ]
+      ],
+      "id": "rev_2026-04-13_181"
     }
   ],
   "statistics": {

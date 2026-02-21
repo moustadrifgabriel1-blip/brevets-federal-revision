@@ -8,7 +8,7 @@ Jours restants: 391
 
 - **2026-05-30** - Premier Quart: Bases essentielles
 - **2026-09-05** - Mi-parcours: Concepts avances
-- **2026-12-11** - Dernier Sprint: Revisions intensives
+- **2026-12-12** - Dernier Sprint: Revisions intensives
 - **2027-03-13** - Revision Finale: Consolidation
 
 ## Sessions de la semaine

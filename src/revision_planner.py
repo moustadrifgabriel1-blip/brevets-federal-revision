@@ -20,6 +20,7 @@ class RevisionSession:
     module: Optional[str] = None
     completed: bool = False
     objectives: List[str] = field(default_factory=list)
+    id: Optional[str] = None
 
 
 class RevisionPlannerAuto:
@@ -181,6 +182,10 @@ class RevisionPlannerAuto:
                 concept_index += len(session_concepts)
             current_date += timedelta(days=1)
         self._add_spaced_repetition()
+        # Assigner des IDs stables à toutes les sessions
+        self.sessions.sort(key=lambda s: s.date)
+        for i, s in enumerate(self.sessions):
+            s.id = f"rev_{s.date}_{i}"
         self._create_milestones()
         return self.sessions
     

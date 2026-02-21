@@ -129,36 +129,56 @@ class ProgressTracker:
 
     def sync_with_calendar(self, revision_plan: dict, course_schedule_sessions: list = None, concept_map: dict = None):
         """
-        Synchronise automatiquement la progression avec le calendrier.
+        Synchronise la progression avec le calendrier.
         
-        - Marque les sessions de révision passées comme complétées
-        - Marque les concepts vus en cours comme 'en cours de révision'
-        - Met à jour les totaux
+        - Met à jour les totaux (sessions, concepts)
+        - Calcule les stats de cours (modules complétés, concepts vus)
+        - NE force PAS l'auto-complétion des sessions passées
+          (c'est l'utilisateur qui coche manuellement)
         
         Args:
             revision_plan: Le plan de révision (depuis revision_plan.json)
-            course_schedule_sessions: Liste des sessions de cours (CourseSession objects ou dicts)
+            course_schedule_sessions: Liste des sessions de cours
             concept_map: La carte des concepts (concept_map.json)
         """
         now = datetime.now()
-        today_str = now.strftime('%Y-%m-%d')
         changed = False
         
-        # 1) Auto-compléter les sessions de révision passées
+        # 1) Mettre à jour les totaux
         sessions = revision_plan.get('sessions', [])
+        total_sessions = len(sessions) if sessions else self.progress["stats"]["total_sessions"]
+        total_concepts = len(concept_map.get('nodes', [])) if concept_map else self.progress["stats"]["total_concepts"]
+        
+        if (self.progress["stats"]["total_sessions"] != total_sessions or 
+            self.progress["stats"]["total_concepts"] != total_concepts):
+            self.progress["stats"]["total_sessions"] = total_sessions
+            self.progress["stats"]["total_concepts"] = total_concepts
+            changed = True
+        
+        # 2) Nettoyer les IDs obsolètes (anciens IDs avec index global)
+        # Si on détecte des IDs au format ancien, les migrer
+        valid_ids = set()
         for session in sessions:
-            session_date = session.get('date', '')
-            session_id = session.get('id') or f"{session.get('category', '')}_{session_date}_{sessions.index(session)}"
-            
-            if session_date < today_str and session_id not in self.progress["sessions_completed"]:
-                self.progress["sessions_completed"].append(session_id)
+            sid = session.get('id')
+            if sid:
+                valid_ids.add(sid)
+        
+        if valid_ids:
+            old_completed = self.progress["sessions_completed"]
+            # Garder seulement les IDs valides (format rev_YYYY-MM-DD_N)
+            cleaned = [sid for sid in old_completed if sid in valid_ids]
+            if len(cleaned) != len(old_completed):
+                self.progress["sessions_completed"] = cleaned
+                self.progress["stats"]["completed_sessions"] = len(cleaned)
                 changed = True
         
-        # 2) Identifier les modules dont les cours sont passés
+        # 3) Mettre à jour le compteur
+        self.progress["stats"]["completed_sessions"] = len(self.progress["sessions_completed"])
+        
+        # 4) Identifier les modules dont les cours sont passés
         completed_modules = set()
         if course_schedule_sessions:
             for s in course_schedule_sessions:
-                # Supporter à la fois des dicts et des objets CourseSession
                 if hasattr(s, 'date'):
                     s_date = s.date
                     s_module = s.module_code
@@ -169,26 +189,7 @@ class ProgressTracker:
                 if s_date <= now:
                     completed_modules.add(s_module)
         
-        # 3) Auto-marquer les concepts des modules complétés comme "vus" 
-        # (mais pas "maîtrisés" — ça reste manuel via quiz)
-        if concept_map and completed_modules:
-            nodes = concept_map.get('nodes', [])
-            for node in nodes:
-                concept_module = node.get('module', '')
-                concept_id = node.get('id', '')
-                # On ne force pas la maîtrise, mais on track les concepts "vus"
-                # via un champ séparé pour ne pas interférer avec le suivi manuel
-        
-        # 4) Mettre à jour les compteurs
-        self.progress["stats"]["completed_sessions"] = len(self.progress["sessions_completed"])
-        
-        # Mettre à jour les totaux si fournis
-        total_sessions = len(sessions) if sessions else self.progress["stats"]["total_sessions"]
-        total_concepts = len(concept_map.get('nodes', [])) if concept_map else self.progress["stats"]["total_concepts"]
-        self.progress["stats"]["total_sessions"] = total_sessions
-        self.progress["stats"]["total_concepts"] = total_concepts
-        
-        # 5) Ajouter les infos de synchronisation avec le calendrier cours
+        # 5) Stats de cours
         if "course_stats" not in self.progress:
             self.progress["course_stats"] = {}
         
@@ -217,6 +218,7 @@ class ProgressTracker:
         
         return {
             "sessions_synced": len(self.progress["sessions_completed"]),
+            "total_sessions": total_sessions,
             "completed_modules": sorted(list(completed_modules)),
             "course_stats": self.progress.get("course_stats", {})
         }
