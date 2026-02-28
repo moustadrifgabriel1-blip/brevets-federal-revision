@@ -2855,33 +2855,54 @@ elif page == "📆 Planning Révisions":
                                     st.rerun()
                             
                             with col_card:
-                                st.markdown(f"""
-                                <div style="border-left: {border}; padding: 1rem 1.2rem; margin: 0.5rem 0; 
-                                            background: {bg_color}; border-radius: 0 12px 12px 0;
-                                            box-shadow: 0 2px 4px rgba(0,0,0,0.05); {'opacity: 0.7;' if is_done else ''}">
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div>
-                                            <strong style="font-size: 1.1rem;">{type_icon} {day_name} {current_day.strftime('%d/%m')}</strong>{today_badge}{done_badge}
-                                            <br><span style="color: #666;">{session['duration_minutes']} min · {session['category']}</span>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <span style="background: {priority_color}; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem;">
-                                                {'Priorité haute' if session['priority'] == 'high' else 'Priorité moyenne' if session['priority'] == 'medium' else 'Priorité basse'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div style="margin-top: 0.5rem; font-size: 0.9rem;">
-                                        {''.join(f'<div style="margin: 2px 0;">• <strong>{c}</strong></div>' for c in session['concepts'][:5])}
-                                        {'<div style="color: #999;">... +' + str(len(session["concepts"]) - 5) + ' autres</div>' if len(session["concepts"]) > 5 else ''}
-                                    </div>
-                                </div>
-                                """, unsafe_allow_html=True)
+                                # Construire les lignes de concepts avec source/pages
+                                concept_lines = []
+                                for c in session['concepts'][:5]:
+                                    node_info = concept_dict.get(c, {})
+                                    src_doc = node_info.get('source_document', '')
+                                    pages = node_info.get('page_references', '')
+                                    source_info = ''
+                                    if src_doc or pages:
+                                        parts = []
+                                        if src_doc:
+                                            parts.append(f'📄 {src_doc}')
+                                        if pages:
+                                            parts.append(f'p. {pages}')
+                                        source_info = f'<br><span style="color: #888; font-size: 0.8rem; margin-left: 1rem;">{" · ".join(parts)}</span>'
+                                    concept_lines.append(f'<div style="margin: 4px 0;">• <strong>{c}</strong>{source_info}</div>')
+                                concepts_html = ''.join(concept_lines)
+                                overflow_html = f'<div style="color: #999;">... +{len(session["concepts"]) - 5} autres</div>' if len(session["concepts"]) > 5 else ''
+                                priority_label = 'Priorité haute' if session['priority'] == 'high' else 'Priorité moyenne' if session['priority'] == 'medium' else 'Priorité basse'
+                                
+                                card_html = (
+                                    f'<div style="border-left: {border}; padding: 1rem 1.2rem; margin: 0.5rem 0; '
+                                    f'background: {bg_color}; border-radius: 0 12px 12px 0; '
+                                    f'box-shadow: 0 2px 4px rgba(0,0,0,0.05); {"opacity: 0.7;" if is_done else ""}">'
+                                    f'<div style="display: flex; justify-content: space-between; align-items: center;">'
+                                    f'<div>'
+                                    f'<strong style="font-size: 1.1rem;">{type_icon} {day_name} {current_day.strftime("%d/%m")}</strong>{today_badge}{done_badge}'
+                                    f'<br><span style="color: #666;">{session["duration_minutes"]} min · {session["category"]}</span>'
+                                    f'</div>'
+                                    f'<div style="text-align: right;">'
+                                    f'<span style="background: {priority_color}; color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem;">'
+                                    f'{priority_label}'
+                                    f'</span>'
+                                    f'</div>'
+                                    f'</div>'
+                                    f'<div style="margin-top: 0.5rem; font-size: 0.9rem;">'
+                                    f'{concepts_html}'
+                                    f'{overflow_html}'
+                                    f'</div>'
+                                    f'</div>'
+                                )
+                                st.markdown(card_html, unsafe_allow_html=True)
                     elif not is_past:
-                        st.markdown(f"""
-                        <div style="padding: 0.5rem 1.2rem; margin: 0.3rem 0; color: #aaa; font-size: 0.9rem;">
-                            {day_name} {current_day.strftime('%d/%m')} — <em>Pas de session</em>
-                        </div>
-                        """, unsafe_allow_html=True)
+                        no_session_html = (
+                            f'<div style="padding: 0.5rem 1.2rem; margin: 0.3rem 0; color: #aaa; font-size: 0.9rem;">'
+                            f'{day_name} {current_day.strftime("%d/%m")} — <em>Pas de session</em>'
+                            f'</div>'
+                        )
+                        st.markdown(no_session_html, unsafe_allow_html=True)
             
             # Navigation semaine
             st.markdown("---")
